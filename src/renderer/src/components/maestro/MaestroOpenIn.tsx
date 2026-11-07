@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react'
 import { useShallow } from 'zustand/react/shallow'
 import { ChevronDown, FolderOpen, Terminal } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { ButtonGroup } from '@/components/ui/button-group'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -120,13 +121,12 @@ export function MaestroOpenIn({ worktree, repo }: { worktree: Worktree; repo: Re
       <OpenInApplicationIcon application={{ command: entry.command ?? '' }} />
     )
   return (
-    <div className="flex shrink-0">
+    <ButtonGroup className="shrink-0">
       <Tooltip>
         <TooltipTrigger asChild>
           <Button
             variant="outline"
             size="icon-sm"
-            className="rounded-r-none"
             disabled={!last}
             aria-label={
               last
@@ -165,7 +165,6 @@ export function MaestroOpenIn({ worktree, repo }: { worktree: Worktree; repo: Re
           <Button
             variant="outline"
             size="icon-sm"
-            className="rounded-l-none border-l-0"
             aria-label={translate(
               'auto.components.maestro.MaestroOpenIn.577d2f1a52',
               'Choose Open in application'
@@ -196,6 +195,6 @@ export function MaestroOpenIn({ worktree, repo }: { worktree: Worktree; repo: Re
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
-    </div>
+    </ButtonGroup>
   )
 }

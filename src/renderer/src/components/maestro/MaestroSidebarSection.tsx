@@ -46,7 +46,7 @@ export function MaestroSidebarSection({
   const custom = group.custom
   return (
     <div
-      className="flex items-center gap-1 px-2"
+      className="flex items-center gap-1 px-2 text-muted-foreground"
       draggable={!!custom}
       onDragStart={
         custom
@@ -59,8 +59,8 @@ export function MaestroSidebarSection({
     >
       <Button
         variant="ghost"
-        size="sm"
-        className="min-w-0 flex-1 justify-start px-1 text-xs text-muted-foreground"
+        size="menu"
+        className="min-w-0 flex-1 justify-start"
         aria-expanded={!group.collapsed}
         onClick={onToggle}
       >

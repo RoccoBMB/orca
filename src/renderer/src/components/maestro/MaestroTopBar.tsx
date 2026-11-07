@@ -2,6 +2,7 @@ import { useUiLanguageRevision } from '@/i18n/use-ui-language-revision'
 import { useEffect } from 'react'
 import { ChevronDown, ChevronRight, GitBranch, GitPullRequest, MoreHorizontal } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { ButtonGroup } from '@/components/ui/button-group'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -92,13 +93,8 @@ export function MaestroTopBar() {
       </div>
       <MaestroOpenIn worktree={worktree} repo={repo} />
       {git && (
-        <div className="flex shrink-0">
-          <Button
-            variant="outline"
-            size="sm"
-            className="rounded-r-none"
-            onClick={() => request('create')}
-          >
+        <ButtonGroup className="shrink-0">
+          <Button variant="outline" size="sm" onClick={() => request('create')}>
             <GitPullRequest className="size-4" />
             {translate('auto.components.maestro.MaestroTopBar.b62de08085', 'Create PR')}
           </Button>
@@ -107,7 +103,6 @@ export function MaestroTopBar() {
               <Button
                 variant="outline"
                 size="icon-sm"
-                className="rounded-l-none border-l-0"
                 aria-label={translate(
                   'auto.components.maestro.MaestroTopBar.aa0be0be48',
                   'Pull request actions'
@@ -137,7 +132,7 @@ export function MaestroTopBar() {
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-        </div>
+        </ButtonGroup>
       )}
     </div>
   )

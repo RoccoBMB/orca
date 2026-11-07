@@ -51,7 +51,7 @@ export function MaestroNavigation() {
         value={scope}
         options={hostScopeOptions}
         size="sm"
-        className="border-0 bg-transparent shadow-none text-worktree-sidebar-foreground"
+        variant="ghost"
         placeholder={translate('auto.components.maestro.MaestroNavigation.0fd2c6b21f', 'All hosts')}
         onChange={(id) => {
           const option = hostScopeOptions.find((host) => host.id === id)

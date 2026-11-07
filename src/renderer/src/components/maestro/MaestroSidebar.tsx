@@ -283,7 +283,7 @@ export function MaestroSidebar({
       <Button
         variant="ghost"
         size="sm"
-        className="mx-2 shrink-0 justify-start text-muted-foreground"
+        className="mx-2 shrink-0 justify-start"
         onClick={() => setDialog('new')}
       >
         <Plus className="size-3.5" />

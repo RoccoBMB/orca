@@ -49,6 +49,7 @@ export function HostCombobox({
   placeholder,
   ariaLabel,
   size = 'default',
+  variant = 'outline',
   notifyOnReselect = false,
   className,
   disabled
@@ -60,6 +61,7 @@ export function HostCombobox({
   placeholder?: string
   ariaLabel?: string
   size?: 'xs' | 'sm' | 'default'
+  variant?: 'outline' | 'ghost'
   className?: string
   disabled?: boolean
   notifyOnReselect?: boolean
@@ -86,7 +88,7 @@ export function HostCombobox({
         <Button
           id={id}
           type="button"
-          variant="outline"
+          variant={variant}
           size={size}
           role="combobox"
           aria-expanded={open}
