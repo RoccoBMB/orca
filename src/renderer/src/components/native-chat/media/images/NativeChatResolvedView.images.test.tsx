@@ -33,7 +33,7 @@ const session: NativeChatLiveSession = {
 vi.mock('../../session/terminal/read/use-native-chat-retained-session', () => ({
   useNativeChatRetainedSession: () => session
 }))
-vi.mock('../../NativeChatComposer', () => ({ NativeChatComposer: () => null }))
+vi.mock('../../composer/NativeChatComposer', () => ({ NativeChatComposer: () => null }))
 
 const { NativeChatResolvedView } = await import('../../NativeChatResolvedView')
 const original = useAppStore.getState()
