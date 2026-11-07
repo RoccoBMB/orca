@@ -21,6 +21,8 @@ export function buildMaestroSidebarGroups(
     collapsed: section.collapsed,
     custom: section
   }))
+  const customByKey = new Map(custom.map((group) => [group.key, group]))
+  const statusByKey = new Map(statuses.map((group) => [group.key, group]))
   const seen = new Set<string>()
   for (const row of rows) {
     const identity = getWorktreeHostIdentity(row)
@@ -29,12 +31,10 @@ export function buildMaestroSidebarGroups(
     }
     seen.add(identity)
     const assignment = settings?.workspaceSections?.[identity]
-    const assigned = custom.find((group) => group.key === assignment)
+    const assigned = assignment ? customByKey.get(assignment) : undefined
     const status = assigned ? undefined : statusFor(row)
     const group =
-      assigned ??
-      statuses.find((group) => group.key === status) ??
-      statuses.find((group) => group.key === 'todo')
+      assigned ?? (status ? statusByKey.get(status) : undefined) ?? statusByKey.get('todo')
     group?.items.push(row)
   }
   return [...statuses.filter((group) => group.items.length > 0), ...custom]

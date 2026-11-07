@@ -64,6 +64,7 @@ export function VirtualizedList<TRow>({
   scrollElement,
   estimateRowHeightPx = VIRTUALIZED_LIST_ROW_HEIGHT_PX,
   activeRowKey,
+  revealRow,
   minimumRows = VIRTUALIZED_LIST_MIN_ROWS,
   announceListPosition = false,
   hasUnloadedRows
@@ -77,6 +78,7 @@ export function VirtualizedList<TRow>({
   estimateRowHeightPx?: number | ((row: TRow) => number)
   // Why: keyboard-driven lists must mount and reveal selections outside the current window.
   activeRowKey?: string
+  revealRow?: { rowKey: string }
   minimumRows?: number
   // Expose list semantics only by opt-in on the windowed path; small fragments have no role container, and other surfaces own their a11y roles.
   announceListPosition?: boolean
@@ -88,16 +90,19 @@ export function VirtualizedList<TRow>({
   const virtualize = rows.length >= minimumRows
   const activeIndex =
     activeRowKey === undefined ? -1 : rows.findIndex((row) => getRowKey(row) === activeRowKey)
+  const revealIndex = revealRow ? rows.findIndex((row) => getRowKey(row) === revealRow.rowKey) : -1
   const rangeExtractor = useCallback(
     (range: Parameters<typeof defaultRangeExtractor>[0]) => {
       const indexes = defaultRangeExtractor(range)
-      if (activeIndex >= 0 && !indexes.includes(activeIndex)) {
-        indexes.push(activeIndex)
-        indexes.sort((a, b) => a - b)
+      for (const index of [activeIndex, revealIndex]) {
+        if (index >= 0 && !indexes.includes(index)) {
+          indexes.push(index)
+        }
       }
+      indexes.sort((a, b) => a - b)
       return indexes
     },
-    [activeIndex]
+    [activeIndex, revealIndex]
   )
 
   // Shared scrollers need this list’s offset; measure on attachment/layout shifts, never ordinary renders.
@@ -145,6 +150,12 @@ export function VirtualizedList<TRow>({
       virtualizer.scrollToIndex(activeIndex, { align: 'auto' })
     }
   }, [activeIndex, activeRowKey, scrollElement, virtualize, virtualizer])
+
+  useLayoutEffect(() => {
+    if (virtualize && scrollElement && revealIndex >= 0) {
+      virtualizer.scrollToIndex(revealIndex, { align: 'auto' })
+    }
+  }, [revealIndex, revealRow, scrollElement, virtualize, virtualizer])
 
   // Why not the window's count: the window is what AT must not be able to hear.
   const announcedSetSize = hasUnloadedRows ? -1 : rows.length

@@ -5,7 +5,6 @@ import { Button } from '@/components/ui/button'
 import { useAppStore } from '@/store'
 import { MaestroSectionDialog } from './MaestroSectionDialog'
 import { useMaestroSettings } from './use-maestro-settings'
-import { maestroWorkspaceStatus } from './maestro-workspace-status'
 import { MaestroWorkspaceRow } from './MaestroWorkspaceRow'
 import { VirtualizedList } from '@/components/virtualized-list'
 import {
@@ -21,19 +20,19 @@ import {
 } from '../../../../shared/maestro-settings'
 import { getWorktreeHostIdentity } from '../../../../shared/worktree/host-qualified-identity'
 import { folderWorkspaceToWorktree } from '../../../../shared/folder-workspaces/folder-workspace-worktree'
-import { getHostedReviewCacheKey } from '@/store/slices/hosted-review/hosted-review-cache-identity'
-import { getGitHubPRCacheKey } from '../../../../shared/github/github-cache-key'
 import { getRepoExecutionHostId } from '../../../../shared/execution-host'
 import { useWorktreeListKeyboardNavigation } from '../sidebar/worktree-list/navigation/use-keyboard'
 import type { HostSectionRow } from '../../../../shared/sidebar-list/host-section-rows'
 import { getPinnedWorktreeDisplayPolicy } from '../../../../shared/sidebar-list/row-types'
 import { getWorktreeOptionId } from '../sidebar/worktree-list/rows/option-dom'
-import { buildMaestroSidebarGroups } from './maestro-sidebar-groups'
 import type { Worktree } from '../../../../shared/worktree/types'
 import type { Repo } from '../../../../shared/repo-types'
 import type { FolderWorkspace } from '../../../../shared/folder-workspaces/folder-workspace-types'
 import type { GlobalSettings } from '../../../../shared/global-settings-types'
 import type { SidebarListModel } from '../sidebar/worktree-list/listing/sidebar-list-model'
+import { useMaestroSidebarGroups } from './use-maestro-sidebar-groups'
+import { useMaestroSidebarReveal } from './use-maestro-sidebar-reveal'
+import { useSidebarWorktreeSelection } from '../sidebar/worktree-list/navigation/use-selection'
 import { translate } from '@/i18n/i18n'
 
 type VirtualRow = { key: string; group: MaestroSidebarGroup; worktree?: Worktree }
@@ -49,8 +48,6 @@ export function MaestroSidebar({ worktrees, folders, repos, onWorktreeCardClick 
   useUiLanguageRevision()
   const { maestro, updateMaestro } = useMaestroSettings()
   const settings = useAppStore((s) => s.settings)
-  const prCache = useAppStore((s) => s.prCache)
-  const reviewCache = useAppStore((s) => s.hostedReviewCache)
   const scrollRef = useRef<HTMLDivElement | null>(null)
   const [scrollElement, setScrollElement] = useState<HTMLDivElement | null>(null)
   const attachScroller = useCallback((element: HTMLDivElement | null) => {
@@ -68,47 +65,21 @@ export function MaestroSidebar({ worktrees, folders, repos, onWorktreeCardClick 
   )
   const repoFor = (worktree: Worktree): Repo | undefined =>
     repoByHost.get(`${worktree.hostId ?? 'local'}|${worktree.repoId}`)
-  const allGroups = buildMaestroSidebarGroups(rows, maestro, (row) => {
-    const repo = repoFor(row)
-    const branch = row.branch.replace(/^refs\/heads\//, '')
-    const review = repo
-      ? reviewCache[
-          getHostedReviewCacheKey(
-            repo.path,
-            branch,
-            settings,
-            repo.id,
-            repo.connectionId,
-            row.hostId ?? repo.executionHostId,
-            true
-          )
-        ]?.data
-      : null
-    const pr = repo
-      ? prCache[
-          getGitHubPRCacheKey(
-            repo.path,
-            repo.id,
-            branch,
-            settings,
-            repo.connectionId,
-            row.hostId ?? repo.executionHostId,
-            true
-          )
-        ]?.data
-      : null
-    return maestroWorkspaceStatus(row, review ?? pr, maestro?.statusOverrides)
-  })
-  const virtualRows: VirtualRow[] = allGroups.flatMap((group) => [
-    { key: group.key, group },
-    ...(group.collapsed
-      ? []
-      : group.items.map((worktree) => ({
-          key: `${group.key}:${getWorktreeHostIdentity(worktree)}`,
-          group,
-          worktree
-        })))
-  ])
+  const allGroups = useMaestroSidebarGroups(rows, repoByHost, maestro)
+  const virtualRows: VirtualRow[] = useMemo(
+    () =>
+      allGroups.flatMap((group) => [
+        { key: group.key, group },
+        ...(group.collapsed
+          ? []
+          : group.items.map((worktree) => ({
+              key: `${group.key}:${getWorktreeHostIdentity(worktree)}`,
+              group,
+              worktree
+            })))
+      ]),
+    [allGroups]
+  )
   const activeWorktreeId = useAppStore((s) => s.activeWorktreeId)
   const activeHostId = useAppStore((s) => s.activeWorkspaceExecutionHostId)
   const activeModal = useAppStore((s) => s.activeModal)
@@ -129,6 +100,11 @@ export function MaestroSidebar({ worktrees, folders, repos, onWorktreeCardClick 
         ]
       : []
   )
+  useSidebarWorktreeSelection({
+    sectionRows: navigationRows,
+    pinnedDisplayPolicy: 'single-location'
+  })
+  const { revealRow, highlightedRevealRowKey } = useMaestroSidebarReveal(allGroups, scrollRef)
   const { handleContainerKeyDown, keyboardPreview } = useWorktreeListKeyboardNavigation({
     rows: navigationRows,
     activeWorktreeId,
@@ -238,6 +214,7 @@ export function MaestroSidebar({ worktrees, folders, repos, onWorktreeCardClick 
           scrollElement={scrollElement}
           estimateRowHeightPx={(row) => (row.worktree ? 32 : 28)}
           activeRowKey={activeRowKey}
+          revealRow={revealRow}
           minimumRows={0}
           renderRow={(row) => (
             <div
@@ -256,6 +233,7 @@ export function MaestroSidebar({ worktrees, folders, repos, onWorktreeCardClick 
                 <MaestroWorkspaceRow
                   worktree={row.worktree}
                   rowKey={row.key}
+                  revealHighlight={row.key === highlightedRevealRowKey}
                   isPreviewActive={keyboardPreview ? row.key === activeRowKey : undefined}
                   repo={repoFor(row.worktree)}
                   onActivate={onWorktreeCardClick}

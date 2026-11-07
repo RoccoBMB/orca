@@ -18,8 +18,9 @@ const getSidebarContainer = (): Element | null =>
 export function useSidebarWorktreeSelection(args: {
   sectionRows: HostSectionRow[]
   pinnedDisplayPolicy: PinnedWorktreeDisplayPolicy
+  enabled?: boolean
 }) {
-  const { sectionRows, pinnedDisplayPolicy } = args
+  const { sectionRows, pinnedDisplayPolicy, enabled = true } = args
   // Built rows include grouping/pinning reorder; use their order for selection and Cmd+1–9 parity.
   const renderedWorktrees = useMemo(
     () => getRenderedWorktreesInSidebarOrder(sectionRows, pinnedDisplayPolicy),
@@ -46,6 +47,9 @@ export function useSidebarWorktreeSelection(args: {
 
   // Why layout effect: the Cmd/Ctrl+1–9 handler can fire right after commit; publishing after paint would leave the shortcut cache stale.
   useLayoutEffect(() => {
+    if (!enabled) {
+      return
+    }
     const chipKeysByIdentity = new Map<string, string>()
     for (const row of sectionRows) {
       if (row.type === 'item' && row.lineageGroupKey && row.lineageChildCount > 0) {
@@ -68,7 +72,7 @@ export function useSidebarWorktreeSelection(args: {
       setVisibleWorktreeIds(null)
       setVisibleWorktreeShortcutTargets(null)
     }
-  }, [renderedWorktreeIds, renderedWorktrees, sectionRows])
+  }, [enabled, renderedWorktreeIds, renderedWorktrees, sectionRows])
 
   return {
     renderedWorktreeIds,

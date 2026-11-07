@@ -1,5 +1,20 @@
 # Changelog
 
+## 2026-11-07 — Sidebar review fixes
+
+- Aligned numbered workspace shortcuts with visible Maestro section order,
+  skipping collapsed sections and preserving host-qualified workspace targets.
+- Connected reveal requests to Maestro section expansion and virtualized scrolling,
+  including repeated folder reveals and explicit reveals of non-active rows.
+- Indexed and memoized sidebar group membership; added the requested
+  500-workspace performance coverage and regression tests.
+- Made workspace hover-card backgrounds opaque in light and dark mode.
+- Implementation: `src/renderer/src/components/maestro/`, shared sidebar selection,
+  `virtualized-list.tsx`, and the workspace-details hover-card variant.
+  Evidence: `qa-rocco/sidebar-fixes*`; details: `NOTES-sidebar.md`.
+- Revert: revert the sidebar review-fix commit(s) on `rocco/sidebar-compact`
+  to return to `0d2d2ba6dd`.
+
 ## 2026-11-07 — Compact Conductor sidebar
 
 - Made Conductor workspace rows single-line (32px), with activity, truncated title,

@@ -90,3 +90,32 @@ with Playwright's `chromium.connectOverCDP('http://127.0.0.1:9444')`.
 No app installation, production profile, real SSH/git config, credential store,
 other worktree, `~/.maestro-smoke`, or control-plane LaunchAgent was changed.
 No PR or merge is part of this task. Push target: `origin rocco/sidebar-compact`.
+
+## Review fixes — 2026-11-07
+
+- Finding 11: Maestro now publishes host-qualified numbered-shortcut targets from expanded section rows; the original list publisher is disabled in Conductor mode.
+- Finding 12: pending workspace/row reveals expand the owning Maestro section, mount and scroll to its qualified row, preserve highlight/rename, and support repeated/offscreen folder reveals.
+- Finding 13: indexed custom/status membership and memoized status/group projections replace per-row section scans and unrelated render rebuilds; the 500-workspace/100-section case and cache-invalidation regression pass.
+- Hover card: workspace details now use the opaque popover token; settled normal-effects background changed from alpha 0.82 to opaque in light/dark. The old reduced-effects capture also cleared after animation.
+
+Verification: 38 focused tests across six files pass; full `pnpm tc`, renderer build,
+and the changed-code quality gate pass. Required delegated review found and
+resolved store-selector scanning and reveal-consumption scroll-back; follow-up
+reports no remaining correctness concerns. The 500-workspace grouping measured
+0.35ms in the final focused run; this is a local observation, not a timing budget.
+
+Hidden Electron CDP checks at 1280×800 pass numbered shortcuts 1–9, collapsed
+section skipping, status expansion, offscreen custom-section folder reveal,
+repeated reveal, and revealing a non-active row without scrolling back. Shortcut
+checks inject key events into Electron's real main shortcut handler while keeping
+the window hidden; cross-platform policy is covered by the focused unit tests.
+All final screenshots were opened and inspected. See
+[the review-fix QA report](qa-rocco/sidebar-fixes-report.md), interaction/surface
+JSON, and `sidebar-fixes*.png`. No page errors occurred. The disposable HOME and
+userData paths remain those documented above; no installed app or real profile
+was used. Native-focus, real SSH, and Windows/Linux rendered checks remain excluded.
+
+Run `pnpm check:changed` against the branch base `ef2a88e6ae` before push; broad
+related-test limitations are recorded in the QA report. Full-suite success is not
+claimed. No PR or merge is part of this task. Revert the review-fix commit(s) to
+return to `0d2d2ba6dd`; Conductor sections can still be disabled independently.

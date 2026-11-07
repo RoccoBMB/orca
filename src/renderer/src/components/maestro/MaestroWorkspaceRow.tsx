@@ -21,13 +21,15 @@ export function MaestroWorkspaceRow({
   repo,
   onActivate,
   rowKey,
-  isPreviewActive
+  isPreviewActive,
+  revealHighlight
 }: {
   worktree: Worktree
   repo?: Repo
   onActivate?: () => void
   rowKey: string
   isPreviewActive?: boolean
+  revealHighlight?: boolean
 }) {
   useUiLanguageRevision()
   const now = useNow(60_000)
@@ -96,6 +98,7 @@ export function MaestroWorkspaceRow({
         isActiveSurface={isPreviewActive ?? active}
         activationRowKey={rowKey}
         compactRow
+        revealHighlight={revealHighlight}
         nativeDragEnabled={false}
         onWorktreeCardClick={onActivate}
         trailingContent={

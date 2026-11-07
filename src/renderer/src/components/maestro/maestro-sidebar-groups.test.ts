@@ -33,3 +33,31 @@ it('retains workspaces with removed assignments or unknown statuses in Backlog',
     ['empty', []]
   ])
 })
+
+it('projects 500 workspaces across 100 collapsed custom sections', () => {
+  const sections = Array.from({ length: 100 }, (_, index) => ({
+    id: `section-${index}`,
+    name: `Section ${index}`,
+    emoji: '',
+    collapsed: true
+  }))
+  const rows = Array.from({ length: 500 }, (_, index) => ({
+    ...referenceWorkspace,
+    hostId: 'local' as const,
+    id: `workspace-${index}`
+  }))
+  const workspaceSections = Object.fromEntries(
+    rows.map((row, index) => [`local|${row.id}`, `section-${index % 100}`])
+  )
+  const started = performance.now()
+  const groups = buildMaestroSidebarGroups(rows, { sections, workspaceSections }, () => 'todo')
+  console.info(`500-workspace grouping: ${(performance.now() - started).toFixed(2)}ms`)
+  expect(groups).toHaveLength(100)
+  expect(groups[99].items.map((row) => row.id)).toEqual([
+    'workspace-99',
+    'workspace-199',
+    'workspace-299',
+    'workspace-399',
+    'workspace-499'
+  ])
+})

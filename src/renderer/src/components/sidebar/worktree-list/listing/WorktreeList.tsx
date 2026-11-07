@@ -1,3 +1,4 @@
+import { conductorSidebarEnabled } from '../../../../../../shared/maestro-settings'
 import { renderMaestroSidebar as maestroView } from '@/components/maestro/MaestroSidebar'
 import React, { useCallback, useMemo } from 'react'
 import { createPortal } from 'react-dom'
@@ -196,6 +197,7 @@ const WorktreeList = React.memo(function WorktreeList({
   }, [allProjectsCollapsed, projectCollapseKeys, setCollapsedGroups])
   const selection = useSidebarWorktreeSelection({
     sectionRows: rowModel.sectionRows,
+    enabled: !conductorSidebarEnabled(settings),
     pinnedDisplayPolicy
   })
   const statusMutations = useWorktreeStatusMutations({
