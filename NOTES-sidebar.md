@@ -72,6 +72,10 @@ Task: supplied `Orca-briefs/sidebar-compact.md` and `common.md`.
   Maestro top bar. This failure also occurs before the compact sidebar changes.
 
 These are recorded as inherited limitations, not reported as passing checks.
+The final broad related-test selection was limited after more than 16 minutes of
+memory pressure. Focused tests and rendered assertions are the behavioral evidence;
+[the QA report](qa-rocco/sidebar-compact-report.md) records this limit and the
+separate check of the QA-only commit.
 Windows/Linux rendering, native-focus tests and a real remote SSH host were not
 exercised on this macOS desktop. No new OS/process/remote-routing code was added.
 

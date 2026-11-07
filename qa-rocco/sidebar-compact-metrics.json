@@ -1,0 +1,120 @@
+{
+  "viewport": {
+    "width": 1280,
+    "height": 800
+  },
+  "rect": {
+    "top": 268,
+    "bottom": 739
+  },
+  "rows": [
+    {
+      "identity": "local|2070cdeb-3bea-4ff2-aa3b-c449b2a5cb4d::/Users/roccobombardieri/Coding Projects/Personal Projects/Orca-sidebar/.local/maestro-qa/sidebar-fixture/workspace-4",
+      "title": "Review sidebar layout",
+      "top": 296,
+      "bottom": 328,
+      "height": 32
+    },
+    {
+      "identity": "local|2070cdeb-3bea-4ff2-aa3b-c449b2a5cb4d::/Users/roccobombardieri/Coding Projects/Personal Projects/Orca-sidebar/.local/maestro-qa/sidebar-fixture/workspace-5",
+      "title": "Check keyboard navigation",
+      "top": 328,
+      "bottom": 360,
+      "height": 32
+    },
+    {
+      "identity": "local|2070cdeb-3bea-4ff2-aa3b-c449b2a5cb4d::/Users/roccobombardieri/Coding Projects/Personal Projects/Orca-sidebar/.local/maestro-qa/sidebar-fixture/workspace-6",
+      "title": "Review file changes — renamed",
+      "top": 360,
+      "bottom": 392,
+      "height": 32
+    },
+    {
+      "identity": "local|2070cdeb-3bea-4ff2-aa3b-c449b2a5cb4d::/Users/roccobombardieri/Coding Projects/Personal Projects/Orca-sidebar/.local/maestro-qa/sidebar-fixture/workspace-7",
+      "title": "Verify folder workspaces",
+      "top": 392,
+      "bottom": 424,
+      "height": 32
+    },
+    {
+      "identity": "local|2070cdeb-3bea-4ff2-aa3b-c449b2a5cb4d::/Users/roccobombardieri/Coding Projects/Personal Projects/Orca-sidebar/.local/maestro-qa/sidebar-fixture/maestro-core",
+      "title": "Build top bar",
+      "top": 452,
+      "bottom": 484,
+      "height": 32
+    },
+    {
+      "identity": "local|2070cdeb-3bea-4ff2-aa3b-c449b2a5cb4d::/Users/roccobombardieri/Coding Projects/Personal Projects/Orca-sidebar/.local/maestro-qa/sidebar-fixture/workspace-1",
+      "title": "Cloud workspace lifecycle",
+      "top": 484,
+      "bottom": 516,
+      "height": 32
+    },
+    {
+      "identity": "local|2070cdeb-3bea-4ff2-aa3b-c449b2a5cb4d::/Users/roccobombardieri/Coding Projects/Personal Projects/Orca-sidebar/.local/maestro-qa/sidebar-fixture/workspace-2",
+      "title": "Improve terminal reconnect",
+      "top": 516,
+      "bottom": 548,
+      "height": 32
+    },
+    {
+      "identity": "local|2070cdeb-3bea-4ff2-aa3b-c449b2a5cb4d::/Users/roccobombardieri/Coding Projects/Personal Projects/Orca-sidebar/.local/maestro-qa/sidebar-fixture/workspace-3",
+      "title": "Remote host picker",
+      "top": 548,
+      "bottom": 580,
+      "height": 32
+    },
+    {
+      "identity": "local|2070cdeb-3bea-4ff2-aa3b-c449b2a5cb4d::/Users/roccobombardieri/Coding Projects/Personal Projects/Orca-sidebar/.local/maestro-qa/sidebar-fixture/workspace-8",
+      "title": "{Briefcase} Weekly Hours Tracker with a very long sleeping workspace title",
+      "top": 608,
+      "bottom": 640,
+      "height": 32
+    },
+    {
+      "identity": "local|2070cdeb-3bea-4ff2-aa3b-c449b2a5cb4d::/Users/roccobombardieri/Coding Projects/Personal Projects/Orca-sidebar/.local/maestro-qa/sidebar-fixture/workspace-9",
+      "title": "{SIN Intake} Questions Answered",
+      "top": 640,
+      "bottom": 672,
+      "height": 32
+    },
+    {
+      "identity": "local|2070cdeb-3bea-4ff2-aa3b-c449b2a5cb4d::/Users/roccobombardieri/Coding Projects/Personal Projects/Orca-sidebar/.local/maestro-qa/sidebar-fixture/workspace-10",
+      "title": "{HR} Track A — November",
+      "top": 672,
+      "bottom": 704,
+      "height": 32
+    },
+    {
+      "identity": "local|2070cdeb-3bea-4ff2-aa3b-c449b2a5cb4d::/Users/roccobombardieri/Coding Projects/Personal Projects/Orca-sidebar/.local/maestro-qa/sidebar-fixture/workspace-11",
+      "title": "{HR} Intake Branching",
+      "top": 704,
+      "bottom": 736,
+      "height": 32
+    }
+  ],
+  "nav": [
+    {
+      "label": "All hosts",
+      "height": 36
+    },
+    {
+      "label": "Dashboard",
+      "height": 36
+    },
+    {
+      "label": "Home",
+      "height": 36
+    },
+    {
+      "label": "Create",
+      "height": 36
+    },
+    {
+      "label": "Search",
+      "height": 36
+    }
+  ],
+  "fullyVisible": 12,
+  "errors": []
+}

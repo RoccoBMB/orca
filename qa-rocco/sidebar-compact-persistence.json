@@ -1,0 +1,22 @@
+{
+  "restarted": true,
+  "sections": [
+    {
+      "id": "orchestrators",
+      "name": "Orchestrators",
+      "emoji": "🤠",
+      "collapsed": false
+    },
+    {
+      "id": "waiting",
+      "name": "Waiting",
+      "emoji": "⏸️",
+      "collapsed": true
+    }
+  ],
+  "assignmentCount": 30,
+  "gitWorkspaces": 37,
+  "folderWorkspaces": 1,
+  "renamedWorkspace": "Review file changes — renamed",
+  "waitingCollapsed": true
+}
