@@ -74,7 +74,7 @@ export function VirtualizedList<TRow>({
   // State tracks scroller attachment; ancestor refs arrive after mount effects and alone would leave the virtualizer unobserved.
   scrollElement: HTMLDivElement | null
   // Callers supply different row padding; wrong initial estimates jump the scrollbar before measurement corrects them.
-  estimateRowHeightPx?: number
+  estimateRowHeightPx?: number | ((row: TRow) => number)
   // Why: keyboard-driven lists must mount and reveal selections outside the current window.
   activeRowKey?: string
   minimumRows?: number
@@ -124,7 +124,10 @@ export function VirtualizedList<TRow>({
     // Why the null half: disabled nulls scrollOffset, so initialOffset() cannot latch 0 pre-attach.
     enabled: virtualize && scrollElement !== null,
     getScrollElement: () => scrollElement,
-    estimateSize: () => estimateRowHeightPx,
+    estimateSize: (index) =>
+      typeof estimateRowHeightPx === 'function'
+        ? estimateRowHeightPx(rows[index])
+        : estimateRowHeightPx,
     overscan: VIRTUALIZED_LIST_OVERSCAN,
     rangeExtractor,
     scrollMargin,

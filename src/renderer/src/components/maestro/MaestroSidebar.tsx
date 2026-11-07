@@ -1,6 +1,5 @@
 import { useUiLanguageRevision } from '@/i18n/use-ui-language-revision'
-import { useMemo, useRef, useState, type DragEvent } from 'react'
-import { useVirtualizer } from '@tanstack/react-virtual'
+import { useMemo, useState, type DragEvent } from 'react'
 import { Plus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useAppStore } from '@/store'
@@ -8,6 +7,7 @@ import { MaestroSectionDialog } from './MaestroSectionDialog'
 import { useMaestroSettings } from './use-maestro-settings'
 import { maestroWorkspaceStatus } from './maestro-workspace-status'
 import { MaestroWorkspaceRow } from './MaestroWorkspaceRow'
+import { VirtualizedList } from '@/components/virtualized-list'
 import {
   MaestroSidebarSection,
   MAESTRO_SECTION_DRAG,
@@ -32,6 +32,8 @@ import type { GlobalSettings } from '../../../../shared/global-settings-types'
 import type { SidebarListModel } from '../sidebar/worktree-list/listing/sidebar-list-model'
 import { translate } from '@/i18n/i18n'
 
+type VirtualRow = { key: string; group: MaestroSidebarGroup; worktree?: Worktree }
+
 type Props = {
   worktrees: readonly Worktree[]
   folders: readonly FolderWorkspace[]
@@ -39,7 +41,6 @@ type Props = {
   projectGroups: readonly ProjectGroup[]
   onWorktreeCardClick?: () => void
 }
-type VirtualRow = { key: string; group: MaestroSidebarGroup; worktree?: Worktree }
 
 export function MaestroSidebar({
   worktrees,
@@ -53,8 +54,8 @@ export function MaestroSidebar({
   const settings = useAppStore((s) => s.settings)
   const prCache = useAppStore((s) => s.prCache)
   const reviewCache = useAppStore((s) => s.hostedReviewCache)
+  const [scrollElement, setScrollElement] = useState<HTMLDivElement | null>(null)
   const [dialog, setDialog] = useState<MaestroSection | 'new' | null>(null)
-  const scrollRef = useRef<HTMLDivElement>(null)
   const rows = useMemo(
     () => [...worktrees, ...folders.map(folderWorkspaceToWorktree)],
     [worktrees, folders]
@@ -159,13 +160,6 @@ export function MaestroSidebar({
           worktree
         })))
   ])
-  const virtualizer = useVirtualizer({
-    count: virtualRows.length,
-    getScrollElement: () => scrollRef.current,
-    estimateSize: (index) => (virtualRows[index].worktree ? 76 : 36),
-    getItemKey: (index) => virtualRows[index].key,
-    overscan: 6
-  })
   const toggle = (group: MaestroSidebarGroup): void => {
     void updateMaestro((current) => {
       if (group.custom) {
@@ -241,53 +235,50 @@ export function MaestroSidebar({
   return (
     <>
       <div
-        ref={scrollRef}
+        ref={setScrollElement}
         className="min-h-0 flex-1 overflow-y-auto worktree-sidebar-scrollbar"
         aria-label={translate(
           'auto.components.maestro.MaestroSidebar.14cd54c3bc',
           'Workspace sections'
         )}
       >
-        <div className="relative w-full" style={{ height: virtualizer.getTotalSize() }}>
-          {virtualizer.getVirtualItems().map((item) => {
-            const row = virtualRows[item.index]
-            return (
-              <div
-                key={row.key}
-                ref={virtualizer.measureElement}
-                data-index={item.index}
-                data-maestro-section={row.group.key}
-                className="absolute top-0 left-0 w-full"
-                style={{ transform: `translateY(${item.start}px)` }}
-                onDragOver={(event) => {
-                  if (
-                    event.dataTransfer.types.includes(MAESTRO_WORKSPACE_DRAG) ||
-                    event.dataTransfer.types.includes(MAESTRO_SECTION_DRAG)
-                  ) {
-                    event.preventDefault()
-                  }
-                }}
-                onDrop={(event) => drop(event, row.group)}
-              >
-                {row.worktree ? (
-                  <MaestroWorkspaceRow
-                    worktree={row.worktree}
-                    repo={repoFor(row.worktree)}
-                    onActivate={onWorktreeCardClick}
-                  />
-                ) : (
-                  <MaestroSidebarSection
-                    group={row.group}
-                    onToggle={() => toggle(row.group)}
-                    onEdit={setDialog}
-                    onMove={move}
-                    onRemove={remove}
-                  />
-                )}
-              </div>
-            )
-          })}
-        </div>
+        <VirtualizedList
+          rows={virtualRows}
+          getRowKey={(row) => row.key}
+          scrollElement={scrollElement}
+          estimateRowHeightPx={(row) => (row.worktree ? 76 : 36)}
+          minimumRows={0}
+          renderRow={(row) => (
+            <div
+              data-maestro-section={row.group.key}
+              onDragOver={(event) => {
+                if (
+                  event.dataTransfer.types.includes(MAESTRO_WORKSPACE_DRAG) ||
+                  event.dataTransfer.types.includes(MAESTRO_SECTION_DRAG)
+                ) {
+                  event.preventDefault()
+                }
+              }}
+              onDrop={(event) => drop(event, row.group)}
+            >
+              {row.worktree ? (
+                <MaestroWorkspaceRow
+                  worktree={row.worktree}
+                  repo={repoFor(row.worktree)}
+                  onActivate={onWorktreeCardClick}
+                />
+              ) : (
+                <MaestroSidebarSection
+                  group={row.group}
+                  onToggle={() => toggle(row.group)}
+                  onEdit={setDialog}
+                  onMove={move}
+                  onRemove={remove}
+                />
+              )}
+            </div>
+          )}
+        />
       </div>
       <Button
         variant="ghost"
