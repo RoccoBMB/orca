@@ -72,10 +72,10 @@ export function MaestroSidebar({
     items: [],
     collapsed: maestro?.collapsedSections?.includes(status.id) ?? false
   }))
-  const customGroups = sections.map((section) => ({
+  const customGroups: MaestroSidebarGroup[] = sections.map((section) => ({
     key: section.id,
     label: section.name,
-    items: [] as Worktree[],
+    items: [],
     collapsed: section.collapsed,
     custom: section
   }))

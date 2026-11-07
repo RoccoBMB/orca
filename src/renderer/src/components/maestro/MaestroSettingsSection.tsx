@@ -1,3 +1,4 @@
+import { openAppHttpLink } from '@/lib/browser/navigation/app-http-link-open'
 import { useUiLanguageRevision } from '@/i18n/use-ui-language-revision'
 import { useState } from 'react'
 import { useAppStore } from '@/store'
@@ -64,7 +65,7 @@ export function MaestroSettingsSection() {
             </DialogDescription>
           </DialogHeader>
           <p className="text-sm">{branding.attribution}</p>
-          <Button variant="link" onClick={() => void window.api.shell.openUrl(branding.sourceUrl)}>
+          <Button variant="link" onClick={() => openAppHttpLink(branding.sourceUrl)}>
             {translate(
               'auto.components.maestro.MaestroSettingsSection.948dc382d3',
               'Orca source and attribution'

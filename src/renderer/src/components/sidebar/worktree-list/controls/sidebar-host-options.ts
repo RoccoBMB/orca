@@ -170,7 +170,7 @@ export function shouldShowHostScopeControls(hosts: readonly SidebarHostOption[])
 }
 
 export function buildSidebarHostScopeOptions(
-  allHosts: readonly SidebarHostOption[]
+  allHosts: readonly ExecutionHostRegistryEntry[]
 ): SidebarHostScopeOption[] {
   const hosts = pickerExecutionHosts(allHosts)
   return [
