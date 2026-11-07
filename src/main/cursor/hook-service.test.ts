@@ -313,3 +313,7 @@ describe('CursorHookService', () => {
     HOOK_CASE_TIMEOUT_MS
   )
 })
+
+vi.mock('../../shared/branding', async () => ({
+  branding: (await import('../../shared/branding.json')).default
+}))

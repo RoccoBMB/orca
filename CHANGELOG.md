@@ -1,5 +1,20 @@
 # Changelog
 
+## 2026-11-07 — Orca unit-test parity with explicit Maestro builds
+
+- Restored Orca defaults for source execution and ordinary unit tests through
+  `src/shared/branding.ts`; Maestro builds explicitly select `config/branding.cjs`.
+- Embedded Maestro identity in desktop, remote CLI/server and WSL bundles, stamped
+  the emitted CLI, isolated development wrapper directories, and prevented native
+  launcher cache reuse across identities. Maestro update policy stays disabled.
+- Kept fork fixture assertions and made their Maestro opt-in explicit; added
+  compiled hook/CLI isolation and disabled-updater coverage. The same 148 files
+  now preserve all 1,212 baseline-pass assertions (zero regressions).
+- Evidence and reproduction: `docs/maestro/TEST-PARITY.md` and
+  `scripts/compare-test-parity.mjs`. Revert this task's branding and verification
+  commits to restore the previous unconditional Maestro source identity. Back up
+  Maestro profiles first; never copy them into official Orca state.
+
 ## 2026-11-07 — Maestro core isolation fixes
 
 - Separated upstream verification from publishing credentials and added the root-entry guard to sync verification. Archived core notes and QA now live in `docs/maestro/`.

@@ -3,7 +3,7 @@ import { execFileSync } from 'node:child_process'
 import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { afterEach, describe, expect, it } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 import {
   windowsPipesNotRunHere,
   parseWindowsRelayInventory,
@@ -106,3 +106,7 @@ describe('the Windows relay inventory', () => {
     expect(windowsPipesNotRunHere('garbage')).toEqual(new Set())
   })
 })
+
+vi.mock('../../../shared/branding', async () => ({
+  branding: (await import('../../../shared/branding.json')).default
+}))

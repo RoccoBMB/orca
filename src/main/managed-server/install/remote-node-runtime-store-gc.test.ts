@@ -222,3 +222,7 @@ posixOnly('gcRemoteNodeRuntimeStore (real shell)', () => {
     expect(existsSync(dir)).toBe(true)
   })
 })
+
+vi.mock('../../../shared/branding', async () => ({
+  branding: (await import('../../../shared/branding.json')).default
+}))

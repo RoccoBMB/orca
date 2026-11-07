@@ -10,5 +10,8 @@
   "attribution": "Maestro \u2014 built on Orca. Copyright (c) 2026 Lovecast Inc. Licensed under the MIT License.",
   "sourceUrl": "https://github.com/stablyai/orca",
   "cliCommand": "maestro",
-  "homeDirectoryName": ".maestro"
+  "homeDirectoryName": ".maestro",
+  "linuxCliCommand": "maestro",
+  "cliBinDirectoryName": "maestro-bin",
+  "hookFilePrefix": "maestro-"
 }

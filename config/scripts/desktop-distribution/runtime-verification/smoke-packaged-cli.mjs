@@ -1,4 +1,5 @@
-import branding from '../../../../src/shared/branding.json' with { type: 'json' }
+import brandingConfig from '../../../../config/branding.cjs'
+const { branding } = brandingConfig
 import { cp, mkdtemp, rm } from 'node:fs/promises'
 import { execFile } from 'node:child_process'
 import { tmpdir } from 'node:os'

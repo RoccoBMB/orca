@@ -1,7 +1,7 @@
 import { branding } from '../../shared/branding'
 
 export function managedHookFileName(fileName: string): string {
-  const prefix = `${branding.cliCommand}-`
+  const prefix = branding.hookFilePrefix
   return fileName.startsWith(prefix) ? fileName : `${prefix}${fileName}`
 }
 

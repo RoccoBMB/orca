@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
-import branding from '../../../../src/shared/branding.json' with { type: 'json' }
+import brandingConfig from '../../../../config/branding.cjs'
+const { branding } = brandingConfig
 import { dirname, join, resolve } from 'node:path'
 import { pathToFileURL } from 'node:url'
 import { compileWindowsRustExecutable } from './windows-rust-executable-build.mjs'

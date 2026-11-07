@@ -289,3 +289,7 @@ describe('Bitbucket credential store', () => {
     expect(existsSync(join(tempHome, '.maestro', 'bitbucket-credential.enc'))).toBe(true)
   })
 })
+
+vi.mock('../../shared/branding', async () => ({
+  branding: (await import('../../shared/branding.json')).default
+}))

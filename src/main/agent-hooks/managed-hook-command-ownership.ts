@@ -1,3 +1,4 @@
+import { branding } from '../../shared/branding'
 import { managedHookFileName, managedHookRelativePath } from './managed-hook-paths'
 import {
   getWindowsNativeHookAgent,
@@ -8,17 +9,19 @@ import {
 export function createManagedCommandMatcher(
   scriptFileName: string
 ): (command: string | undefined) => boolean {
+  const matchPath = (fileName: string): string =>
+    branding.hookFilePrefix ? managedHookRelativePath(fileName) : `agent-hooks/${fileName}`
   const ownedScriptFileName = managedHookFileName(scriptFileName)
   const scriptStem = ownedScriptFileName.replace(/\.(?:cmd|ps1|sh)$/, '')
   // Sweep every platform suffix after a platform switch.
   const needles = [
-    managedHookRelativePath(ownedScriptFileName),
-    managedHookRelativePath(`${scriptStem}.cmd`),
-    managedHookRelativePath(`${scriptStem}.ps1`),
-    managedHookRelativePath(`${scriptStem}.sh`)
+    matchPath(ownedScriptFileName),
+    matchPath(`${scriptStem}.cmd`),
+    matchPath(`${scriptStem}.ps1`),
+    matchPath(`${scriptStem}.sh`)
   ]
   // The native executable selects its provider through argv[1].
-  const nativeHook = `${managedHookRelativePath(WINDOWS_NATIVE_HOOK_EXECUTABLE_NAME)} ${getWindowsNativeHookAgent(scriptFileName)} `
+  const nativeHook = `${matchPath(WINDOWS_NATIVE_HOOK_EXECUTABLE_NAME)} ${getWindowsNativeHookAgent(scriptFileName)} `
   return (command) => {
     if (!command) {
       return false

@@ -113,3 +113,7 @@ describe('CommandCodeHookService', () => {
     }
   })
 })
+
+vi.mock('../../shared/branding', async () => ({
+  branding: (await import('../../shared/branding.json')).default
+}))

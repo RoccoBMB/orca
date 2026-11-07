@@ -10,7 +10,7 @@ import {
 } from 'node:fs'
 import { tmpdir, userInfo } from 'node:os'
 import { join } from 'node:path'
-import { afterEach, beforeEach, describe, expect, it } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import {
   ORCAD_WSL_HOLDER_BLOCKED_FILENAME,
   ORCAD_WSL_HOLDER_RELEASE_FILENAME
@@ -267,3 +267,7 @@ describe.skipIf(process.platform === 'win32')('WSL distro holder script', () => 
     expect(await within(RELEASE_BOUND_MS, other.exited)).toBe(0)
   })
 })
+
+vi.mock('../../../shared/branding', async () => ({
+  branding: (await import('../../../shared/branding.json')).default
+}))

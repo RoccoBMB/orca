@@ -2,7 +2,7 @@ import { existsSync } from 'node:fs'
 import { mkdir, mkdtemp, rm, utimes, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { afterEach, describe, expect, it } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 import {
   inspectAppImageGenerationLeases,
   leaseAppImageGenerationForCurrentProcess,
@@ -114,3 +114,7 @@ describe('AppImage generation leases', () => {
     })
   })
 })
+
+vi.mock('../../shared/branding', async () => ({
+  branding: (await import('../../shared/branding.json')).default
+}))

@@ -1,6 +1,6 @@
 import { chmod, mkdir, readFile, rm, symlink, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
-import { afterEach, describe, expect, it } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 import { CliInstaller } from './cli-installer'
 import { createPackagedMacLauncher, makeFixture } from './cli-installer-test-fixtures'
 
@@ -53,3 +53,7 @@ describe.skipIf(process.platform === 'win32' || process.getuid?.() === 0)(
     })
   }
 )
+
+vi.mock('../../shared/branding', async () => ({
+  branding: (await import('../../shared/branding.json')).default
+}))

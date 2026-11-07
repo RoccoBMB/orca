@@ -78,7 +78,7 @@ export function compileWindowsRustExecutable({
       join(repoRoot, 'config/scripts/native-build/windows/windows-rust-executable-build.mjs'),
       ...fingerprintInputs
     ],
-    rustTarget ? `${version}\0${rustTarget}` : version
+    `${version}\0${rustTarget ?? ''}\0${JSON.stringify(buildEnv(version))}`
   )
 
   mkdirSync(dirname(outputPath), { recursive: true })

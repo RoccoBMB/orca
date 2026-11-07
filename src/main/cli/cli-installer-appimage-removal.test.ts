@@ -190,3 +190,7 @@ describe.skipIf(process.platform === 'win32')('AppImage CLI removal', () => {
     ).resolves.toBe(secondRoot.payloadLauncherPath)
   })
 })
+
+vi.mock('../../shared/branding', async () => ({
+  branding: (await import('../../shared/branding.json')).default
+}))

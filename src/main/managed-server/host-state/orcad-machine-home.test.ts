@@ -276,3 +276,7 @@ describe('decideOrcadMachineHome', () => {
     expect(decideOrcadMachineHome(ownRunning, linux).kind).toBe('claim')
   })
 })
+
+vi.mock('../../../shared/branding', async () => ({
+  branding: (await import('../../../shared/branding.json')).default
+}))

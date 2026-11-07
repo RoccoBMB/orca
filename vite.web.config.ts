@@ -1,11 +1,14 @@
 import { markdownParserAliases } from './config/build-plugins/markdown-parser-exports'
 import { resolve } from 'node:path'
+import { createRequire } from 'node:module'
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import { createPdfjsViewerAssetsPlugin } from './config/build-plugins/pdfjs-viewer-assets'
 import { createViteCacheRetentionPlugin } from './config/build-plugins/vite-cache-retention'
 import { resolveBuildSourceCommit } from './config/scripts/build-identity/build-source-commit.mjs'
+
+const { brandingDefines } = createRequire(import.meta.url)('./config/branding.cjs')
 
 export default defineConfig({
   root: resolve('src/renderer'),
@@ -19,6 +22,7 @@ export default defineConfig({
     createViteCacheRetentionPlugin()
   ],
   define: {
+    ...brandingDefines,
     ORCA_FEATURE_WALL_ENABLED: 'true',
     ORCA_BUILD_COMMIT: JSON.stringify(resolveBuildSourceCommit())
   },

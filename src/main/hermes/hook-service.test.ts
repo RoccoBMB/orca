@@ -3,7 +3,7 @@ import { execFile, execFileSync, spawnSync } from 'node:child_process'
 import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { afterEach, beforeEach, describe, expect, it } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { parse } from 'yaml'
 
 import { makePaneKey } from '../../shared/workspace-layout/stable-pane-id'
@@ -462,3 +462,7 @@ describe('HermesHookService', () => {
     expect(payload.tool_input.items).toHaveLength(51)
   })
 })
+
+vi.mock('../../shared/branding', async () => ({
+  branding: (await import('../../shared/branding.json')).default
+}))

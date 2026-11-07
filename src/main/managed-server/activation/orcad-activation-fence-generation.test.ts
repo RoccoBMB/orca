@@ -182,3 +182,7 @@ describe.skipIf(process.platform === 'win32')('a superseded activation fence hol
     expect(readFileSync(join(root, 'profiles', 'state.json'), 'utf8')).toBe('successor-state')
   })
 })
+
+vi.mock('../../../shared/branding', async () => ({
+  branding: (await import('../../../shared/branding.json')).default
+}))

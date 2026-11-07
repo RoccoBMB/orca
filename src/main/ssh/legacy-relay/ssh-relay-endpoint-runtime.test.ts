@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import { parseRelayDaemonRuntimes } from './ssh-relay-endpoint-runtime'
 
 describe('the runtime each relay daemon runs on', () => {
@@ -21,3 +21,7 @@ describe('the runtime each relay daemon runs on', () => {
     ])
   })
 })
+
+vi.mock('../../../shared/branding', async () => ({
+  branding: (await import('../../../shared/branding.json')).default
+}))

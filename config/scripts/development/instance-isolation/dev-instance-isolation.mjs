@@ -1,5 +1,8 @@
 import { createRequire } from 'node:module'
-const branding = createRequire(import.meta.url)('../../../../src/shared/branding.json')
+const branding =
+  process.env.ORCA_BRAND === 'maestro'
+    ? createRequire(import.meta.url)('../../../../src/shared/branding.json')
+    : { userDataName: 'orca' }
 
 import { createHash } from 'node:crypto'
 import { existsSync, lstatSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'

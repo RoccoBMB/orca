@@ -200,3 +200,7 @@ describe('CliInstaller', () => {
     await expect(readFile(bundledLauncher, 'utf8')).resolves.toBe(bundledContent)
   })
 })
+
+vi.mock('../../shared/branding', async () => ({
+  branding: (await import('../../shared/branding.json')).default
+}))

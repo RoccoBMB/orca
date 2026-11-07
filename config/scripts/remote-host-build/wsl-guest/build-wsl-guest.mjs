@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 // Ship self-contained builtins-only CommonJS WSL hook/network/profile/SQLite/OpenCode text-task programs via out/relay/wsl extraResources.
 import { build } from 'esbuild'
+import { createRequire } from 'node:module'
 import { JSONC_PARSER_ESM_ALIAS } from '../../../build-plugins/jsonc-parser-esm.ts'
 import { createHash } from 'node:crypto'
 import { mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
@@ -12,6 +13,7 @@ import {
 } from '../../../../src/shared/remote-bundle-artifacts.ts'
 
 const __dirname = import.meta.dirname
+const { brandingDefines } = createRequire(import.meta.url)('../../../branding.cjs')
 const ROOT = join(__dirname, '../../..', '..')
 // Why: lets a contract test build into a temp tree instead of clobbering a developer's out/relay.
 const OUT_ROOT = process.env.ORCA_WSL_GUEST_OUT_ROOT ?? join(ROOT, 'out', 'relay')
@@ -32,7 +34,7 @@ const bundle = (entry, outfile, extra = {}) =>
     outfile: join(outDir, outfile),
     sourcemap: false,
     minify: true,
-    define: { 'process.env.NODE_ENV': '"production"' },
+    define: { ...brandingDefines, 'process.env.NODE_ENV': '"production"' },
     ...extra
   })
 

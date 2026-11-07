@@ -2,7 +2,11 @@
 
 Maestro is the personal build of the MIT-licensed Orca fork. The upstream license
 and copyright remain in `LICENSE` and About. Configure identity and build defaults
-in `src/shared/branding.json`; electron-builder reads that same file.
+in `src/shared/branding.json`. `config/branding.cjs` selects it only for
+`ORCA_BRAND=maestro` builds; source execution and ordinary tests retain Orca
+defaults from `src/shared/branding-default.json`. Bundles embed the selected
+identity, and the emitted CLI receives its own selected JSON, so runtime shell
+variables cannot switch a packaged Maestro into Orca state.
 
 | Identity             | Maestro                                                  |
 | -------------------- | -------------------------------------------------------- |
@@ -58,10 +62,12 @@ pnpm install:maestro
 The installer validates the bundle ID, copies into `~/Applications/Maestro.app`,
 and leaves launching to you. Quit an older Maestro before replacing it. It never
 writes `/Applications/Orca.app`. For a macOS DMG/zip use `pnpm build:maestro:mac`.
-Windows and Linux keep Orca's `build:win` / `build:linux` packaging commands with
-the Maestro identity. Platform builds require their existing native toolchains. Local packages may omit the optional cross-platform orcad template; release builds assemble it on the platform matrix.
+For Maestro on Windows/Linux, use `node scripts/maestro.mjs build:win` /
+`node scripts/maestro.mjs build:linux` so native and JavaScript builds select the
+same identity. Platform builds require their existing native toolchains. Local packages may omit the optional cross-platform orcad template; release builds assemble it on the platform matrix.
 
-For development use `pnpm dev -- --worktree-profile`. Automated launches must use
+For development use `pnpm dev:maestro -- --worktree-profile`. This first rebuilds
+the CLI with Maestro identity and uses separate `maestro-bin` wrapper directories. Automated launches must use
 `ORCA_BACKGROUND_LAUNCH=1`, disposable HOME and userData, and CDP. Native focus
 checks belong on CI or an isolated display.
 
@@ -125,3 +131,5 @@ layout without reverting code. Back up the Maestro profile before any downgrade.
 
 Core isolation fixes and verification: [NOTES-fixes.md](NOTES-fixes.md) and
 [verification report](docs/maestro/FIXES-VERIFICATION.md).
+
+Unit-test parity and reproduction: [TEST-PARITY.md](docs/maestro/TEST-PARITY.md).

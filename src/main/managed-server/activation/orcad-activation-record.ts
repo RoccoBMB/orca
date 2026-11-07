@@ -34,7 +34,7 @@ export type OrcadActivationRecord = {
 
 export function emptyOrcadActivationRecord(): OrcadActivationRecord {
   return {
-    appId: branding.appId,
+    ...(branding.appId !== 'com.stablyai.orca' ? { appId: branding.appId } : {}),
     schemaVersion: ORCAD_ACTIVATION_SCHEMA_VERSION,
     active: null,
     previous: null,
@@ -66,7 +66,10 @@ export function parseOrcadActivationRecord(raw: string | null): OrcadActivationR
     return { state: 'unreadable', reason: 'activation record is not an object' }
   }
   const record = parsed as Partial<OrcadActivationRecord>
-  if (record.appId !== branding.appId) {
+  if (
+    record.appId !== branding.appId &&
+    (record.appId !== undefined || branding.appId !== 'com.stablyai.orca')
+  ) {
     return { state: 'unreadable', reason: 'activation record belongs to another application' }
   }
   if (record.schemaVersion !== ORCAD_ACTIVATION_SCHEMA_VERSION) {
@@ -80,7 +83,7 @@ export function parseOrcadActivationRecord(raw: string | null): OrcadActivationR
   return {
     state: 'ok',
     record: {
-      appId: branding.appId,
+      ...(branding.appId !== 'com.stablyai.orca' ? { appId: branding.appId } : {}),
       schemaVersion: ORCAD_ACTIVATION_SCHEMA_VERSION,
       active: typeof record.active === 'string' ? record.active : null,
       previous: typeof record.previous === 'string' ? record.previous : null,
@@ -131,7 +134,7 @@ export function serializeOrcadActivationRecord(record: OrcadActivationRecord): s
   if (record.appId !== undefined && record.appId !== branding.appId) {
     throw new Error('Cannot write an activation record belonging to another application')
   }
-  return `${JSON.stringify({ ...record, appId: branding.appId }, null, 2)}\n`
+  return `${JSON.stringify({ ...record, ...(branding.appId !== 'com.stablyai.orca' ? { appId: branding.appId } : {}) }, null, 2)}\n`
 }
 
 export function withActivatedVersion(
@@ -149,7 +152,7 @@ export function withActivatedVersion(
       ? record.activeAppVersion
       : undefined
   return {
-    appId: branding.appId,
+    ...(branding.appId !== 'com.stablyai.orca' ? { appId: branding.appId } : {}),
     schemaVersion: ORCAD_ACTIVATION_SCHEMA_VERSION,
     active: version,
     // Re-activating identical bytes must preserve the existing rollback target.
@@ -166,7 +169,7 @@ export function withRolledBackVersion(
   now: Date
 ): OrcadActivationRecord {
   return {
-    appId: branding.appId,
+    ...(branding.appId !== 'com.stablyai.orca' ? { appId: branding.appId } : {}),
     schemaVersion: ORCAD_ACTIVATION_SCHEMA_VERSION,
     active: record.previous,
     // Rolling back must not offer the failed build as the next rollback target.
@@ -181,7 +184,7 @@ export function withRolledBackVersion(
 
 export function withDeactivatedVersion(record: OrcadActivationRecord): OrcadActivationRecord {
   return {
-    appId: branding.appId,
+    ...(branding.appId !== 'com.stablyai.orca' ? { appId: branding.appId } : {}),
     schemaVersion: ORCAD_ACTIVATION_SCHEMA_VERSION,
     active: null,
     // Pin the stopped build for redeploy and any daemon still using its entry.

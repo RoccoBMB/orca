@@ -58,6 +58,7 @@ const darkBuildSwitches: {
   darkBuildMarkers: () => { fileName: string; text: string }[]
 } = createRequire(import.meta.url)('./config/dark-build-switches.cjs')
 const DARK_BUILD_DEFINES = darkBuildSwitches.darkBuildDefines()
+const { brandingDefines } = createRequire(import.meta.url)('./config/branding.cjs')
 
 /** Marks a dark switched-on main build so packaging refuses it. */
 function createDarkBuildMarkerPlugin(): Plugin {
@@ -247,7 +248,8 @@ export const electronViteConfig: UserConfig = {
       ORCA_POSTHOG_WRITE_KEY: ORCA_POSTHOG_WRITE_KEY_LITERAL,
       ORCA_DIAGNOSTICS_TOKEN_URL: ORCA_DIAGNOSTICS_TOKEN_URL_LITERAL,
       ORCA_BUILD_COMMIT: ORCA_BUILD_COMMIT_LITERAL,
-      ...DARK_BUILD_DEFINES
+      ...DARK_BUILD_DEFINES,
+      ...brandingDefines
     },
     // @xterm/headless declares exports:null; point Vite directly at its published CJS main to permit inlining.
     resolve: {
@@ -260,6 +262,7 @@ export const electronViteConfig: UserConfig = {
     }
   },
   preload: {
+    define: brandingDefines,
     build: {
       externalizeDeps: false,
       rollupOptions: {
@@ -273,7 +276,8 @@ export const electronViteConfig: UserConfig = {
     cacheDir: resolve('.cache/vite/renderer'),
     define: {
       ORCA_BUILD_COMMIT: ORCA_BUILD_COMMIT_LITERAL,
-      ...DARK_BUILD_DEFINES
+      ...DARK_BUILD_DEFINES,
+      ...brandingDefines
     },
     resolve: {
       alias: {

@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import {
   getLocalBuildCompatibilityError,
   parseLocalBuildCompatibility,
@@ -43,3 +43,7 @@ describe('local build compatibility', () => {
     ).toThrow('invalid compatibility metadata')
   })
 })
+
+vi.mock('./branding', async () => ({
+  branding: (await import('./branding.json')).default
+}))

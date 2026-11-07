@@ -107,3 +107,7 @@ function restoreEnv(name: string, value: string | undefined): void {
     process.env[name] = value
   }
 }
+
+vi.mock('../../shared/branding', async () => ({
+  branding: (await import('../../shared/branding.json')).default
+}))

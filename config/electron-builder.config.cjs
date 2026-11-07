@@ -117,7 +117,7 @@ const devChannelRepo = isHourlyChannel
     : isAdhocChannel
       ? 'orca-adhoc'
       : null
-const branding = require('../src/shared/branding.json')
+const { branding } = require('../config/branding.cjs')
 const appId = branding.appId
 const brandingAssets = require('./maestro-packaging.cjs').maestroPackaging(branding)
 const featureWallResources = {
@@ -420,17 +420,19 @@ module.exports = {
             'Resources'
           )
         : join(context.appOutDir, 'resources')
-    writeFileSync(
-      join(resourcesDir, 'app-executable-name'),
-      context.electronPlatformName === 'linux' ? branding.cliCommand : branding.productName
-    )
-    const cliDirectory = join(resourcesDir, 'bin')
-    require('./scripts/desktop-distribution/cli/brand-cli-launchers.cjs').brandCliLaunchers(
-      cliDirectory,
-      context.electronPlatformName
-    )
     if (!existsSync(resourcesDir)) {
       throw new Error(`Missing packaged resources directory: ${resourcesDir}`)
+    }
+    if (branding.productName !== 'Orca') {
+      writeFileSync(
+        join(resourcesDir, 'app-executable-name'),
+        context.electronPlatformName === 'linux' ? branding.cliCommand : branding.productName
+      )
+      const cliDirectory = join(resourcesDir, 'bin')
+      require('./scripts/desktop-distribution/cli/brand-cli-launchers.cjs').brandCliLaunchers(
+        cliDirectory,
+        context.electronPlatformName
+      )
     }
     // FpmTarget replaces this with deb/rpm while building those artifacts from the shared app tree.
     if (context.electronPlatformName === 'linux') {
@@ -457,7 +459,9 @@ module.exports = {
       }
       writeMacBuildCompatibility(resourcesDir, { version, commit, architecture })
     }
-    stampPackagedCliVersion(resourcesDir, context.packager.appInfo.version)
+    if (context.packager?.appInfo) {
+      stampPackagedCliVersion(resourcesDir, context.packager.appInfo.version)
+    }
     prunePackagedRuntimeNodeModules(resourcesDir, context.electronPlatformName, context.arch)
     assertNoWindowsExecutablesInRuntimeNodeModules(resourcesDir, context.electronPlatformName)
     // Gate native glibc floor after pruning foreign CPU variants; GLIBC_2.34 once broke Ubuntu 20.04 startup (#9902).
@@ -694,14 +698,14 @@ module.exports = {
     // Omit mdx because Ubuntu 24.04 maps it to application/x-genesis-32x-rom; claiming it would need a glob override.
     mimeTypes: ['text/markdown', 'text/csv', 'text/tab-separated-values'],
     // Avoid GNOME Orca’s orca package and /usr/bin/orca names.
-    executableName: branding.cliCommand,
+    executableName: branding.linuxCliCommand,
     // Use icns to generate hicolor sizes; some Linux docks ignore a lone 1024px PNG.
     icon: 'resources/build/icon.icns',
     desktop: {
       entry: {
         // Why: Electron reports WM_CLASS=orca for the visible Linux window;
         // GNOME docks need an exact match to group it with orca-ide.desktop.
-        StartupWMClass: branding.cliCommand
+        StartupWMClass: branding.linuxCliCommand
       }
     },
     extraResources: [
@@ -735,7 +739,7 @@ module.exports = {
     artifactName: isLinuxArm64Release ? 'orca-linux-arm64.${ext}' : 'orca-linux.${ext}'
   },
   deb: {
-    packageName: branding.cliCommand,
+    packageName: branding.linuxCliCommand,
     artifactName: `${branding.cliCommand}_${'${version}'}_${'${arch}'}.${'${ext}'}`,
     // Headless Chromium still needs display service; orca serve starts packaged Xvfb when available (ensure-virtual-display.ts).
     depends: [
@@ -755,7 +759,7 @@ module.exports = {
     fpm: appImageNodeRuntimeFpmArgs
   },
   rpm: {
-    packageName: branding.cliCommand,
+    packageName: branding.linuxCliCommand,
     artifactName: `${branding.cliCommand}-${'${version}'}.${'${arch}'}.${'${ext}'}`,
     // Why: see deb depends. RPM distros ship Xvfb as xorg-x11-server-Xvfb (there
     // is no `xvfb` package), so the name differs from the deb here.

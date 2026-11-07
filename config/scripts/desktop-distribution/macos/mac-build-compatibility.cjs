@@ -1,7 +1,7 @@
 const { writeFileSync } = require('node:fs')
 const { join } = require('node:path')
 const contract = require('../../../../src/shared/local-build-compatibility-contract.json')
-const branding = require('../../../../src/shared/branding.json')
+const { branding } = require('../../../../config/branding.cjs')
 const compatibilityContract = { ...contract, appId: branding.appId }
 
 const MAC_BUILD_COMPATIBILITY_FILENAME = 'orca-local-build.json'

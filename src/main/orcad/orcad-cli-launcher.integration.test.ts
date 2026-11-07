@@ -1,7 +1,7 @@
 import { existsSync, mkdirSync, mkdtempSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join, resolve } from 'node:path'
-import { expect, it } from 'vitest'
+import { expect, it, vi } from 'vitest'
 import { installFakeAppEnvironment } from '../../../config/scripts/test-runtime/environment/vitest-host-ports-setup'
 import { runProcess, spawnProcess } from '@orca/process-host'
 import { sealedChildEnv } from '../runtime/agent-session/environment/structured-session-child-env.test-support'
@@ -156,3 +156,7 @@ it.skipIf(skip)(
   },
   150_000
 )
+
+vi.mock('../../shared/branding', async () => ({
+  branding: (await import('../../shared/branding.json')).default
+}))

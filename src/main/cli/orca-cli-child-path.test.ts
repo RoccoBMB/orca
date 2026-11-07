@@ -107,3 +107,7 @@ describe('prependOrcaCliDirToChildPath', () => {
     expect(env.PATH).toBe(join(USER_DATA, 'cli', 'maestro-bin'))
   })
 })
+
+vi.mock('../../shared/branding', async () => ({
+  branding: (await import('../../shared/branding.json')).default
+}))

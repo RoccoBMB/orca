@@ -1,5 +1,5 @@
 import { createRequire } from 'node:module'
-const branding = createRequire(import.meta.url)('../../../../src/shared/branding.json')
+const { branding } = createRequire(import.meta.url)('../../../../config/branding.cjs')
 import { spawnSync } from 'node:child_process'
 import { chmodSync, copyFileSync, mkdirSync, rmSync, writeFileSync } from 'node:fs'
 import path from 'node:path'

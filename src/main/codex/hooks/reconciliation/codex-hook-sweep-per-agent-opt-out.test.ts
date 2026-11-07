@@ -77,3 +77,7 @@ describe('Codex turned off per agent', () => {
     ])
   })
 })
+
+vi.mock('../../../../shared/branding', async () => ({
+  branding: (await import('../../../../shared/branding.json')).default
+}))

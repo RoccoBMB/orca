@@ -7,7 +7,7 @@ import { dirname, join, sep } from 'node:path'
 import { promisify } from 'node:util'
 import { fileURLToPath } from 'node:url'
 import { createPackageWithOptions, statFile } from '@electron/asar'
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import { runProcess } from '@orca/process-host'
 import { stagePackagedProcessHost } from '../../../config/scripts/desktop-distribution/runtime-verification/packaged-process-host-fixture.mjs'
 
@@ -378,3 +378,7 @@ async function waitForProcessExit(pid: number, timeoutMs: number): Promise<boole
   }
   return !isProcessAlive(pid)
 }
+
+vi.mock('../../shared/branding', async () => ({
+  branding: (await import('../../shared/branding.json')).default
+}))

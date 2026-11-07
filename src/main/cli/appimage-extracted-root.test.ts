@@ -210,3 +210,7 @@ describe('appimage extracted root', () => {
     expect(existsSync(initialRoot.rootPath)).toBe(false)
   })
 })
+
+vi.mock('../../shared/branding', async () => ({
+  branding: (await import('../../shared/branding.json')).default
+}))

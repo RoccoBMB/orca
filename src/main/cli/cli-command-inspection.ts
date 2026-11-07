@@ -15,6 +15,7 @@ import { extractLegacyAppImageCliWrapperTarget } from './legacy-appimage-cli-wra
 // Match after-install.sh's electron-builder name variants when reclaiming packaged launchers.
 const PACKAGED_LINUX_LAUNCHER_DIRECTORIES = [
   `/opt/${branding.productName}`,
+  `/opt/${branding.linuxCliCommand}`,
   `/opt/${branding.cliCommand}`
 ]
 

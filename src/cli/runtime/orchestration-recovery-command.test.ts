@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import {
   buildOrchestrationRecoveryCommand,
   resolveOrchestrationCliExecutable
@@ -116,3 +116,7 @@ describe('orchestration recovery command identity', () => {
     expect(buildOrchestrationRecoveryCommand('orchestration.workerStart', null)).toBeUndefined()
   })
 })
+
+vi.mock('../../shared/branding', async () => ({
+  branding: (await import('../../shared/branding.json')).default
+}))

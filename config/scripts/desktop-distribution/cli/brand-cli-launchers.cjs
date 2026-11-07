@@ -1,10 +1,10 @@
 const { readFileSync, renameSync, writeFileSync } = require('node:fs')
 const { join } = require('node:path')
-const branding = require('../../../../src/shared/branding.json')
+const { branding } = require('../../../../config/branding.cjs')
 
-function brandCliLaunchers(cliDirectory, platform) {
+function brandCliLaunchers(cliDirectory, platform, identity = branding) {
   if (platform === 'win32') {
-    const command = branding.cliCommand
+    const command = identity.cliCommand
     if (command === 'orca') {
       return
     }
@@ -17,12 +17,12 @@ function brandCliLaunchers(cliDirectory, platform) {
     return
   }
   const original = platform === 'linux' ? 'orca-ide' : 'orca'
-  const target = join(cliDirectory, branding.cliCommand)
-  if (original !== branding.cliCommand) {
+  const target = join(cliDirectory, identity.cliCommand)
+  if (original !== identity.cliCommand) {
     renameSync(join(cliDirectory, original), target)
   }
   const script = readFileSync(target, 'utf8')
-  const marker = `# ${branding.appId} CLI launcher`
+  const marker = `# ${identity.appId} CLI launcher`
   writeFileSync(target, script.replace(/^(#![^\n]*\n)/, `$1${marker}\n`))
 }
 

@@ -467,3 +467,7 @@ describe('until Codex answers', () => {
     expect({ hooks: identity(hooksPath()), toml: identity(configPath()) }).toEqual(before)
   })
 })
+
+vi.mock('../../../../shared/branding', async () => ({
+  branding: (await import('../../../../shared/branding.json')).default
+}))

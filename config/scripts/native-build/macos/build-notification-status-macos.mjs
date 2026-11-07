@@ -4,7 +4,8 @@ import { execFileSync } from 'node:child_process'
 import { mkdirSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import path from 'node:path'
-import branding from '../../../../src/shared/branding.json' with { type: 'json' }
+import brandingConfig from '../../../../config/branding.cjs'
+const { branding } = brandingConfig
 
 const repoRoot = path.resolve(import.meta.dirname, '../../../..')
 const sourcePath = path.join(repoRoot, 'native', 'notification-status-macos', 'main.swift')

@@ -253,3 +253,7 @@ describe('Codex WSL runtime hook install', () => {
     })
   })
 })
+
+vi.mock('../../../../shared/branding', async () => ({
+  branding: (await import('../../../../shared/branding.json')).default
+}))

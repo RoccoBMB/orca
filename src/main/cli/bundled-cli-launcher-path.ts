@@ -2,7 +2,7 @@ import { branding } from '../../shared/branding'
 import { join } from 'node:path'
 
 // Why `orca-ide` on Linux: GNOME Orca ships /usr/bin/orca, so the CLI never claims that name.
-export const LINUX_CLI_COMMAND_NAME = branding.cliCommand
+export const LINUX_CLI_COMMAND_NAME = branding.linuxCliCommand
 
 // Keep path-only callers independent of cli-installer's Electron dependency.
 export function getBundledLauncherPath(

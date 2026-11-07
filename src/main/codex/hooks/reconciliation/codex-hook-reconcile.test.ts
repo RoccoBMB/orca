@@ -529,3 +529,7 @@ describe('an app start whose lookup has not answered within its wait', () => {
     )
   })
 })
+
+vi.mock('../../../../shared/branding', async () => ({
+  branding: (await import('../../../../shared/branding.json')).default
+}))

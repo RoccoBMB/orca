@@ -163,3 +163,7 @@ async function writePayload(cwd: string): Promise<void> {
   await mkdir(launcherDirectory, { recursive: true })
   await writeFile(join(launcherDirectory, 'maestro'), '#!/usr/bin/env bash\n', { mode: 0o755 })
 }
+
+vi.mock('../../shared/branding', async () => ({
+  branding: (await import('../../shared/branding.json')).default
+}))

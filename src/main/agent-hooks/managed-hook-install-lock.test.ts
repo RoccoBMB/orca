@@ -406,3 +406,7 @@ describe.skipIf(process.platform === 'win32')('withManagedHookInstallLock', () =
     await first
   })
 })
+
+vi.mock('../../shared/branding', async () => ({
+  branding: (await import('../../shared/branding.json')).default
+}))

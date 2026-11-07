@@ -1,5 +1,5 @@
 import { createRequire } from 'node:module'
-const branding = createRequire(import.meta.url)('../../../../src/shared/branding.json')
+const { branding } = createRequire(import.meta.url)('../../../../config/branding.cjs')
 
 // Keep all signed Info.plist values branch-invariant: ad-hoc cdhash is the Keychain ACL identity, so branch drift re-prompts for passwords.
 // Branch Dock names belong in the unsigned .app directory name.

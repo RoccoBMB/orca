@@ -370,3 +370,7 @@ describe('GrokHookService', () => {
     expect(commands.some(registersManagedGrokScript)).toBe(true)
   })
 })
+
+vi.mock('../../shared/branding', async () => ({
+  branding: (await import('../../shared/branding.json')).default
+}))

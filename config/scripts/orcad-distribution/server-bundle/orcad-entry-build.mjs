@@ -6,6 +6,7 @@ import { basename, dirname, join } from 'node:path'
 import { ORCAD_SERVER_ENTRY_FILENAME } from '../../../../src/shared/orcad-artifacts.ts'
 
 const root = join(import.meta.dirname, '../../..', '..')
+const { brandingDefines } = createRequire(import.meta.url)('../../../branding.cjs')
 const { turnedOnDarkBuildDefines } = createRequire(import.meta.url)(
   '../../../dark-build-switches.cjs'
 )
@@ -46,6 +47,7 @@ export const ORCAD_COMMONJS_MODULE_OPTIONS = {
   },
   define: {
     'import.meta.url': '__orcadModuleUrl',
+    ...brandingDefines,
     // Why only when on: an undeclared switch already reads as off, so other builds keep their bytes.
     ...turnedOnDarkBuildDefines()
   },
@@ -168,6 +170,7 @@ function buildOrcadEntryBundle(outfile, minify) {
 
 export function buildOrcadCli(outfile) {
   return build({
+    define: brandingDefines,
     entryPoints: [join(root, 'src/cli/index.ts')],
     bundle: true,
     platform: 'node',

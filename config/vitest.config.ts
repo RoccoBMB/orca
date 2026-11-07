@@ -58,6 +58,9 @@ const transforms = {
     }
   ],
   define: {
+    ...(process.env.ORCA_BRAND === 'maestro'
+      ? createRequire(import.meta.url)('./branding.cjs').brandingDefines
+      : {}),
     ORCA_FEATURE_WALL_ENABLED: 'true',
     // Why: tests only interpolate it; they must not depend on the checkout's HEAD.
     ORCA_BUILD_COMMIT: JSON.stringify('0'.repeat(40)),

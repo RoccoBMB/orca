@@ -1,4 +1,5 @@
 import { availableParallelism } from 'node:os'
+import { writeFileSync } from 'node:fs'
 import { createRequire } from 'node:module'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -82,6 +83,8 @@ export async function buildCli({
 if (isDirectInvocation(import.meta.url, process.argv[1])) {
   try {
     await buildCli()
+    const { branding } = createRequire(import.meta.url)('../../branding.cjs')
+    writeFileSync(join(ROOT, 'out/shared/branding-default.json'), JSON.stringify(branding))
   } catch (error) {
     console.error(error.message)
     process.exitCode = 1

@@ -246,3 +246,7 @@ describe.skipIf(process.platform === 'win32')('AppImage CLI ownership', () => {
     )
   })
 })
+
+vi.mock('../../shared/branding', async () => ({
+  branding: (await import('../../shared/branding.json')).default
+}))

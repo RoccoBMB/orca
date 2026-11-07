@@ -9,16 +9,16 @@ function maestroPackaging(branding) {
     writeFileSync(
       join(output, name),
       source
-        .replaceAll('orca-ide', branding.cliCommand)
+        .replaceAll('orca-ide', branding.linuxCliCommand)
         .replaceAll('Orca', branding.productName)
-        .replaceAll('/opt/orca', `/opt/${branding.cliCommand}`),
+        .replaceAll('/opt/orca', `/opt/${branding.linuxCliCommand}`),
       { mode: 0o755 }
     )
   }
   const executableNamePath = join(output, 'app-executable-name')
   writeFileSync(
     executableNamePath,
-    process.platform === 'linux' ? branding.cliCommand : branding.productName
+    process.platform === 'linux' ? branding.linuxCliCommand : branding.productName
   )
   return { directory: output, executableNamePath }
 }

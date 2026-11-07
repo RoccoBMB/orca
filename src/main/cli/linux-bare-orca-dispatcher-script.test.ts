@@ -145,3 +145,7 @@ describe.runIf(process.platform !== 'win32')('removing the bare orca dispatcher'
     expect(await readFile(fixture.dispatcherPath, 'utf8')).toContain('MINE')
   })
 })
+
+vi.mock('../../shared/branding', async () => ({
+  branding: (await import('../../shared/branding.json')).default
+}))

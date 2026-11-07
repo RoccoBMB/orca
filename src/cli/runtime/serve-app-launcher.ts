@@ -14,8 +14,8 @@ export function canStartOrcaServer(env: NodeJS.ProcessEnv): boolean {
   )
 }
 
-export function appCliName(_platform: NodeJS.Platform): string {
-  return branding.cliCommand
+export function appCliName(platform: NodeJS.Platform): string {
+  return platform === 'linux' ? branding.linuxCliCommand : branding.cliCommand
 }
 
 const NOT_AN_APP_CLI = `This \`${branding.cliCommand}\` command isn't running from an installed ${branding.productName} app. On an SSH host, it belongs to that connection's server and can't start one of its own.`
@@ -103,6 +103,9 @@ export function resolveServiceCommand(
 }
 
 function isBrandedLauncher(path: string): boolean {
+  if (!branding.hookFilePrefix) {
+    return true
+  }
   try {
     const stat = statSync(path)
     if (!stat.isFile() || stat.size > 16 * 1024) {

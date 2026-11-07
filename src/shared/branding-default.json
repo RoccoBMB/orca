@@ -1,0 +1,17 @@
+{
+  "productName": "Orca",
+  "appId": "com.stablyai.orca",
+  "userDataName": "orca",
+  "protocol": "orca",
+  "autoUpdate": true,
+  "telemetryDefault": true,
+  "conductorLayoutDefault": false,
+  "showDotfilesDefault": true,
+  "attribution": "Copyright (c) 2026 Lovecast Inc. Licensed under the MIT License.",
+  "sourceUrl": "https://github.com/stablyai/orca",
+  "cliCommand": "orca",
+  "homeDirectoryName": ".orca",
+  "linuxCliCommand": "orca-ide",
+  "cliBinDirectoryName": "bin",
+  "hookFilePrefix": ""
+}

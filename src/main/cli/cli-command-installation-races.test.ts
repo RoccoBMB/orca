@@ -314,3 +314,7 @@ describe.skipIf(process.platform === 'win32')('CLI command filesystem races', ()
     )
   })
 })
+
+vi.mock('../../shared/branding', async () => ({
+  branding: (await import('../../shared/branding.json')).default
+}))

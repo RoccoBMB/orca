@@ -68,7 +68,7 @@ export abstract class CliInstallLocation {
       // Why: development builds must not claim the production shell command.
       return DEV_COMMAND_NAME
     }
-    return branding.cliCommand
+    return this.platform === 'linux' ? LINUX_CLI_COMMAND_NAME : branding.cliCommand
   }
 
   constructor(options: CliInstallerOptions = {}) {
