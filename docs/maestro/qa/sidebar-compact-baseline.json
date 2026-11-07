@@ -1,0 +1,27 @@
+{
+  "base": "ef2a88e6ae",
+  "baselineCheckout": ".local/maestro-qa/sidebar-baseline (detached, no source changes)",
+  "baselineCommand": "node config/scripts/test-runtime/execution-policy/run-vitest.mjs run --config config/vitest.config.ts src/renderer/src/components/sidebar/worktree-list/listing/WorktreeList.lineage-agent-expansion-coupling.test.tsx src/renderer/src/app-shell/worktree-creation-chat-handoff.test.tsx --maxWorkers=2",
+  "baselineResult": {
+    "filesFailed": 2,
+    "testsFailed": 3
+  },
+  "failures": [
+    {
+      "file": "src/renderer/src/components/sidebar/worktree-list/listing/WorktreeList.lineage-agent-expansion-coupling.test.tsx",
+      "tests": 2,
+      "error": "Partial store mock omits gitStatusHeadByWorktree; null settings enable the inherited default Conductor sidebar."
+    },
+    {
+      "file": "src/renderer/src/app-shell/worktree-creation-chat-handoff.test.tsx",
+      "tests": 1,
+      "error": "Partial preload mock omits window.api.shell.listInstalledOpenInApplications used by the inherited Maestro top bar."
+    }
+  ],
+  "focusedResult": {
+    "filesPassed": 5,
+    "testsPassed": 18
+  },
+  "fullTypecheck": "passed",
+  "latestBroadRelatedSelection": "Stopped after more than 16 minutes of excessive fan-out and host memory pressure; focused tests and rendered assertions passed."
+}

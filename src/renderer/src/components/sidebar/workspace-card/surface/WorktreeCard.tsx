@@ -41,7 +41,9 @@ const WorktreeCard = React.memo(function WorktreeCard({
   onLineageToggle,
   isLineageDropTarget = false,
   affiliateListMode = false,
-  statusPrDisplay = null
+  statusPrDisplay = null,
+  compactRow = false,
+  trailingContent
 }: WorktreeCardProps): React.JSX.Element {
   const card = useWorktreeCardController({
     worktree,
@@ -78,7 +80,9 @@ const WorktreeCard = React.memo(function WorktreeCard({
     onLineageToggle,
     isLineageDropTarget,
     affiliateListMode,
-    statusPrDisplay
+    statusPrDisplay,
+    compactRow,
+    trailingContent
   })
 
   return <WorktreeCardSurface card={card} />

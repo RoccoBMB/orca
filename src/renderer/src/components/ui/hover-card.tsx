@@ -19,7 +19,7 @@ const hoverCardContentVariants = cva('', {
     variant: {
       default: 'w-64 p-4',
       'workspace-details':
-        'w-[360px] max-w-[calc(100vw-2rem)] max-h-[28rem] overflow-y-auto p-3 text-xs scrollbar-sleek'
+        'bg-popover w-[360px] max-w-[calc(100vw-2rem)] max-h-[28rem] overflow-y-auto p-3 text-xs scrollbar-sleek'
     }
   },
   defaultVariants: { variant: 'default' }

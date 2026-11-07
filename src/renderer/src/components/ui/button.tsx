@@ -19,6 +19,8 @@ const buttonVariants = cva(
         'orchestration-tab': `${outlineButtonClasses} border-(--crew-border) bg-(--crew-surface) text-card-foreground shadow-floating dark:border-(--crew-border) dark:bg-(--crew-surface) dark:hover:bg-accent dark:hover:text-accent-foreground`,
         secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/80',
         ghost: 'hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50',
+        sidebar:
+          'justify-start font-normal text-muted-foreground hover:bg-worktree-sidebar-accent hover:text-worktree-sidebar-accent-foreground',
         link: 'text-primary underline-offset-4 hover:underline',
         'menu-launch':
           'min-w-0 flex-1 justify-start rounded-l-[7px] rounded-r-none text-foreground',
@@ -36,6 +38,7 @@ const buttonVariants = cva(
         inline: 'h-6 gap-1 px-0 has-[>svg]:px-0',
         sm: 'h-8 gap-1.5 rounded-md px-3 has-[>svg]:px-2.5',
         menu: 'h-8 gap-2 px-2 py-1.5 text-xs leading-5',
+        sidebar: 'h-9 gap-2 px-2 text-[13px]',
         lg: 'h-10 rounded-md px-6 has-[>svg]:px-4',
         icon: 'size-9',
         'icon-xs': "size-6 rounded-md [&_svg:not([class*='size-'])]:size-3",

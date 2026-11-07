@@ -1,0 +1,19 @@
+$ node config/scripts/preflight/changed-checks/check-changed.mjs --base=0192fe61d9 --maxWorkers=2
+check:changed: 13 changed file(s) since 0192fe61d9 (0192fe61d9); running 3 check(s).
+✓ format (0.5s)
+✓ changed-code quality (1.4s)
+… 62.6s elapsed; running: unit tests 60.1s
+… 122.6s elapsed; running: unit tests 120.1s
+… 182.9s elapsed; running: unit tests 180.3s
+
+✗ unit tests (194.8s)
+
+ RUN  v5.0.5 /Users/roccobombardieri/Coding Projects/Personal Projects/Orca-sidebar
+
+(node:3932) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/roccobombardieri/Coding%20Projects/Personal%20Projects/Orca-sidebar/src/shared/orcad-artifacts.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/roccobombardieri/Coding Projects/Personal Projects/Orca-sidebar/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+✗ 1 of 3 check(s) failed in 197.4s: unit tests
+[ELIFECYCLE] Command failed with exit code 1.

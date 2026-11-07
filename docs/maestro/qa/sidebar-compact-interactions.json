@@ -1,0 +1,11 @@
+{
+  "results": {
+    "search": true,
+    "collapse": true,
+    "keyboard": true,
+    "inlineRename": true,
+    "contextMenu": true,
+    "drag": true
+  },
+  "errors": []
+}

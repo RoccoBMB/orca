@@ -1,0 +1,21 @@
+{
+  "results": {
+    "diffStats": true,
+    "hover": true,
+    "sleeping": {
+      "row": {
+        "left": 0,
+        "right": 276,
+        "height": 32
+      },
+      "time": {
+        "left": 247.6875,
+        "right": 261
+      },
+      "truncated": true
+    },
+    "dark": true,
+    "projectGrouping": true
+  },
+  "errors": []
+}

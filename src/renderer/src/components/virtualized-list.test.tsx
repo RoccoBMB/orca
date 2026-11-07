@@ -122,13 +122,17 @@ function SharedScrollerHarness({
   rows,
   rowTestId = 'virtual-row',
   announceListPosition,
-  hasUnloadedRows
+  hasUnloadedRows,
+  activeRowKey,
+  revealRow
 }: {
   aboveHeight: number
   rows: readonly string[]
   rowTestId?: string
   announceListPosition?: boolean
   hasUnloadedRows?: boolean
+  activeRowKey?: string
+  revealRow?: { rowKey: string }
 }): ReactElement {
   const [scroller, setScroller] = useState<HTMLDivElement | null>(null)
 
@@ -171,6 +175,8 @@ function SharedScrollerHarness({
           scrollElement={scroller}
           announceListPosition={announceListPosition}
           hasUnloadedRows={hasUnloadedRows}
+          activeRowKey={activeRowKey}
+          revealRow={revealRow}
           getRowKey={(row) => row}
           renderRow={(row) => (
             <div key={row} data-testid={rowTestId}>
@@ -432,6 +438,42 @@ describe('VirtualizedList scroll-margin lifecycle', () => {
     expect(host.querySelectorAll('[data-testid="second-row"]').length).toBeLessThan(
       secondRows.length
     )
+  })
+
+  it('keeps an explicit reveal in view after its request is consumed, and repeats it', async () => {
+    const rows = manyRows(1000)
+    const renderList = async (revealRow?: { rowKey: string }) => {
+      await act(async () =>
+        root.render(
+          <SharedScrollerHarness
+            aboveHeight={0}
+            rows={rows}
+            activeRowKey="row-000"
+            revealRow={revealRow}
+          />
+        )
+      )
+    }
+    await renderList()
+    const scroller = host.querySelector<HTMLDivElement>('.overflow-auto')!
+    Object.defineProperties(scroller, {
+      clientHeight: { value: 600 },
+      scrollHeight: { value: 24000 }
+    })
+    scroller.scrollTo = (optionsOrX?: ScrollToOptions | number, y?: number) => {
+      scroller.scrollTop = typeof optionsOrX === 'number' ? (y ?? 0) : (optionsOrX?.top ?? 0)
+      queueMicrotask(() => scroller.dispatchEvent(new Event('scroll')))
+    }
+    await renderList({ rowKey: 'row-999' })
+    expect(scroller.scrollTop).toBe(23400)
+    await renderList()
+    expect(scroller.scrollTop).toBe(23400)
+    act(() => {
+      scroller.scrollTop = 0
+      scroller.dispatchEvent(new Event('scroll'))
+    })
+    await renderList({ rowKey: 'row-999' })
+    expect(scroller.scrollTop).toBe(23400)
   })
 
   it('renders small lists without the virtualization shell or observers', () => {

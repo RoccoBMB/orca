@@ -50,8 +50,8 @@ export function MaestroNavigation() {
       <HostCombobox
         value={scope}
         options={hostScopeOptions}
-        size="sm"
-        variant="ghost"
+        size="sidebar"
+        variant="sidebar"
         placeholder={translate('auto.components.maestro.MaestroNavigation.0fd2c6b21f', 'All hosts')}
         onChange={(id) => {
           const option = hostScopeOptions.find((host) => host.id === id)
@@ -64,9 +64,8 @@ export function MaestroNavigation() {
         }}
       />
       <Button
-        variant="ghost"
-        className="justify-start"
-        size="sm"
+        variant="sidebar"
+        size="sidebar"
         onClick={() => {
           setView('activity')
           setSidebarBody('agents')
@@ -76,9 +75,8 @@ export function MaestroNavigation() {
         {translate('auto.components.maestro.MaestroNavigation.5dcc8763a4', 'Dashboard')}
       </Button>
       <Button
-        variant="ghost"
-        className="justify-start"
-        size="sm"
+        variant="sidebar"
+        size="sidebar"
         onClick={() => {
           setView('terminal')
           setSidebarBody('workspaces')
@@ -88,9 +86,8 @@ export function MaestroNavigation() {
         {translate('auto.components.maestro.MaestroNavigation.c04ad93ca2', 'Home')}
       </Button>
       <Button
-        variant="ghost"
-        className="justify-start"
-        size="sm"
+        variant="sidebar"
+        size="sidebar"
         onClick={() => openWorkspaceCreationComposerWithTourHandoff()}
       >
         <Plus className="size-4" />
