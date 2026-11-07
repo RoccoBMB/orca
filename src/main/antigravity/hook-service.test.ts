@@ -9,7 +9,7 @@ const { homedirMock } = vi.hoisted(() => ({
 }))
 
 vi.mock('os', async () => {
-  const actual = (await vi.importActual('os')) as Record<string, unknown>
+  const actual: Record<string, unknown> = await vi.importActual('os')
   return {
     ...actual,
     homedir: homedirMock
@@ -91,9 +91,8 @@ describe('AntigravityHookService', () => {
       new AntigravityHookService().install()
       rmSync(join(homeDir, '.maestro', 'agent-hooks'), { recursive: true, force: true })
 
-      const config = JSON.parse(
-        readFileSync(join(homeDir, '.gemini', 'config', 'hooks.json'), 'utf8')
-      ) as { 'maestro-status': Record<string, { hooks?: { command: string }[] }[]> }
+      const config: { 'maestro-status': Record<string, { hooks?: { command: string }[] }[]> } =
+        JSON.parse(readFileSync(join(homeDir, '.gemini', 'config', 'hooks.json'), 'utf8'))
       const command = config['maestro-status'].PreToolUse[0].hooks?.[0]?.command
 
       const result = spawnSync('/bin/sh', ['-c', command!], {
@@ -113,11 +112,9 @@ describe('AntigravityHookService', () => {
       new AntigravityHookService().install()
       rmSync(join(homeDir, '.maestro', 'agent-hooks'), { recursive: true, force: true })
 
-      const config = JSON.parse(
-        readFileSync(join(homeDir, '.gemini', 'config', 'hooks.json'), 'utf8')
-      ) as {
+      const config: {
         'maestro-status': Record<string, { command?: string; hooks?: { command: string }[] }[]>
-      }
+      } = JSON.parse(readFileSync(join(homeDir, '.gemini', 'config', 'hooks.json'), 'utf8'))
       const postToolUse = config['maestro-status'].PostToolUse[0].hooks?.[0]?.command
       const preInvocation = config['maestro-status'].PreInvocation[0].command
 
@@ -169,10 +166,10 @@ describe('AntigravityHookService', () => {
 
     new AntigravityHookService().install()
 
-    const config = JSON.parse(readFileSync(configPath, 'utf8')) as {
+    const config: {
       'user-hook': { PreInvocation: { command: string }[] }
       'maestro-status': { PreInvocation: { command: string }[] }
-    }
+    } = JSON.parse(readFileSync(configPath, 'utf8'))
     expect(config['user-hook'].PreInvocation[0].command).toBe('/usr/local/bin/user-hook')
     const commands = config['maestro-status'].PreInvocation.map((entry) => entry.command)
     expect(commands).toContain('/usr/local/bin/orca-extra')
@@ -215,9 +212,9 @@ describe('AntigravityHookService', () => {
 
     new AntigravityHookService().install()
 
-    const config = JSON.parse(readFileSync(configPath, 'utf8')) as {
+    const config: {
       'maestro-status': Record<string, { command?: string; hooks?: { command: string }[] }[]>
-    }
+    } = JSON.parse(readFileSync(configPath, 'utf8'))
     expect(config['maestro-status'].OldEvent).toBeUndefined()
     const preToolCommands = config['maestro-status'].PreToolUse.flatMap((definition) =>
       (definition.hooks ?? []).map((hook) => hook.command)
@@ -267,9 +264,9 @@ describe('AntigravityHookService', () => {
       expect(service.getStatus().state).toBe('partial')
       expect(service.install().state).toBe('installed')
 
-      const config = JSON.parse(readFileSync(configPath, 'utf8')) as {
+      const config: {
         'maestro-status': Record<string, { command?: string; hooks?: { command: string }[] }[]>
-      }
+      } = JSON.parse(readFileSync(configPath, 'utf8'))
       const [keptUserHook, stop] = config['maestro-status'].Stop
       expect(config['maestro-status'].Stop).toHaveLength(2)
       expect(keptUserHook).toEqual(userHook)
