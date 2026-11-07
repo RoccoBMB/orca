@@ -1,0 +1,76 @@
+{
+  "viewport": {
+    "width": 1280,
+    "height": 800
+  },
+  "results": {
+    "numericShortcuts": true,
+    "collapsedSectionsSkipped": true,
+    "statusReveal": true,
+    "folderCustomRevealAndRepeat": true,
+    "nonActiveRevealRetainsScroll": true
+  },
+  "errors": [],
+  "initialOrder": [
+    {
+      "id": "2070cdeb-3bea-4ff2-aa3b-c449b2a5cb4d::/Users/roccobombardieri/Coding Projects/Personal Projects/Orca-sidebar/.local/maestro-qa/sidebar-fixture/workspace-4",
+      "identity": "local|2070cdeb-3bea-4ff2-aa3b-c449b2a5cb4d::/Users/roccobombardieri/Coding Projects/Personal Projects/Orca-sidebar/.local/maestro-qa/sidebar-fixture/workspace-4",
+      "title": "Active\nReview sidebar layout\n4h"
+    },
+    {
+      "id": "2070cdeb-3bea-4ff2-aa3b-c449b2a5cb4d::/Users/roccobombardieri/Coding Projects/Personal Projects/Orca-sidebar/.local/maestro-qa/sidebar-fixture/workspace-5",
+      "identity": "local|2070cdeb-3bea-4ff2-aa3b-c449b2a5cb4d::/Users/roccobombardieri/Coding Projects/Personal Projects/Orca-sidebar/.local/maestro-qa/sidebar-fixture/workspace-5",
+      "title": "Inactive\nCheck keyboard navigation\n4h"
+    },
+    {
+      "id": "2070cdeb-3bea-4ff2-aa3b-c449b2a5cb4d::/Users/roccobombardieri/Coding Projects/Personal Projects/Orca-sidebar/.local/maestro-qa/sidebar-fixture/workspace-6",
+      "identity": "local|2070cdeb-3bea-4ff2-aa3b-c449b2a5cb4d::/Users/roccobombardieri/Coding Projects/Personal Projects/Orca-sidebar/.local/maestro-qa/sidebar-fixture/workspace-6",
+      "title": "Active\nReview file changes — renamed\n5h"
+    },
+    {
+      "id": "2070cdeb-3bea-4ff2-aa3b-c449b2a5cb4d::/Users/roccobombardieri/Coding Projects/Personal Projects/Orca-sidebar/.local/maestro-qa/sidebar-fixture/workspace-7",
+      "identity": "local|2070cdeb-3bea-4ff2-aa3b-c449b2a5cb4d::/Users/roccobombardieri/Coding Projects/Personal Projects/Orca-sidebar/.local/maestro-qa/sidebar-fixture/workspace-7",
+      "title": "Inactive\nVerify folder workspaces\n5h"
+    },
+    {
+      "id": "2070cdeb-3bea-4ff2-aa3b-c449b2a5cb4d::/Users/roccobombardieri/Coding Projects/Personal Projects/Orca-sidebar/.local/maestro-qa/sidebar-fixture/maestro-core",
+      "identity": "local|2070cdeb-3bea-4ff2-aa3b-c449b2a5cb4d::/Users/roccobombardieri/Coding Projects/Personal Projects/Orca-sidebar/.local/maestro-qa/sidebar-fixture/maestro-core",
+      "title": "Active\nBuild top bar\n+3\n−1\n1h"
+    },
+    {
+      "id": "2070cdeb-3bea-4ff2-aa3b-c449b2a5cb4d::/Users/roccobombardieri/Coding Projects/Personal Projects/Orca-sidebar/.local/maestro-qa/sidebar-fixture/workspace-1",
+      "identity": "local|2070cdeb-3bea-4ff2-aa3b-c449b2a5cb4d::/Users/roccobombardieri/Coding Projects/Personal Projects/Orca-sidebar/.local/maestro-qa/sidebar-fixture/workspace-1",
+      "title": "Inactive\nCloud workspace lifecycle\n2h"
+    },
+    {
+      "id": "2070cdeb-3bea-4ff2-aa3b-c449b2a5cb4d::/Users/roccobombardieri/Coding Projects/Personal Projects/Orca-sidebar/.local/maestro-qa/sidebar-fixture/workspace-2",
+      "identity": "local|2070cdeb-3bea-4ff2-aa3b-c449b2a5cb4d::/Users/roccobombardieri/Coding Projects/Personal Projects/Orca-sidebar/.local/maestro-qa/sidebar-fixture/workspace-2",
+      "title": "Active\nImprove terminal reconnect\n2h"
+    },
+    {
+      "id": "2070cdeb-3bea-4ff2-aa3b-c449b2a5cb4d::/Users/roccobombardieri/Coding Projects/Personal Projects/Orca-sidebar/.local/maestro-qa/sidebar-fixture/workspace-3",
+      "identity": "local|2070cdeb-3bea-4ff2-aa3b-c449b2a5cb4d::/Users/roccobombardieri/Coding Projects/Personal Projects/Orca-sidebar/.local/maestro-qa/sidebar-fixture/workspace-3",
+      "title": "Active\nRemote host picker\n3h"
+    },
+    {
+      "id": "2070cdeb-3bea-4ff2-aa3b-c449b2a5cb4d::/Users/roccobombardieri/Coding Projects/Personal Projects/Orca-sidebar/.local/maestro-qa/sidebar-fixture/workspace-8",
+      "identity": "local|2070cdeb-3bea-4ff2-aa3b-c449b2a5cb4d::/Users/roccobombardieri/Coding Projects/Personal Projects/Orca-sidebar/.local/maestro-qa/sidebar-fixture/workspace-8",
+      "title": "Inactive\n{Briefcase} Weekly Hours Tracker with a very long sleeping workspace title\n6h"
+    },
+    {
+      "id": "2070cdeb-3bea-4ff2-aa3b-c449b2a5cb4d::/Users/roccobombardieri/Coding Projects/Personal Projects/Orca-sidebar/.local/maestro-qa/sidebar-fixture/workspace-9",
+      "identity": "local|2070cdeb-3bea-4ff2-aa3b-c449b2a5cb4d::/Users/roccobombardieri/Coding Projects/Personal Projects/Orca-sidebar/.local/maestro-qa/sidebar-fixture/workspace-9",
+      "title": "Inactive\n{SIN Intake} Questions Answered\n7h"
+    },
+    {
+      "id": "2070cdeb-3bea-4ff2-aa3b-c449b2a5cb4d::/Users/roccobombardieri/Coding Projects/Personal Projects/Orca-sidebar/.local/maestro-qa/sidebar-fixture/workspace-10",
+      "identity": "local|2070cdeb-3bea-4ff2-aa3b-c449b2a5cb4d::/Users/roccobombardieri/Coding Projects/Personal Projects/Orca-sidebar/.local/maestro-qa/sidebar-fixture/workspace-10",
+      "title": "Inactive\n{HR} Track A — November\n7h"
+    },
+    {
+      "id": "2070cdeb-3bea-4ff2-aa3b-c449b2a5cb4d::/Users/roccobombardieri/Coding Projects/Personal Projects/Orca-sidebar/.local/maestro-qa/sidebar-fixture/workspace-11",
+      "identity": "local|2070cdeb-3bea-4ff2-aa3b-c449b2a5cb4d::/Users/roccobombardieri/Coding Projects/Personal Projects/Orca-sidebar/.local/maestro-qa/sidebar-fixture/workspace-11",
+      "title": "Inactive\n{HR} Intake Branching\n8h"
+    }
+  ]
+}

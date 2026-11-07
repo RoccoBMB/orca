@@ -115,7 +115,10 @@ JSON, and `sidebar-fixes*.png`. No page errors occurred. The disposable HOME and
 userData paths remain those documented above; no installed app or real profile
 was used. Native-focus, real SSH, and Windows/Linux rendered checks remain excluded.
 
-Run `pnpm check:changed` against the branch base `ef2a88e6ae` before push; broad
-related-test limitations are recorded in the QA report. Full-suite success is not
-claimed. No PR or merge is part of this task. Revert the review-fix commit(s) to
+Branch-base `pnpm check:changed --base=ef2a88e6ae --maxWorkers=2 --timeout=2`
+passed typecheck, formatting, lint and changed-code quality; the broad related
+unit suite timed out after two minutes. Details are in the QA report; full-suite
+success is not claimed. QA-only formatting/code-quality passed; its dependency
+scan for evidence files was stopped after 195 seconds with no test results.
+Final clean-state checks are incremental only; both gate logs are in the QA report. No PR or merge is part of this task. Revert the review-fix commit(s) to
 return to `0d2d2ba6dd`; Conductor sections can still be disabled independently.

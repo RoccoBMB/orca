@@ -1,0 +1,14 @@
+{
+  "light": {
+    "background": "rgb(255, 255, 255)",
+    "opacity": "1",
+    "animations": 0,
+    "text": "Build top bar\nmain\nLINKED WORK\nmaestro-core"
+  },
+  "dark": {
+    "background": "rgb(23, 23, 23)",
+    "opacity": "1",
+    "animations": 0,
+    "text": "Build top bar\nmain\nLINKED WORK\nmaestro-core"
+  }
+}

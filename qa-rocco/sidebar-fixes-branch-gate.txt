@@ -1,0 +1,44 @@
+$ node config/scripts/preflight/changed-checks/check-changed.mjs --base=ef2a88e6ae --maxWorkers=2 --timeout=2
+check:changed: 55 changed file(s) since ef2a88e6ae (ef2a88e6ae); running 25 check(s).
+✓ changed-code quality (30.7s)
+✓ format (0.4s)
+✓ oxlint (2.8s)
+✓ typecheck (tsconfig.node, tsconfig.tc.web) (54.5s)
+✓ direct-link-open-ratchet (21.4s)
+… 65.7s elapsed; running: unit tests 60.0s, flaky-test-pattern-ratchet 5.5s, focus-read-ratchet 4.6s
+✓ flaky-test-pattern-ratchet (21.3s)
+✓ host-list-render-ratchet (7.1s)
+✓ focus-read-ratchet (27.6s)
+✓ layout-writer-ratchets (31.7s)
+… 125.7s elapsed; running: unit tests 120.0s, legacy-relay-fence-ratchet 37.1s, max-lines-ratchet 5.5s
+
+✗ unit tests (120.8s)
+
+ RUN  v5.0.5 /Users/roccobombardieri/Coding Projects/Personal Projects/Orca-sidebar
+
+(node:98944) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/roccobombardieri/Coding%20Projects/Personal%20Projects/Orca-sidebar/src/shared/orcad-artifacts.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/roccobombardieri/Coding Projects/Personal Projects/Orca-sidebar/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+Timed out after 2 min; pass --timeout=<minutes> to extend.
+✓ memo-translate-subscription-ratchet (2.2s)
+✓ path-literal-ratchet (4.3s)
+✓ react-compiler-compat-ratchet (27.3s)
+✓ max-lines-ratchet (63.0s)
+… 185.7s elapsed; running: legacy-relay-fence-ratchet 97.1s, ts-nocheck-ratchet 25.4s, workspace-record-read-ratchet 2.6s
+✓ workspace-record-read-ratchet (5.7s)
+✓ ts-nocheck-ratchet (37.9s)
+✓ legacy-relay-fence-ratchet (110.5s)
+✓ localization coverage (8.9s)
+✓ worktree-id-composer-ratchet (22.3s)
+✓ localization catalogs (42.7s)
+… 245.7s elapsed; running: localization extraction 37.7s, test file runners 34.5s, compiled :has() restyle scope 4.8s
+✓ compiled :has() restyle scope (4.9s)
+✓ test file runners (42.2s)
+✓ dead design-system classes (5.5s)
+✓ localization extraction (77.6s)
+✓ import boundaries (41.5s)
+
+✗ 1 of 25 check(s) failed in 287.3s: unit tests
+[ELIFECYCLE] Command failed with exit code 1.
