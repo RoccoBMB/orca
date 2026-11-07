@@ -36,9 +36,9 @@ describe('CliInstaller', () => {
     async () => {
       const fixture = await makeFixture()
       const commandDir = join(fixture.root, 'bin')
-      const installPath = join(commandDir, 'orca')
+      const installPath = join(commandDir, 'maestro')
       const resourcesPath = join(fixture.root, 'Current.app', 'Contents', 'Resources')
-      const launcherPath = join(resourcesPath, 'bin', 'orca')
+      const launcherPath = join(resourcesPath, 'bin', 'maestro')
       const oldCliPath = join(fixture.root, 'OldWorktree', 'out', 'cli', 'index.js')
       await mkdir(commandDir, { recursive: true })
       await mkdir(join(resourcesPath, 'bin'), { recursive: true })
@@ -82,7 +82,7 @@ describe('CliInstaller', () => {
     async () => {
       const fixture = await makeFixture()
       const commandDir = join(fixture.root, 'bin')
-      const installPath = join(commandDir, 'orca')
+      const installPath = join(commandDir, 'maestro')
       const resourcesPath = await createPackagedMacLauncher(fixture.root)
       await mkdir(commandDir, { recursive: true })
       await writeFile(
@@ -112,13 +112,13 @@ describe('CliInstaller', () => {
     'replaces stale sibling dev launcher symlinks from packaged installs',
     async () => {
       const fixture = await makeFixture()
-      for (const devLauncherName of ['orca', 'orca-dev']) {
+      for (const devLauncherName of ['maestro', 'maestro-dev']) {
         const caseRoot = join(fixture.root, devLauncherName)
         const commandDir = join(caseRoot, 'bin')
-        const installPath = join(commandDir, 'orca')
-        const userDataPath = join(caseRoot, 'orca')
+        const installPath = join(commandDir, 'maestro')
+        const userDataPath = join(caseRoot, 'maestro')
         const resourcesPath = join(caseRoot, 'Current.app', 'Contents', 'Resources')
-        const launcherPath = join(resourcesPath, 'bin', 'orca')
+        const launcherPath = join(resourcesPath, 'bin', 'maestro')
         const devLauncherPath = join(`${userDataPath}-dev`, 'cli', 'bin', devLauncherName)
         await mkdir(commandDir, { recursive: true })
         await mkdir(join(resourcesPath, 'bin'), { recursive: true })

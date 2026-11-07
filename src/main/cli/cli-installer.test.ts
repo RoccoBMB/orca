@@ -26,7 +26,7 @@ import { buildLegacyAppImageCliWrapper } from './legacy-appimage-cli-wrapper'
 async function fakeAppImageExtractRunner(_appImagePath: string, cwd: string): Promise<void> {
   const launcherDir = join(cwd, 'squashfs-root', 'resources', 'bin')
   await mkdir(launcherDir, { recursive: true })
-  await writeFile(join(launcherDir, 'orca-ide'), '#!/usr/bin/env bash\n', {
+  await writeFile(join(launcherDir, 'maestro'), '#!/usr/bin/env bash\n', {
     encoding: 'utf8',
     mode: 0o755
   })
@@ -52,7 +52,7 @@ describe('CliInstaller', () => {
         platform: 'linux',
         isPackaged: false,
         userDataPath: fixture.userDataPath,
-        execPath: '/opt/Orca/orca-ide',
+        execPath: '/opt/Maestro/maestro',
         appPath: fixture.appPath,
         homePath,
         processPathEnv: commandDir
@@ -60,12 +60,12 @@ describe('CliInstaller', () => {
 
       const installed = await installer.install()
       expect(installed.state).toBe('installed')
-      expect(installed.commandName).toBe('orca-dev')
-      expect(installed.commandPath).toBe(join(commandDir, 'orca-dev'))
-      expect(installed.launcherPath).toBe(join(fixture.userDataPath, 'cli', 'bin', 'orca-dev'))
+      expect(installed.commandName).toBe('maestro-dev')
+      expect(installed.commandPath).toBe(join(commandDir, 'maestro-dev'))
+      expect(installed.launcherPath).toBe(join(fixture.userDataPath, 'cli', 'bin', 'maestro-dev'))
       await expect(readlink(installed.commandPath as string)).resolves.toBe(installed.launcherPath)
       await expect(
-        readFile(join(fixture.userDataPath, 'cli', 'bin', 'orca'), 'utf8')
+        readFile(join(fixture.userDataPath, 'cli', 'bin', 'maestro'), 'utf8')
       ).resolves.toBe(await readFile(installed.launcherPath as string, 'utf8'))
     }
   )
@@ -75,7 +75,7 @@ describe('CliInstaller', () => {
     async () => {
       const fixture = await makeFixture()
       const commandDir = join(fixture.root, '.local', 'bin')
-      const installPath = join(commandDir, 'orca-ide')
+      const installPath = join(commandDir, 'maestro')
       const appImagePath = join(fixture.root, 'Orca.AppImage')
       const cacheRootPath = join(fixture.root, 'cache')
       await writeFile(appImagePath, '#!/usr/bin/env bash\n', {
@@ -121,7 +121,7 @@ describe('CliInstaller', () => {
     async () => {
       const fixture = await makeFixture()
       const commandDir = join(fixture.root, '.local', 'bin')
-      const installPath = join(commandDir, 'orca-ide')
+      const installPath = join(commandDir, 'maestro')
       const appImagePath = join(fixture.root, "Orca's AppImage.AppImage")
       const cacheRootPath = join(fixture.root, 'cache')
       await mkdir(commandDir, { recursive: true })
@@ -160,7 +160,7 @@ describe('CliInstaller', () => {
   )
 
   it.skipIf(process.platform === 'win32')(
-    'removes a legacy AppImage wrapper only when it names the current AppImage',
+    'preserves Orca AppImage wrappers while registering Maestro',
     async () => {
       const fixture = await makeFixture()
       const homePath = join(fixture.root, 'home')
@@ -196,16 +196,14 @@ describe('CliInstaller', () => {
       })
 
       await installer.install()
-      await expect(lstat(legacyCommandPath)).rejects.toMatchObject({ code: 'ENOENT' })
+      await expect(readFile(legacyCommandPath, 'utf8')).resolves.toContain(appImagePath)
 
       await writeFile(legacyCommandPath, buildLegacyAppImageCliWrapper(foreignAppImagePath), {
         encoding: 'utf8',
         mode: 0o755
       })
       await installer.remove()
-      await expect(readFile(legacyCommandPath, 'utf8')).resolves.toBe(
-        buildLegacyAppImageCliWrapper(foreignAppImagePath)
-      )
+      await expect(readFile(legacyCommandPath, 'utf8')).resolves.toContain(foreignAppImagePath)
     }
   )
 })

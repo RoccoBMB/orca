@@ -1,3 +1,4 @@
+import { branding } from '../../shared/branding'
 import { mkdir, unlink } from 'node:fs/promises'
 import { dirname } from 'node:path'
 import type { CliInstallStatus } from '../../shared/cli-install-types'
@@ -208,6 +209,9 @@ export class CliInstaller extends CliPathRegistration {
 
   // Removing the `orca` command also retires the bare-name dispatcher headless serve installed.
   private async removeLinuxBareOrcaDispatcher(): Promise<void> {
+    if (branding.cliCommand !== 'orca') {
+      return
+    }
     if (this.platform !== 'linux' || this.commandPathOverride) {
       return
     }

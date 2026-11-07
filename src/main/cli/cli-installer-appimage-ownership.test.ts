@@ -41,7 +41,7 @@ async function makeFixture() {
   const appImagePath = join(root, 'Orca.AppImage')
   const cacheRootPath = join(root, 'cache')
   const commandDirectory = join(root, 'home', '.local', 'bin')
-  const commandPath = join(commandDirectory, 'orca-ide')
+  const commandPath = join(commandDirectory, 'maestro')
   await mkdir(commandDirectory, { recursive: true })
   await writeFile(appImagePath, '#!/usr/bin/env bash\n', { mode: 0o755 })
   return { root, appImagePath, cacheRootPath, commandDirectory, commandPath }
@@ -50,7 +50,7 @@ async function makeFixture() {
 async function extractPayload(_appImagePath: string, cwd: string): Promise<void> {
   const launcherDirectory = join(cwd, 'squashfs-root', 'resources', 'bin')
   await mkdir(launcherDirectory, { recursive: true })
-  await writeFile(join(launcherDirectory, 'orca-ide'), '#!/usr/bin/env bash\n', { mode: 0o755 })
+  await writeFile(join(launcherDirectory, 'maestro'), '#!/usr/bin/env bash\n', { mode: 0o755 })
 }
 
 function installerOptions(fixture: Fixture) {
@@ -59,7 +59,7 @@ function installerOptions(fixture: Fixture) {
     isPackaged: true,
     userDataPath: join(fixture.root, 'user-data'),
     resourcesPath: join(fixture.root, 'mount', 'resources'),
-    execPath: join(fixture.root, 'mount', 'orca-ide'),
+    execPath: join(fixture.root, 'mount', 'maestro'),
     appPath: join(fixture.root, 'mount', 'resources', 'app.asar'),
     homePath: join(fixture.root, 'home'),
     processPathEnv: fixture.commandDirectory,
@@ -73,7 +73,7 @@ describe.skipIf(process.platform === 'win32')('AppImage CLI ownership', () => {
   it('uses the mounted bundled launcher when only APPDIR is inherited', async () => {
     const fixture = await makeFixture()
     const resourcesPath = join(fixture.root, 'mounted', 'resources')
-    const launcherPath = join(resourcesPath, 'bin', 'orca-ide')
+    const launcherPath = join(resourcesPath, 'bin', 'maestro')
     await mkdir(dirname(launcherPath), { recursive: true })
     await writeFile(launcherPath, '#!/usr/bin/env bash\n', { mode: 0o755 })
     vi.stubEnv('APPIMAGE', '')
@@ -84,7 +84,7 @@ describe.skipIf(process.platform === 'win32')('AppImage CLI ownership', () => {
       isPackaged: true,
       userDataPath: join(fixture.root, 'user-data'),
       resourcesPath,
-      execPath: join(dirname(resourcesPath), 'orca-ide'),
+      execPath: join(dirname(resourcesPath), 'maestro'),
       appPath: join(resourcesPath, 'app.asar'),
       homePath: join(fixture.root, 'home'),
       processPathEnv: fixture.commandDirectory,
@@ -105,7 +105,7 @@ describe.skipIf(process.platform === 'win32')('AppImage CLI ownership', () => {
   it('ignores inherited APPIMAGE without the matching runtime identity', async () => {
     const fixture = await makeFixture()
     const resourcesPath = join(fixture.root, 'installed', 'resources')
-    const launcherPath = join(resourcesPath, 'bin', 'orca-ide')
+    const launcherPath = join(resourcesPath, 'bin', 'maestro')
     await mkdir(dirname(launcherPath), { recursive: true })
     await writeFile(launcherPath, '#!/usr/bin/env bash\n', { mode: 0o755 })
     vi.stubEnv('APPIMAGE', fixture.appImagePath)
@@ -117,7 +117,7 @@ describe.skipIf(process.platform === 'win32')('AppImage CLI ownership', () => {
       isPackaged: true,
       userDataPath: join(fixture.root, 'user-data'),
       resourcesPath,
-      execPath: join(fixture.root, 'installed', 'orca-ide'),
+      execPath: join(fixture.root, 'installed', 'maestro'),
       appPath: join(resourcesPath, 'app.asar'),
       homePath: join(fixture.root, 'home'),
       processPathEnv: fixture.commandDirectory,
@@ -136,7 +136,7 @@ describe.skipIf(process.platform === 'win32')('AppImage CLI ownership', () => {
 
   it('refuses an arbitrary resources/bin/orca-ide symlink', async () => {
     const fixture = await makeFixture()
-    const foreignTarget = join(fixture.root, 'foreign', 'resources', 'bin', 'orca-ide')
+    const foreignTarget = join(fixture.root, 'foreign', 'resources', 'bin', 'maestro')
     await symlink(foreignTarget, fixture.commandPath)
     const extract = vi.fn(extractPayload)
     const installer = new CliInstaller({
@@ -216,9 +216,9 @@ describe.skipIf(process.platform === 'win32')('AppImage CLI ownership', () => {
       'a'.repeat(24),
       'resources',
       'bin',
-      'orca-ide'
+      'maestro'
     )
-    const foreignTarget = join(fixture.root, 'foreign', 'orca-ide')
+    const foreignTarget = join(fixture.root, 'foreign', 'maestro')
     await symlink(ownedOldTarget, fixture.commandPath)
 
     class RacedInstaller extends CliInstaller {

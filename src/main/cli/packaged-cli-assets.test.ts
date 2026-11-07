@@ -1,6 +1,6 @@
 import { execFile, spawn } from 'node:child_process'
 import { globSync } from 'node:fs'
-import { copyFile, cp, mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises'
+import { copyFile, cp, mkdir, mkdtemp, readFile, realpath, rm, writeFile } from 'node:fs/promises'
 import { createRequire } from 'node:module'
 import { tmpdir } from 'node:os'
 import { dirname, join, sep } from 'node:path'
@@ -25,17 +25,17 @@ const unixLauncherFixtures = [
   {
     name: 'Linux',
     asset: linuxLauncherAsset,
-    appDir: ['Orca'],
-    launcher: ['resources', 'bin', 'orca-ide'],
-    executable: ['orca-ide'],
+    appDir: ['Maestro'],
+    launcher: ['resources', 'bin', 'maestro'],
+    executable: ['maestro'],
     cli: ['resources', 'app.asar.unpacked', 'out', 'cli', 'index.js']
   },
   {
     name: 'macOS',
     asset: darwinLauncherAsset,
-    appDir: ['Orca.app'],
-    launcher: ['Contents', 'Resources', 'bin', 'orca'],
-    executable: ['Contents', 'MacOS', 'Orca'],
+    appDir: ['Maestro.app'],
+    launcher: ['Contents', 'Resources', 'bin', 'maestro'],
+    executable: ['Contents', 'MacOS', 'Maestro'],
     cli: ['Contents', 'Resources', 'app.asar.unpacked', 'out', 'cli', 'index.js']
   }
 ] as const
@@ -139,6 +139,7 @@ describe('packaged CLI assets', () => {
           await mkdir(dirname(electronPath), { recursive: true })
           await mkdir(dirname(cliPath), { recursive: true })
           await copyFile(launcherFixture.asset, launcherPath)
+          await writeExecutableIdentity(appDir, launcherFixture.name)
           await writeFile(cliPath, '', 'utf8')
           await writeFile(
             electronPath,
@@ -204,6 +205,7 @@ server.listen(0, '127.0.0.1', () => {
         await mkdir(dirname(electronPath), { recursive: true })
         await mkdir(dirname(cliPath), { recursive: true })
         await copyFile(launcherFixture.asset, launcherPath)
+        await writeExecutableIdentity(appDir, launcherFixture.name)
         await writeFile(cliPath, '', 'utf8')
         await writeFile(
           electronPath,
@@ -237,7 +239,8 @@ node -e 'console.log(JSON.stringify({
           orcaNodeReplExternalModule: string | null
         }
 
-        expect(payload.argv).toEqual([cliPath, '--help', 'two words'])
+        expect(await realpath(payload.argv[0])).toBe(await realpath(cliPath))
+        expect(payload.argv.slice(1)).toEqual(['--help', 'two words'])
         expect(payload.runAsNode).toBe('1')
         // Hide node options from Electron's bootstrap but preserve them for the CLI.
         expect(payload.nodeOptions).toBeNull()
@@ -250,6 +253,17 @@ node -e 'console.log(JSON.stringify({
     }
   )
 })
+
+async function writeExecutableIdentity(appDir: string, platform: 'Linux' | 'macOS'): Promise<void> {
+  await writeFile(
+    platform === 'macOS'
+      ? join(appDir, 'Contents', 'Info.plist')
+      : join(appDir, 'resources', 'app-executable-name'),
+    platform === 'macOS'
+      ? '<?xml version="1.0"?><plist version="1.0"><dict><key>CFBundleExecutable</key><string>Maestro</string></dict></plist>'
+      : 'maestro'
+  )
+}
 
 async function waitForListenerState(path: string): Promise<{ pid: number; port: number }> {
   const deadline = Date.now() + 5_000

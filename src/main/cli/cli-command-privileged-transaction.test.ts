@@ -106,7 +106,7 @@ describe.skipIf(process.platform !== 'darwin' || process.getuid?.() === 0)(
 
     it('restores a trailing-newline symlink inserted after privileged inspection', async () => {
       const fixture = await createPrivilegedFixture()
-      const staleTarget = join(fixture.userDataPath, 'cli', 'bin', 'old', 'orca')
+      const staleTarget = join(fixture.userDataPath, 'cli', 'bin', 'old', 'maestro')
       const foreignTarget = `${staleTarget}\n`
       await symlink(staleTarget, fixture.commandPath)
       const original = await lstat(fixture.commandPath, { bigint: true })
@@ -196,7 +196,10 @@ describe.skipIf(process.platform !== 'darwin' || process.getuid?.() === 0)(
 
     it('repairs an unreadable link to an older Orca launcher through the transaction', async () => {
       const fixture = await createPrivilegedFixture()
-      await symlink('/Applications/Old Orca.app/Contents/Resources/bin/orca', fixture.commandPath)
+      await symlink(
+        '/Applications/Old Maestro.app/Contents/Resources/bin/maestro',
+        fixture.commandPath
+      )
       await lchmod(fixture.commandPath, 0o300)
       const commands: string[] = []
       const installer = new CliInstaller({
@@ -237,7 +240,7 @@ describe.skipIf(process.platform !== 'darwin' || process.getuid?.() === 0)(
 
     it('restores the displaced command when publication setup fails', async () => {
       const fixture = await createPrivilegedFixture()
-      const staleTarget = join(fixture.userDataPath, 'cli', 'bin', 'old', 'orca')
+      const staleTarget = join(fixture.userDataPath, 'cli', 'bin', 'old', 'maestro')
       await symlink(staleTarget, fixture.commandPath)
       const installer = new CliInstaller({
         ...fixtureInstallerOptions(fixture),

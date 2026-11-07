@@ -39,7 +39,7 @@ async function makeFixture(): Promise<{
   created.push(root)
   const homePath = join(root, 'home')
   const resourcesPath = join(root, 'resources')
-  const launcherPath = join(resourcesPath, 'bin', 'orca-ide')
+  const launcherPath = join(resourcesPath, 'bin', 'maestro')
   const screenReaderDir = join(root, 'usr-bin')
   await writeProgram(launcherPath, 'ORCA_CLI')
   await writeProgram(join(screenReaderDir, 'orca'), 'SCREEN_READER')

@@ -1,3 +1,4 @@
+import { branding } from '../../shared/branding'
 import { existsSync } from 'node:fs'
 import { mkdir, writeFile } from 'node:fs/promises'
 import { dirname, isAbsolute, join } from 'node:path'
@@ -38,10 +39,9 @@ export async function ensureDevLauncher(args: {
   })
   if (args.commandName === DEV_COMMAND_NAME && args.platform !== 'win32') {
     // Why: dev PTYs prepend this dir to PATH, so keep a local `orca` alias without claiming the global command.
-    await writeFile(join(dirname(launcherPath), 'orca'), content, {
-      encoding: 'utf8',
-      mode: 0o755
-    })
+    for (const name of new Set(['orca', branding.cliCommand])) {
+      await writeFile(join(dirname(launcherPath), name), content, { encoding: 'utf8', mode: 0o755 })
+    }
   }
   return launcherPath
 }

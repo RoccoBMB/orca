@@ -37,7 +37,7 @@ describe('CliInstaller', () => {
       userDataPath: fixture.userDataPath,
       execPath: 'C:\\Users\\me\\AppData\\Local\\Orca\\Orca.exe',
       appPath: fixture.appPath,
-      commandPathOverride: join(fixture.root, 'Programs', 'Orca', 'bin', 'orca.cmd'),
+      commandPathOverride: join(fixture.root, 'Programs', 'Orca', 'bin', 'maestro.cmd'),
       userPathReader: async () => ({
         state: 'unknown',
         detail: 'Orca could not read the Windows user PATH registry value.'
@@ -51,7 +51,7 @@ describe('CliInstaller', () => {
 
   it('bypasses cached status data before a Windows PATH mutation', async () => {
     const fixture = await makeFixture()
-    const installPath = join(fixture.root, 'Programs', 'Orca', 'bin', 'orca.cmd')
+    const installPath = join(fixture.root, 'Programs', 'Orca', 'bin', 'maestro.cmd')
     const pathDirectory = dirname(installPath)
     let registryPath = 'C:\\Tools'
     const registryReader = new WindowsUserPathRegistryReader({
@@ -90,7 +90,7 @@ describe('CliInstaller', () => {
 
   it('matches expandable Windows PATH entries case-insensitively without rewriting them', async () => {
     const fixture = await makeFixture()
-    const installPath = join(fixture.root, 'Local App Data', 'Orca', 'bin', 'orca.cmd')
+    const installPath = join(fixture.root, 'Local App Data', 'Orca', 'bin', 'maestro.cmd')
     const userPathWriter = vi.fn()
     const installer = new CliInstaller({
       platform: 'win32',
@@ -113,7 +113,7 @@ describe('CliInstaller', () => {
 
   it('does not expand environment variables stored in a REG_SZ Windows PATH', async () => {
     const fixture = await makeFixture()
-    const installPath = join(fixture.root, 'Local App Data', 'Orca', 'bin', 'orca.cmd')
+    const installPath = join(fixture.root, 'Local App Data', 'Orca', 'bin', 'maestro.cmd')
     const pathDirectory = dirname(installPath)
     const userPathWriter = vi.fn()
     const installer = new CliInstaller({
@@ -136,7 +136,7 @@ describe('CliInstaller', () => {
   it('keeps a bundled Windows launcher installed when the user PATH read is unknown', async () => {
     const fixture = await makeFixture()
     const resourcesPath = join(fixture.root, 'resources')
-    const bundledLauncher = join(resourcesPath, 'bin', 'orca.exe')
+    const bundledLauncher = join(resourcesPath, 'bin', 'maestro.exe')
     await mkdir(dirname(bundledLauncher), { recursive: true })
     await writeFile(bundledLauncher, 'native launcher', 'utf8')
 
@@ -164,7 +164,7 @@ describe('CliInstaller', () => {
     const fixture = await makeFixture()
     const localAppDataPath = join(fixture.root, 'AppData', 'Local')
     const resourcesPath = join(fixture.root, 'D Custom Orca', 'resources')
-    const bundledLauncher = join(resourcesPath, 'bin', 'orca.exe')
+    const bundledLauncher = join(resourcesPath, 'bin', 'maestro.exe')
     const bundledContent = 'native launcher'
     await mkdir(dirname(bundledLauncher), { recursive: true })
     await writeFile(bundledLauncher, bundledContent, 'utf8')

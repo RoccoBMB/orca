@@ -1,3 +1,4 @@
+import { branding } from '../../shared/branding'
 import { link, readlink, rmdir, symlink, unlink, writeFile } from 'node:fs/promises'
 import { basename, dirname, join, resolve } from 'node:path'
 import type { CliInstallStatus } from '../../shared/cli-install-types'
@@ -99,7 +100,12 @@ export class CliCommandInstallation extends CliCommandInspection {
   }
 
   protected async removeLegacyLinuxCommandIfManaged(launcherPath: string | null): Promise<void> {
-    if (this.platform !== 'linux' || this.commandPathOverride || !launcherPath) {
+    if (
+      branding.cliCommand !== 'orca' ||
+      this.platform !== 'linux' ||
+      this.commandPathOverride ||
+      !launcherPath
+    ) {
       return
     }
 

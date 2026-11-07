@@ -64,7 +64,7 @@ async function makeFixture(): Promise<{ homePath: string; resourcesPath: string 
   created.push(root)
   const resourcesPath = join(root, 'resources')
   await mkdir(join(resourcesPath, 'bin'), { recursive: true })
-  await writeFile(join(resourcesPath, 'bin', 'orca-ide'), '#!/usr/bin/env bash\n', 'utf8')
+  await writeFile(join(resourcesPath, 'bin', 'maestro'), '#!/usr/bin/env bash\n', 'utf8')
   return { homePath: join(root, 'home'), resourcesPath }
 }
 
@@ -161,5 +161,5 @@ describe('installLinuxBareOrcaDispatcher', () => {
 async function writePayload(cwd: string): Promise<void> {
   const launcherDirectory = join(cwd, 'squashfs-root', 'resources', 'bin')
   await mkdir(launcherDirectory, { recursive: true })
-  await writeFile(join(launcherDirectory, 'orca-ide'), '#!/usr/bin/env bash\n', { mode: 0o755 })
+  await writeFile(join(launcherDirectory, 'maestro'), '#!/usr/bin/env bash\n', { mode: 0o755 })
 }
