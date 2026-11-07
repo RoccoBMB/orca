@@ -13,7 +13,7 @@
 - Added local build/install commands, `ROCCO.md`, and weekly upstream sync tooling.
 - Preserved Orca CLI coexistence and framework symlinks during Maestro installation;
   made local helper signing ad hoc and reused the shared virtual list for compiler
-  compatibility. Verification and screenshots live in `qa-rocco/REPORT.md`.
+  compatibility. Verification and screenshots live in `docs/maestro/qa/REPORT.md`.
 - Revert: revert the Maestro feature commits on `rocco/core`; the General setting
   disables Conductor sections independently. Keep a backup of the Maestro profile
   before downgrading.

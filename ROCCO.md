@@ -92,7 +92,7 @@ bash scripts/sync-upstream.sh
 The script fetches `upstream/main`, creates `sync/upstream-<UTC date>` from
 `rocco/main` in a disposable worktree, merges, installs the lockfile, and runs
 `tc`, affected tests, and `check:changed`. It leaves `rocco/main` unchanged until
-review. Conflicts are printed and written to `qa-rocco/upstream-conflicts.txt`.
+review. Conflicts are printed and written to `docs/maestro/qa/upstream-conflicts.txt`.
 Override `SYNC_BASE`, `SYNC_BRANCH`, and `SYNC_REPORT` when needed. A failed sync
 keeps its branch for inspection and removes the disposable checkout.
 
@@ -103,6 +103,6 @@ workflow there to enable the weekly schedule.
 
 ## Revert / handoff
 
-`NOTES-core.md` records build and validation evidence. Revert the relevant Maestro
+`docs/maestro/NOTES-core.md` records build and validation evidence. Revert the relevant Maestro
 commits to remove the integration; turn off Conductor sections for the upstream
 layout without reverting code. Back up the Maestro profile before any downgrade.

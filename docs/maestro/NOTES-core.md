@@ -40,7 +40,7 @@ Branch: `rocco/core` in the existing isolated Orca-core worktree.
   section settings survived restart; collapse, reorder and reload checks passed.
   Final screenshots were inspected at 1440×1200 and 1280×800 CSS viewports.
 - The final `check:changed` result and coverage limits belong in
-  [qa-rocco/REPORT.md](qa-rocco/REPORT.md). Do not infer broad gate success from
+  [qa/REPORT.md](qa/REPORT.md). Do not infer broad gate success from
   focused checks. Branding-related test selection fans out widely.
 
 ## Tooling / next-session reference
@@ -65,5 +65,5 @@ path to the same workspace set. Sync leaves rocco/main unchanged until review.
 The local package omits the optional cross-platform orcad template; release-matrix
 and non-macOS installers require their own environments. No local app was installed.
 Official Orca data, real SSH/git credentials, ~/.maestro-smoke and the control-plane
-LaunchAgent were not modified. See ROCCO.md and qa-rocco/REPORT.md for evidence and
+LaunchAgent were not modified. See ROCCO.md and docs/maestro/qa/REPORT.md for evidence and
 remaining platform coverage. Push target: `git push origin rocco/core`.

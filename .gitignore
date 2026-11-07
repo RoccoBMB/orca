@@ -95,6 +95,8 @@ docs/**
 !docs/assets/**
 !docs/readme/
 !docs/readme/**
+!docs/maestro/
+!docs/maestro/**
 !docs/bug-reproductions/
 !docs/bug-reproductions/**
 !docs/STYLEGUIDE.md

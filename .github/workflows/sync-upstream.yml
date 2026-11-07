@@ -3,25 +3,29 @@ on:
   schedule:
     - cron: '0 14 * * 1'
   workflow_dispatch:
-permissions:
-  contents: write
-  pull-requests: write
-  issues: write
+permissions: {}
 concurrency:
   group: maestro-upstream-sync
   cancel-in-progress: false
 jobs:
-  sync:
+  verify:
     if: github.repository == 'RoccoBMB/orca'
     runs-on: ubuntu-latest
     timeout-minutes: 90
+    permissions:
+      contents: read
     env:
       ORCA_BACKGROUND_LAUNCH: '1'
+      SYNC_BASE: rocco/main
+    outputs:
+      outcome: ${{ steps.merge.outcome }}
+      changed: ${{ steps.bundle.outputs.changed }}
     steps:
       - uses: actions/checkout@v4
         with:
           ref: rocco/main
           fetch-depth: 0
+          persist-credentials: false
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
@@ -35,51 +39,91 @@ jobs:
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git remote add upstream https://github.com/stablyai/orca.git
           echo "SYNC_BRANCH=sync/upstream-$(date -u +%Y-%m-%d)-${GITHUB_RUN_ID}" >> "$GITHUB_ENV"
-          echo "SYNC_REPORT=$RUNNER_TEMP/upstream-conflicts.txt" >> "$GITHUB_ENV"
+          echo "SYNC_REPORT=$RUNNER_TEMP/sync-result/upstream-conflicts.txt" >> "$GITHUB_ENV"
+          mkdir -p "$RUNNER_TEMP/sync-result"
       - name: Merge and verify
         id: merge
         continue-on-error: true
         run: bash scripts/sync-upstream.sh
-      - name: Open fork pull request
+      - name: Export verified Git objects
+        id: bundle
         if: steps.merge.outcome == 'success'
-        env:
-          GH_TOKEN: ${{ github.token }}
         run: |
-          if test "$(git rev-list --count "rocco/main..$SYNC_BRANCH")" = 0; then
+          if test "$(git rev-list --count "$SYNC_BASE..$SYNC_BRANCH")" = 0; then
+            echo 'changed=false' >> "$GITHUB_OUTPUT"
+          else
+            git bundle create "$RUNNER_TEMP/sync-result/verified.bundle" "$SYNC_BRANCH" "^$SYNC_BASE"
+            echo 'changed=true' >> "$GITHUB_OUTPUT"
+          fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: sync-result
+          path: ${{ runner.temp }}/sync-result/
+          retention-days: 7
+  publish:
+    needs: verify
+    if: always() && github.repository == 'RoccoBMB/orca'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+      VERIFY_RESULT: ${{ needs.verify.result }}
+      VERIFY_OUTCOME: ${{ needs.verify.outputs.outcome }}
+      SYNC_CHANGED: ${{ needs.verify.outputs.changed }}
+    steps:
+      - uses: actions/download-artifact@v4
+        if: needs.verify.result == 'success'
+        with:
+          name: sync-result
+          path: ${{ runner.temp }}/sync-result
+      # Only Git objects cross jobs; never check out or execute merged files here.
+      - name: Publish result
+        run: |
+          if test "$VERIFY_RESULT" != success || test "$VERIFY_OUTCOME" != success; then
+            {
+              echo 'The scheduled upstream sync needs attention.'
+              echo
+              echo "Run: https://github.com/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
+              echo
+              echo 'See the verification log and sync-result artifact for merge conflicts or check failures.'
+            } > "$RUNNER_TEMP/sync-issue.md"
+            gh issue create --repo "$GITHUB_REPOSITORY" --title 'Upstream sync needs attention' --body-file "$RUNNER_TEMP/sync-issue.md"
+            exit 1
+          fi
+          if test "$SYNC_CHANGED" != true; then
             echo 'Already up to date; no pull request needed.'
             exit 0
           fi
-          git push origin "$SYNC_BRANCH"
+          git -c init.templateDir= init "$RUNNER_TEMP/publish"
+          cd "$RUNNER_TEMP/publish"
+          git config core.hooksPath /dev/null
+          git remote add origin "https://github.com/$GITHUB_REPOSITORY.git"
+          gh auth setup-git
+          git fetch --no-tags origin rocco/main
+          git bundle verify "$RUNNER_TEMP/sync-result/verified.bundle"
+          refs=$(git bundle list-heads "$RUNNER_TEMP/sync-result/verified.bundle")
+          test "$(printf '%s\n' "$refs" | wc -l)" -eq 1
+          read -r commit ref <<< "$refs"
+          [[ "$ref" =~ ^refs/heads/sync/upstream-[0-9]{4}-[0-9]{2}-[0-9]{2}-${GITHUB_RUN_ID}$ ]]
+          git fetch --no-tags "$RUNNER_TEMP/sync-result/verified.bundle" "$ref"
+          git merge-base --is-ancestor origin/rocco/main FETCH_HEAD
+          git push origin "FETCH_HEAD:$ref"
           cat > "$RUNNER_TEMP/sync-body.md" <<'BODY'
-          Upstream sync passed typecheck, affected tests, and changed checks.
+          Upstream sync passed the root-entry guard, typecheck, affected tests, and changed checks in a read-only job.
 
           ```mermaid
           flowchart LR
-            A[upstream/main] --> C[sync branch: merge and verify]
+            A[upstream/main] --> C[merge and verify: read only]
             B[rocco/main] --> C
-            C --> D[review in RoccoBMB/orca]
-            D --> B
+            C --> D[Git bundle]
+            D --> E[publish: no upstream code execution]
+            E --> F[review in RoccoBMB/orca]
+            F --> B
           ```
           BODY
-          gh pr create --repo "$GITHUB_REPOSITORY" --base rocco/main --head "$SYNC_BRANCH" --title 'chore: sync upstream Orca' --body-file "$RUNNER_TEMP/sync-body.md"
-      - name: Report failure
-        if: steps.merge.outcome == 'failure'
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          {
-            echo 'The scheduled upstream sync needs attention.'
-            echo
-            echo "Run: https://github.com/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
-            echo
-            if test -s "$SYNC_REPORT"; then
-              echo 'Conflicting files / merge failure:'
-              echo '```text'
-              cat "$SYNC_REPORT"
-              echo '```'
-            else
-              echo 'Merge verification failed. See the run log for dependency, typecheck, test, or changed-check failures.'
-            fi
-          } > "$RUNNER_TEMP/sync-issue.md"
-          gh issue create --repo "$GITHUB_REPOSITORY" --title 'Upstream sync needs attention' --body-file "$RUNNER_TEMP/sync-issue.md"
-          exit 1
+          gh pr create --repo "$GITHUB_REPOSITORY" --base rocco/main --head "${ref#refs/heads/}" --title 'chore: sync upstream Orca' --body-file "$RUNNER_TEMP/sync-body.md"
