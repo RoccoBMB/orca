@@ -80,6 +80,9 @@ function resolveSigningIdentity() {
   if (explicitIdentity) {
     return explicitIdentity
   }
+  if (branding.productName !== 'Orca' && process.env.ORCA_MAC_RELEASE !== '1') {
+    return '-'
+  }
   const identities = spawnSync('security', ['find-identity', '-v', '-p', 'codesigning'], {
     encoding: 'utf8'
   })

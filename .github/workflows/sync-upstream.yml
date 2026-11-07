@@ -1,0 +1,85 @@
+name: Sync Maestro with upstream
+on:
+  schedule:
+    - cron: '0 14 * * 1'
+  workflow_dispatch:
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+concurrency:
+  group: maestro-upstream-sync
+  cancel-in-progress: false
+jobs:
+  sync:
+    if: github.repository == 'RoccoBMB/orca'
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      ORCA_BACKGROUND_LAUNCH: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: rocco/main
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - uses: pnpm/action-setup@v4
+        with:
+          version: '12.14.0'
+          run_install: false
+      - name: Prepare sync
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git remote add upstream https://github.com/stablyai/orca.git
+          echo "SYNC_BRANCH=sync/upstream-$(date -u +%Y-%m-%d)-${GITHUB_RUN_ID}" >> "$GITHUB_ENV"
+          echo "SYNC_REPORT=$RUNNER_TEMP/upstream-conflicts.txt" >> "$GITHUB_ENV"
+      - name: Merge and verify
+        id: merge
+        continue-on-error: true
+        run: bash scripts/sync-upstream.sh
+      - name: Open fork pull request
+        if: steps.merge.outcome == 'success'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if test "$(git rev-list --count "rocco/main..$SYNC_BRANCH")" = 0; then
+            echo 'Already up to date; no pull request needed.'
+            exit 0
+          fi
+          git push origin "$SYNC_BRANCH"
+          cat > "$RUNNER_TEMP/sync-body.md" <<'BODY'
+          Upstream sync passed typecheck, affected tests, and changed checks.
+
+          ```mermaid
+          flowchart LR
+            A[upstream/main] --> C[sync branch: merge and verify]
+            B[rocco/main] --> C
+            C --> D[review in RoccoBMB/orca]
+            D --> B
+          ```
+          BODY
+          gh pr create --repo "$GITHUB_REPOSITORY" --base rocco/main --head "$SYNC_BRANCH" --title 'chore: sync upstream Orca' --body-file "$RUNNER_TEMP/sync-body.md"
+      - name: Report failure
+        if: steps.merge.outcome == 'failure'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          {
+            echo 'The scheduled upstream sync needs attention.'
+            echo
+            echo "Run: https://github.com/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
+            echo
+            if test -s "$SYNC_REPORT"; then
+              echo 'Conflicting files / merge failure:'
+              echo '```text'
+              cat "$SYNC_REPORT"
+              echo '```'
+            else
+              echo 'Merge verification failed. See the run log for dependency, typecheck, test, or changed-check failures.'
+            fi
+          } > "$RUNNER_TEMP/sync-issue.md"
+          gh issue create --repo "$GITHUB_REPOSITORY" --title 'Upstream sync needs attention' --body-file "$RUNNER_TEMP/sync-issue.md"
+          exit 1

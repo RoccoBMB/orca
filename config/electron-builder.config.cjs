@@ -928,6 +928,9 @@ function codesignArgs(identity, targetPath) {
 }
 
 function findInstalledMacSigningIdentity(keychainFile) {
+  if (!isMacRelease && branding.productName !== 'Orca') {
+    return '-'
+  }
   try {
     const output = execFileSync(
       'security',
