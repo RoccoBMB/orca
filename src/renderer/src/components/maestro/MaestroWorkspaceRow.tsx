@@ -8,19 +8,26 @@ import { isActiveSidebarWorkspace } from '../../../../shared/sidebar-list/active
 import type { Worktree } from '../../../../shared/worktree/types'
 import type { Repo } from '../../../../shared/repo-types'
 import WorktreeCard from '../sidebar/workspace-card/surface/WorktreeCard'
-import { LoadingSpinner } from '../LoadingSpinner'
 import { MAESTRO_WORKSPACE_DRAG } from './MaestroSidebarSection'
 import { getWorktreeHostIdentity } from '../../../../shared/worktree/host-qualified-identity'
 import { translate } from '@/i18n/i18n'
+import {
+  getWorktreeOptionId,
+  forwardOptionPressToCardSurface
+} from '../sidebar/worktree-list/rows/option-dom'
 
 export function MaestroWorkspaceRow({
   worktree,
   repo,
-  onActivate
+  onActivate,
+  rowKey,
+  isPreviewActive
 }: {
   worktree: Worktree
   repo?: Repo
   onActivate?: () => void
+  rowKey: string
+  isPreviewActive?: boolean
 }) {
   useUiLanguageRevision()
   const now = useNow(60_000)
@@ -37,7 +44,7 @@ export function MaestroWorkspaceRow({
         !worktree.head ||
         s.gitStatusHeadByWorktree[worktree.id] !== worktree.head ||
         s.gitStatusReadErrorByWorktree[worktree.id] ||
-        getResolvedExecutionHostIdForWorktree(s, worktree.id) !== worktree.hostId
+        getResolvedExecutionHostIdForWorktree(s, worktree.id) !== (worktree.hostId ?? 'local')
       ) {
         return null
       }
@@ -65,7 +72,16 @@ export function MaestroWorkspaceRow({
   const timestamp = worktree.createdAt ?? worktree.lastActivityAt
   return (
     <div
+      id={getWorktreeOptionId(rowKey)}
+      role="option"
+      aria-selected={isPreviewActive ?? active}
+      aria-current={active ? 'page' : undefined}
+      aria-label={worktree.displayName}
+      data-worktree-id={worktree.id}
+      data-worktree-row-key={rowKey}
+      data-worktree-host-identity={getWorktreeHostIdentity(worktree)}
       data-maestro-workspace={getWorktreeHostIdentity(worktree)}
+      onClick={forwardOptionPressToCardSurface}
       draggable
       onDragStart={(event) => {
         event.stopPropagation()
@@ -77,54 +93,46 @@ export function MaestroWorkspaceRow({
         worktree={worktree}
         repo={repo}
         isActive={active}
+        isActiveSurface={isPreviewActive ?? active}
+        activationRowKey={rowKey}
+        compactRow
         nativeDragEnabled={false}
         onWorktreeCardClick={onActivate}
+        trailingContent={
+          <div className="ml-auto flex shrink-0 items-center gap-2 pr-2 text-2xs text-muted-foreground">
+            {stats && (stats.added > 0 || stats.removed > 0) ? (
+              <span
+                className="flex gap-1.5 tabular-nums"
+                aria-label={translate(
+                  'auto.components.maestro.MaestroWorkspaceRow.ef5798569a',
+                  '{{value0}} lines added, {{value1}} lines removed',
+                  { value0: stats.added, value1: stats.removed }
+                )}
+              >
+                <span className="text-[color:var(--git-decoration-added)]">+{stats.added}</span>
+                <span className="text-[color:var(--git-decoration-deleted)]">−{stats.removed}</span>
+              </span>
+            ) : null}
+            <time
+              className="ml-auto tabular-nums"
+              dateTime={new Date(timestamp).toISOString()}
+              aria-label={
+                worktree.createdAt
+                  ? translate(
+                      'auto.components.maestro.MaestroWorkspaceRow.c1aa534eeb',
+                      'Workspace age'
+                    )
+                  : translate(
+                      'auto.components.maestro.MaestroWorkspaceRow.c463faa545',
+                      'Last activity'
+                    )
+              }
+            >
+              {formatShortTimeAgo(timestamp, now)}
+            </time>
+          </div>
+        }
       />
-      <div className="flex items-center gap-2 px-4 pb-1 text-2xs text-muted-foreground">
-        {worktree.smartTier === 'working' && (
-          <span
-            aria-label={translate(
-              'auto.components.maestro.MaestroWorkspaceRow.73290a059e',
-              'Agent working'
-            )}
-          >
-            <LoadingSpinner className="size-3" />
-          </span>
-        )}
-        {stats ? (
-          <span
-            className="flex gap-1.5 tabular-nums"
-            aria-label={translate(
-              'auto.components.maestro.MaestroWorkspaceRow.ef5798569a',
-              '{{value0}} lines added, {{value1}} lines removed',
-              { value0: stats.added, value1: stats.removed }
-            )}
-          >
-            <span className="text-[color:var(--git-decoration-added)]">+{stats.added}</span>
-            <span className="text-[color:var(--git-decoration-deleted)]">−{stats.removed}</span>
-          </span>
-        ) : (
-          <span
-            aria-label={translate(
-              'auto.components.maestro.MaestroWorkspaceRow.311fdd70ab',
-              'Diff statistics unavailable'
-            )}
-          >
-            —
-          </span>
-        )}
-        <time
-          className="ml-auto tabular-nums"
-          dateTime={new Date(timestamp).toISOString()}
-          aria-label={
-            worktree.createdAt
-              ? translate('auto.components.maestro.MaestroWorkspaceRow.c1aa534eeb', 'Workspace age')
-              : translate('auto.components.maestro.MaestroWorkspaceRow.c463faa545', 'Last activity')
-          }
-        >
-          {formatShortTimeAgo(timestamp, now)}
-        </time>
-      </div>
     </div>
   )
 }

@@ -1,5 +1,20 @@
 # Changelog
 
+## 2026-11-07 — Compact Conductor sidebar
+
+- Made Conductor workspace rows single-line (32px), with activity, truncated title,
+  non-zero diff counts and age. Kept project/branch details in the existing hover
+  card and retained activation, inline rename and context menus.
+- Removed duplicate project groups in status mode, hid empty status sections, and
+  made section labels quiet with emoji and a right-side collapsed chevron.
+- Added 36px navigation rows and a Search row opening Orca's existing palette;
+  reused Orca's keyboard navigation and virtualization for the section order.
+- Implementation: `src/renderer/src/components/maestro/`, the optional workspace
+  card template, and the sidebar Button variant. QA: `qa-rocco/sidebar-compact*`;
+  implementation and verification notes: `NOTES-sidebar.md`.
+- Revert: revert the compact sidebar commit(s) on `rocco/sidebar-compact`, or turn
+  Conductor sections off in Settings → General → Maestro to use project grouping.
+
 ## 2026-11-07 — Maestro core
 
 - Added a separate Maestro app identity, profile and URL scheme in

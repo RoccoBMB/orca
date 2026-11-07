@@ -98,7 +98,12 @@ const SidebarNav = React.memo(function SidebarNav() {
           'auto.components.sidebar.SidebarNav.0c3395fd32',
           'Search worktrees and browser tabs'
         )}
-        className="group flex w-full items-center gap-2 rounded-md bg-worktree-sidebar-foreground/5 px-2 py-1.5 text-left text-[13px] font-medium tracking-tight text-worktree-sidebar-foreground/60 transition-colors hover:bg-worktree-sidebar-foreground/8"
+        className={cn(
+          'group flex w-full items-center gap-2 rounded-md px-2 text-left text-[13px] transition-colors duration-200 ease-out',
+          conductorSidebar
+            ? 'h-9 font-normal text-muted-foreground hover:bg-worktree-sidebar-accent'
+            : 'bg-worktree-sidebar-foreground/5 py-1.5 font-medium tracking-tight text-worktree-sidebar-foreground/60 hover:bg-worktree-sidebar-foreground/8'
+        )}
       >
         <Search
           className="size-4 shrink-0 text-worktree-sidebar-foreground/30"

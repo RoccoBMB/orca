@@ -70,10 +70,13 @@ off to retain Orca's standard per-project sidebar and grouping options.
 - New section creates an optional emoji and name. Its menu renames, changes emoji,
   moves up/down, or removes it. Drag section headers to reorder. Click a header to
   collapse it. Drag rows to sections or statuses, or use Move to section.
-- Removing a section returns its workspaces to automatic grouping. Projects below
-  the sections provide a second way to navigate the same visible workspace set.
+- Removing a section returns its workspaces to automatic grouping. Status mode
+  shows each workspace once; project grouping remains available by turning
+  Conductor sections off in Settings → General → Maestro.
 - Section settings and host-qualified assignments persist through Orca's settings
-  store. The upstream workspace cards retain activity, diff stats and timing.
+  store. Compact 32px rows retain activity, inline non-zero diff stats, age, keyboard
+  navigation, rename and context menus. Project and branch details live in the
+  title hover card; empty status sections are hidden.
 - The top bar reuses the workspace context menu. Open in remembers the last app,
   discovers supported installed editors, supports configured custom commands,
   and uses Orca's ownership checks for remote/SSH editor launches.

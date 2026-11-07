@@ -1,13 +1,5 @@
 import { useUiLanguageRevision } from '@/i18n/use-ui-language-revision'
-import {
-  ArrowDown,
-  ArrowUp,
-  ChevronRight,
-  Folder,
-  MoreHorizontal,
-  Pencil,
-  Trash2
-} from 'lucide-react'
+import { ArrowDown, ArrowUp, ChevronRight, MoreHorizontal, Pencil, Trash2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
@@ -46,7 +38,7 @@ export function MaestroSidebarSection({
   const custom = group.custom
   return (
     <div
-      className="flex items-center gap-1 px-2 text-muted-foreground"
+      className="group/section flex h-7 items-center gap-1 px-2 text-muted-foreground"
       draggable={!!custom}
       onDragStart={
         custom
@@ -58,34 +50,36 @@ export function MaestroSidebarSection({
       }
     >
       <Button
-        variant="ghost"
+        variant="sidebar"
         size="menu"
-        className="min-w-0 flex-1 justify-start"
+        className="h-7 min-w-0 flex-1 justify-start"
         aria-expanded={!group.collapsed}
         onClick={onToggle}
       >
-        <ChevronRight
-          className={`size-3 shrink-0 transition-transform duration-200 ease-out motion-reduce:transition-none ${group.collapsed ? '' : 'rotate-90'}`}
-        />
-        {custom?.emoji ? <span>{custom.emoji}</span> : <Folder className="size-3.5 shrink-0" />}
+        {custom?.emoji && <span className="shrink-0">{custom.emoji}</span>}
         <span className="truncate">{group.label}</span>
-        <span className="ml-auto text-2xs tabular-nums">{group.items.length}</span>
+        <span className="ml-auto text-2xs tabular-nums opacity-0 group-hover/section:opacity-100 group-focus-within/section:opacity-100">
+          {group.items.length}
+        </span>
+        {group.collapsed && <ChevronRight className="size-3.5 shrink-0" />}
       </Button>
       {custom && (
         <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button
-              variant="ghost"
-              size="icon-xs"
-              aria-label={translate(
-                'auto.components.maestro.MaestroSidebarSection.e97c19d261',
-                'Actions for {{value0}}',
-                { value0: custom.name }
-              )}
-            >
-              <MoreHorizontal className="size-3.5" />
-            </Button>
-          </DropdownMenuTrigger>
+          <span className="opacity-0 group-hover/section:opacity-100 group-focus-within/section:opacity-100 has-[[data-state=open]]:opacity-100">
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon-xs"
+                aria-label={translate(
+                  'auto.components.maestro.MaestroSidebarSection.e97c19d261',
+                  'Actions for {{value0}}',
+                  { value0: custom.name }
+                )}
+              >
+                <MoreHorizontal className="size-3.5" />
+              </Button>
+            </DropdownMenuTrigger>
+          </span>
           <DropdownMenuContent>
             <DropdownMenuItem onSelect={() => onEdit(custom)}>
               <Pencil className="size-3.5" />

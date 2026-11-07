@@ -58,6 +58,8 @@ export type WorktreeCardProps = {
   nativeDragEnabled?: boolean
   affiliateListMode?: boolean
   statusPrDisplay?: WorktreeCardPrDisplay | null
+  compactRow?: boolean
+  trailingContent?: React.ReactNode
 }
 
 type DefaultedWorktreeCardProp =

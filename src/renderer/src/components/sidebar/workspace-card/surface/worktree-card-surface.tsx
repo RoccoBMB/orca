@@ -8,6 +8,7 @@ import { useIsSleepingWorktree } from '../../workspace-actions/sleep/use-worktre
 import { getWorktreeCardFrameGeometry } from './worktree-card-frame-geometry'
 import type { WorktreeCardController } from '../controller/use-worktree-card-controller'
 import { DEFAULT_WORKSPACE_CARD_TEMPLATE } from '../template/default-workspace-card'
+import { COMPACT_WORKSPACE_CARD_TEMPLATE } from '../template/compact-workspace-card'
 import { renderWorkspaceCardTemplate } from '../template/render-workspace-card-template'
 
 export function WorktreeCardSurface({ card }: { card: WorktreeCardController }): React.JSX.Element {
@@ -49,7 +50,7 @@ export function WorktreeCardSurface({ card }: { card: WorktreeCardController }):
     getWorktreeCardFrameGeometry({ flushSurface, contentIndent, statusLane })
   const { content: parentCardContent, frame } = renderWorkspaceCardTemplate(
     card,
-    DEFAULT_WORKSPACE_CARD_TEMPLATE,
+    card.compactRow ? COMPACT_WORKSPACE_CARD_TEMPLATE : DEFAULT_WORKSPACE_CARD_TEMPLATE,
     (templateFrame) => {
       const { parentContentMarginLeft } = geometryFor(templateFrame.statusLane)
       return parentContentMarginLeft < 0
@@ -64,7 +65,11 @@ export function WorktreeCardSurface({ card }: { card: WorktreeCardController }):
     <div
       className={cn(
         'relative flex cursor-pointer flex-col pr-1.5 transition-[background-color,border-color,opacity,box-shadow] duration-200 outline-none select-none',
-        titleOnlyCard ? 'py-2' : 'pt-1.25 pb-1.5',
+        card.compactRow
+          ? 'h-8 flex-row items-center gap-2 pl-1 py-0'
+          : titleOnlyCard
+            ? 'py-2'
+            : 'pt-1.25 pb-1.5',
         flushSurface ? 'ml-1 w-[calc(100%-0.25rem)]' : 'ml-1',
         'overflow-hidden rounded-lg',
         // Navigation updates the live attribute before React; it must own the complete active style.
@@ -84,6 +89,7 @@ export function WorktreeCardSurface({ card }: { card: WorktreeCardController }):
         isRuntimeDisconnected && !isDeleting && 'opacity-60'
       )}
       data-worktree-card-surface="true"
+      data-current={isActiveSurface || undefined}
       data-worktree-card-active={
         isActiveSurface && !isLineageDropTarget ? activeSurfaceVariant : undefined
       }
@@ -114,10 +120,16 @@ export function WorktreeCardSurface({ card }: { card: WorktreeCardController }):
       )}
       {isSleeping && newCardStyle && !isDeleting ? (
         // Mix tokens for background-independent sleep dimming; scope to the parent so awake children stay bright.
-        <div data-worktree-sleeping-dim="">{parentCardContent}</div>
+        <div
+          data-worktree-sleeping-dim=""
+          className={card.compactRow ? 'min-w-0 flex-1' : undefined}
+        >
+          {parentCardContent}
+        </div>
       ) : (
         parentCardContent
       )}
+      {card.trailingContent}
 
       {lineageChildren ? (
         <div

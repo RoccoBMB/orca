@@ -134,12 +134,25 @@ export function WorktreeCardIdentityHover({
       workspaceTitle={workspaceTitle}
       workspaceTitleRenameDisabled={card.isDeleting || affiliateListMode}
       detailsAfter={
-        workspacePorts.length > 0 ? <WorktreeCardPortsDetails ports={workspacePorts} /> : null
+        card.compactRow || workspacePorts.length > 0 ? (
+          <>
+            {card.compactRow && (
+              <div className="break-words text-xs text-muted-foreground">
+                {repo?.displayName ?? worktree.path}
+              </div>
+            )}
+            {workspacePorts.length > 0 ? <WorktreeCardPortsDetails ports={workspacePorts} /> : null}
+          </>
+        ) : null
       }
       openDelay={100}
       hoverControl={{
         ...hoverControl,
+        hoverOpen: hoverControl.hoverOpen && !(card.compactRow && card.titleRenaming),
         handleHoverOpenChange: (open) => {
+          if (open && card.compactRow && card.titleRenaming) {
+            return
+          }
           if (
             !open ||
             !identityRef.current?.querySelector(

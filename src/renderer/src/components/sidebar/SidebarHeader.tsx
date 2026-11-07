@@ -1,4 +1,5 @@
 import React, { useId } from 'react'
+import { conductorSidebarEnabled } from '../../../../shared/maestro-settings'
 import { useTranslation } from 'react-i18next'
 import { useAppStore } from '@/store'
 import { translate } from '@/i18n/i18n'
@@ -26,6 +27,7 @@ const SidebarHeader = React.memo(function SidebarHeader({
   useTranslation()
   const sidebarBody = useAppStore((s) => s.sidebarBody ?? 'workspaces')
   const groupBy = useAppStore((s) => s.groupBy)
+  const conductorSidebar = useAppStore((s) => conductorSidebarEnabled(s.settings))
   const setSidebarBody = useAppStore((s) => s.setSidebarBody)
   const updateSettings = useAppStore((s) => s.updateSettings)
   const agentsViewActive = sidebarBody === 'agents'
@@ -49,7 +51,7 @@ const SidebarHeader = React.memo(function SidebarHeader({
     void updateSettings?.({ agentsSidebarIntroShown: true })
   }, [updateSettings])
   const sidebarTitle =
-    groupBy === 'repo'
+    groupBy === 'repo' && !conductorSidebar
       ? translate('dashboard.sidebar.projects', 'Projects')
       : translate('dashboard.sidebar.workspaces', 'Workspaces')
   const activityLabel = translate(
@@ -58,7 +60,12 @@ const SidebarHeader = React.memo(function SidebarHeader({
   )
 
   return (
-    <div className="group/sidebar-header mt-2 flex h-8 min-w-0 shrink-0 items-center justify-between gap-1.5 px-2">
+    <div
+      className={cn(
+        'group/sidebar-header flex h-8 min-w-0 shrink-0 items-center justify-between gap-1.5 px-2',
+        !conductorSidebar && 'mt-2'
+      )}
+    >
       <div
         className="flex min-w-0 items-center"
         data-contextual-tour-target={groupBy === 'repo' ? 'projects-collapse-all' : undefined}

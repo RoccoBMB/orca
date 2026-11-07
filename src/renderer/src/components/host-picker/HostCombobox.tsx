@@ -60,8 +60,8 @@ export function HostCombobox({
   options: readonly HostComboboxOption[]
   placeholder?: string
   ariaLabel?: string
-  size?: 'xs' | 'sm' | 'default'
-  variant?: 'outline' | 'ghost'
+  size?: 'xs' | 'sm' | 'default' | 'sidebar'
+  variant?: 'outline' | 'ghost' | 'sidebar'
   className?: string
   disabled?: boolean
   notifyOnReselect?: boolean

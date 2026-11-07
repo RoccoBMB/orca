@@ -19514,9 +19514,7 @@
         "MaestroWorkspaceRow": {
           "c463faa545": "Last activity",
           "c1aa534eeb": "Workspace age",
-          "311fdd70ab": "Diff statistics unavailable",
-          "ef5798569a": "{{value0}} lines added, {{value1}} lines removed",
-          "73290a059e": "Agent working"
+          "ef5798569a": "{{value0}} lines added, {{value1}} lines removed"
         },
         "use": {
           "maestro": {

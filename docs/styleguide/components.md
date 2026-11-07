@@ -24,6 +24,8 @@ Variants in priority order:
 | `link`        | Inline text actions inside paragraphs.                             |
 | `destructive` | Delete, discard, irreversible. Never for Cancel.                   |
 
+`sidebar` is the quiet, normal-weight variant for workspace sidebar navigation and section labels. Pair it with `size="sidebar"` for 36px navigation rows, or `size="menu"` for section controls.
+
 Sizes are defined in `button.tsx` (`default`, `sm`, `xs`, `lg`, plus `icon`, `icon-xs`, `icon-sm`, `icon-lg`). Match the size to the surrounding row height — don't drop a `default` button into a 28px toolbar.
 
 ## Picking the right primitive
