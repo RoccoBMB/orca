@@ -20,7 +20,7 @@ vi.mock('@/lib/browser/navigation/http-link-routing', () => ({
 }))
 
 import { NativeChatVisualFrame } from './NativeChatVisualFrame'
-import type { ReaderGesture } from '../../native-chat-autoscroll'
+import type { ReaderGesture } from '../../viewport/scroll/native-chat-autoscroll'
 
 const visual = { revision: 'r1', html: '<p>chart</p>', path: '/v' }
 

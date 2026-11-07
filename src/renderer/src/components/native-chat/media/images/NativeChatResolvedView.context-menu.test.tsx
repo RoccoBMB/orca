@@ -75,7 +75,7 @@ vi.mock('sonner', () => ({ toast: { success: mocks.success, error: mocks.error }
 const { NativeChatResolvedView } = await import('../../NativeChatResolvedView')
 const { useAppStore } = await import('../../../../store/index')
 const { installNativeChatMessageListTestViewport } =
-  await import('../../native-chat-message-list-test-viewport')
+  await import('../../viewport/virtualization/native-chat-message-list-test-viewport')
 const { TooltipProvider } = await import('@/components/ui/tooltip')
 
 function RetainedBridgeChat({ visible = true }: { visible?: boolean }) {

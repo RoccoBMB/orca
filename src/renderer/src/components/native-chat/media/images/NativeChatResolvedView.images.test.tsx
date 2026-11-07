@@ -2,13 +2,13 @@
 
 import { afterEach, beforeEach, expect, it, vi } from 'vitest'
 import { cleanup, screen, waitFor } from '@testing-library/react'
-import { render } from '../../native-chat-tooltip-test-harness'
+import { render } from '../../messages/actions/native-chat-tooltip-test-harness'
 import type { NativeChatLiveSession } from '../../session/terminal/read/native-chat-live-session-contract'
 import '@/components/editor/document-images/useLocalImageSrc'
 import { resetLocalImageCacheState as resetLocalImageSrcStateForTests } from '@/components/editor/document-images/local-image-src-cache'
 import { useAppStore } from '@/store'
-import { nativeChatFanoutFixture } from '../../native-chat-workspace-test-fixtures'
-import { installNativeChatMessageListTestViewport } from '../../native-chat-message-list-test-viewport'
+import { nativeChatFanoutFixture } from '../../surfaces/integration/native-chat-workspace-test-fixtures'
+import { installNativeChatMessageListTestViewport } from '../../viewport/virtualization/native-chat-message-list-test-viewport'
 
 const session: NativeChatLiveSession = {
   messages: [
