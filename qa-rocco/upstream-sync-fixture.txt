@@ -1,0 +1,1 @@
+PASS: successful merge, baseline preserved, temporary worktree cleanup, no-op merge detection, conflict exit/report and clean baseline. pnpm validation commands stubbed for this isolated merge fixture.

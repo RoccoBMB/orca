@@ -64,3 +64,5 @@ Every change must consider these areas:
 ## Git / GitHub
 
 If changing code around `git`, `gh`, source-control, or review behavior read [`docs/agents-md-refs/git-workflow.md`](./docs/agents-md-refs/git-workflow.md).
+
+Project changes and revert guidance: [CHANGELOG.md](CHANGELOG.md).

@@ -1,0 +1,23 @@
+{
+  "survivedAppRestart": true,
+  "collapseExpandAndReorderThroughUi": true,
+  "survivedReload": true,
+  "sections": [
+    {
+      "id": "2c5d973e-53e0-4938-8b27-842f534299cf",
+      "name": "Release crew",
+      "emoji": "🎻",
+      "collapsed": true
+    },
+    {
+      "id": "qa-section",
+      "name": "Orchestrators",
+      "emoji": "🎼",
+      "collapsed": false
+    }
+  ],
+  "workspaceSections": {
+    "local|qa-repo::/private/var/folders/6k/401qrhtj2s5brq31dhcbg8qw0000gp/T/m-qa-dUhji7/workspace-3": "2c5d973e-53e0-4938-8b27-842f534299cf"
+  },
+  "pageErrors": []
+}
