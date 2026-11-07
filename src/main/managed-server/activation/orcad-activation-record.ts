@@ -1,4 +1,5 @@
 // Keep activation identity, rollback target and state snapshot outside version directories so GC cannot erase recovery metadata.
+import { branding } from '../../../shared/branding'
 import { remoteInstallDirName, ORCAD_INSTALL_MODEL } from '../install/remote-install-model'
 
 export const ORCAD_ACTIVATION_FILENAME = 'orcad-active.json'
@@ -16,6 +17,7 @@ export type OrcadStateSnapshot = {
 }
 
 export type OrcadActivationRecord = {
+  appId?: string
   schemaVersion: typeof ORCAD_ACTIVATION_SCHEMA_VERSION
   /** Content-hashed install version; null before activation or after decommission. */
   active: string | null
@@ -32,6 +34,7 @@ export type OrcadActivationRecord = {
 
 export function emptyOrcadActivationRecord(): OrcadActivationRecord {
   return {
+    appId: branding.appId,
     schemaVersion: ORCAD_ACTIVATION_SCHEMA_VERSION,
     active: null,
     previous: null,
@@ -63,6 +66,9 @@ export function parseOrcadActivationRecord(raw: string | null): OrcadActivationR
     return { state: 'unreadable', reason: 'activation record is not an object' }
   }
   const record = parsed as Partial<OrcadActivationRecord>
+  if (record.appId !== branding.appId) {
+    return { state: 'unreadable', reason: 'activation record belongs to another application' }
+  }
   if (record.schemaVersion !== ORCAD_ACTIVATION_SCHEMA_VERSION) {
     return {
       state: 'unreadable',
@@ -74,6 +80,7 @@ export function parseOrcadActivationRecord(raw: string | null): OrcadActivationR
   return {
     state: 'ok',
     record: {
+      appId: branding.appId,
       schemaVersion: ORCAD_ACTIVATION_SCHEMA_VERSION,
       active: typeof record.active === 'string' ? record.active : null,
       previous: typeof record.previous === 'string' ? record.previous : null,
@@ -121,7 +128,10 @@ export function coreOrcadActivationRecord(record: OrcadActivationRecord): OrcadA
 }
 
 export function serializeOrcadActivationRecord(record: OrcadActivationRecord): string {
-  return `${JSON.stringify(record, null, 2)}\n`
+  if (record.appId !== undefined && record.appId !== branding.appId) {
+    throw new Error('Cannot write an activation record belonging to another application')
+  }
+  return `${JSON.stringify({ ...record, appId: branding.appId }, null, 2)}\n`
 }
 
 export function withActivatedVersion(
@@ -139,6 +149,7 @@ export function withActivatedVersion(
       ? record.activeAppVersion
       : undefined
   return {
+    appId: branding.appId,
     schemaVersion: ORCAD_ACTIVATION_SCHEMA_VERSION,
     active: version,
     // Re-activating identical bytes must preserve the existing rollback target.
@@ -155,6 +166,7 @@ export function withRolledBackVersion(
   now: Date
 ): OrcadActivationRecord {
   return {
+    appId: branding.appId,
     schemaVersion: ORCAD_ACTIVATION_SCHEMA_VERSION,
     active: record.previous,
     // Rolling back must not offer the failed build as the next rollback target.
@@ -169,6 +181,7 @@ export function withRolledBackVersion(
 
 export function withDeactivatedVersion(record: OrcadActivationRecord): OrcadActivationRecord {
   return {
+    appId: branding.appId,
     schemaVersion: ORCAD_ACTIVATION_SCHEMA_VERSION,
     active: null,
     // Pin the stopped build for redeploy and any daemon still using its entry.

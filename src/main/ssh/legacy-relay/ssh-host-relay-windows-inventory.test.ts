@@ -17,7 +17,7 @@ import { getRemoteHostPlatform, joinRemotePath } from '../ssh-remote-platform'
 const host = getRemoteHostPlatform('win32-x64')
 const HOME = 'C:\\Users\\dev'
 const VERSION = 'relay-0.1.0+aaaaaaaaaaaa'
-const DIR = joinRemotePath(host, HOME, '.orca-remote', VERSION)
+const DIR = joinRemotePath(host, HOME, '.maestro-remote', VERSION)
 
 describe('the Windows relay inventory', () => {
   let base: string | null = null
@@ -49,6 +49,19 @@ describe('the Windows relay inventory', () => {
         }
       }
     })
+  })
+
+  it('excludes official Orca pipes from the parsed inventory', () => {
+    const inventory = parseWindowsRelayInventory(
+      host,
+      HOME,
+      [],
+      JSON.stringify({
+        pipes: ['orca-relay-01234567890123456789', 'maestro-relay-01234567890123456789'],
+        dirs: {}
+      })
+    )
+    expect(inventory?.pipes).toEqual(['\\\\.\\pipe\\maestro-relay-01234567890123456789'])
   })
 
   it("maps another desktop's pipes to its own instance and credential", () => {

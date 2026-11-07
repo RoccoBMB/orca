@@ -1,4 +1,12 @@
-import { chmodSync, mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs'
+import {
+  chmodSync,
+  readFileSync,
+  existsSync,
+  mkdirSync,
+  mkdtempSync,
+  rmSync,
+  writeFileSync
+} from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
@@ -153,14 +161,31 @@ function machine(name: string, hostname = name, options: MachineOptions = {}) {
 }
 
 function loginHomeResult() {
-  return { loginHome: home, orcadHome: home, userDataDir: join(home, '.orca') }
+  return { loginHome: home, orcadHome: home, userDataDir: join(home, '.maestro') }
 }
 
 function claimPath(): string {
-  return join(home, '.orca-remote', ORCAD_MACHINE_CLAIM_FILENAME)
+  return join(home, '.maestro-remote', ORCAD_MACHINE_CLAIM_FILENAME)
 }
 
 describe.runIf(POSIX)('resolveOrcadMachineHome on a home several machines share', () => {
+  it('ignores official remote claims, activations and profile owners', async () => {
+    const official = mkdirp(home, '.orca-remote')
+    const record = '{"schemaVersion":1,"active":"0.2.0+abcd"}'
+    writeFileSync(join(official, 'orcad-active.json'), record)
+    writeFileSync(join(official, 'orcad-machine.json'), 'foreign claim')
+    const owners = mkdirp(home, '.orca', '.profile-state-access', 'maintenance')
+    writeFileSync(join(owners, 'foreign.owner'), '{"host":"official"}')
+    expect(await resolveOrcadMachineHome(machine('node-a'), true)).toEqual({
+      loginHome: home,
+      orcadHome: home,
+      userDataDir: join(home, '.maestro')
+    })
+    expect(existsSync(join(home, '.maestro-remote', 'orcad-machine.json'))).toBe(true)
+    expect(readFileSync(join(official, 'orcad-active.json'), 'utf8')).toBe(record)
+    expect(readFileSync(join(official, 'orcad-machine.json'), 'utf8')).toBe('foreign claim')
+  })
+
   it('restores an emptied claim to the machine the arbiter already chose', async () => {
     const a = machine('node-a', 'node-a', { noHardLinks: true })
     const b = machine('node-b', 'node-b', { noHardLinks: true })
@@ -188,7 +213,7 @@ describe.runIf(POSIX)('resolveOrcadMachineHome on a home several machines share'
   })
 
   it('refuses to guess when the claim cannot be read', async () => {
-    mkdirSync(join(home, '.orca-remote'))
+    mkdirSync(join(home, '.maestro-remote'))
     writeFileSync(claimPath(), 'not json')
     await expect(resolveOrcadMachineHome(machine('node-a'), true)).rejects.toThrow(
       /cannot tell which machine owns/
@@ -197,7 +222,7 @@ describe.runIf(POSIX)('resolveOrcadMachineHome on a home several machines share'
 
   it('claims a stopped pre-claim install on a local disk, which no other machine can share', async () => {
     const a = machine('node-a', 'node-a', { homeSource: '/dev/disk3s5' })
-    writeFileSync(join(mkdirp(home, '.orca-remote'), 'orcad-active.json'), '{"schemaVersion":1}')
+    writeFileSync(join(mkdirp(home, '.maestro-remote'), 'orcad-active.json'), '{"schemaVersion":1}')
     expect(await resolveOrcadMachineHome(a, true)).toEqual(loginHomeResult())
   })
 })

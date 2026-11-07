@@ -1,3 +1,4 @@
+import { branding } from '../../../shared/branding'
 import {
   ORCAD_WSL_HOLDER_BLOCKED_FILENAME,
   ORCAD_WSL_HOLDER_RELEASE_FILENAME
@@ -5,7 +6,7 @@ import {
 import { buildWslExecArgs } from '../../../shared/wsl-login-shell-command'
 
 /** `$0` of the holder's shell; the token that identifies our holder in a process command line. */
-export const WSL_DISTRO_HOLDER_MARKER = 'orca-wsl-distro-holder'
+export const WSL_DISTRO_HOLDER_MARKER = `${branding.cliCommand}-wsl-distro-holder`
 
 /** How often the holder looks for orcad's release request; also the floor on how soon it ends. */
 export const WSL_DISTRO_HOLDER_POLL_SECONDS = 15
@@ -22,14 +23,14 @@ export const WSL_DISTRO_HOLDER_BLOCKED_NAMES_MAX = 5
 
 // Why short sleeps: busybox `sleep` (Alpine) rejects `infinity`. Why `rm` without -f: it claims the
 // request atomically, so an orcad that starts and clears it first keeps the holder (and the distro).
-// `~/.orca` is the WSL host's data root (orcad-remote-context); without HOME the path never exists.
+// The branded home directory is the WSL host's data root (orcad-remote-context); without HOME the path never exists.
 export function buildWslDistroHolderScript(
   pollSeconds = WSL_DISTRO_HOLDER_POLL_SECONDS,
   procRoot = '/proc'
 ): string {
   const ignored = WSL_DISTRO_HOLDER_IGNORED_PROCESS_NAMES.map((name) => `'${name}'`).join('|')
   return [
-    `f="$HOME/.orca/${ORCAD_WSL_HOLDER_RELEASE_FILENAME}"; b="$HOME/.orca/${ORCAD_WSL_HOLDER_BLOCKED_FILENAME}"; me=$(id -u)`,
+    `f="$HOME/${branding.homeDirectoryName}/${ORCAD_WSL_HOLDER_RELEASE_FILENAME}"; b="$HOME/${branding.homeDirectoryName}/${ORCAD_WSL_HOLDER_BLOCKED_FILENAME}"; me=$(id -u)`,
     // A new holder means a client wants the distro: an older orcad's request no longer stands.
     // Also any note half-written by a holder killed mid-write.
     'rm -f "$f" "$b" "$b".*',

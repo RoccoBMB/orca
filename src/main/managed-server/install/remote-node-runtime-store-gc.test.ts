@@ -44,7 +44,7 @@ posixOnly('gcRemoteNodeRuntimeStore (real shell)', () => {
 
   beforeEach(() => {
     home = mkdtempSync(join(tmpdir(), 'runtime-store-'))
-    root = join(home, '.orca-remote')
+    root = join(home, '.maestro-remote')
     mkdirSync(join(root, 'runtimes'), { recursive: true })
     mockExec.mockReset()
     mockExec.mockImplementation(async (_conn, command) =>
