@@ -1,0 +1,60 @@
+{
+  "base": "rocco/main",
+  "omittedScans": [
+    "type-aware code quality: full scan timed out after 30 minutes; single CLI installer check passed"
+  ],
+  "results": [
+    {
+      "name": "code quality",
+      "files": 110,
+      "seconds": 0,
+      "timedOut": false,
+      "findings": []
+    },
+    {
+      "name": "JS plugins",
+      "files": 110,
+      "seconds": 1,
+      "timedOut": false,
+      "findings": []
+    },
+    {
+      "name": "casting code quality",
+      "files": 110,
+      "seconds": 0,
+      "timedOut": false,
+      "findings": []
+    },
+    {
+      "name": "focused plugins",
+      "files": 110,
+      "seconds": 7,
+      "timedOut": false,
+      "findings": []
+    },
+    {
+      "name": "React Doctor",
+      "files": 110,
+      "seconds": 3,
+      "timedOut": false,
+      "findings": []
+    },
+    {
+      "name": "design system",
+      "files": 110,
+      "seconds": 1,
+      "timedOut": false,
+      "findings": []
+    },
+    {
+      "name": "ast-grep",
+      "files": 110,
+      "findings": []
+    },
+    {
+      "name": "casting SAFETY rationale",
+      "files": 110,
+      "findings": []
+    }
+  ]
+}

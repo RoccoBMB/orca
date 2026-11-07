@@ -34,12 +34,19 @@ Branch: `rocco/core` in the existing isolated Orca-core worktree.
 - Focused checks: 42 files / 158 tests passed; 2 files / 10 tests platform-skipped.
   Covers CLI, credentials, startup/profile isolation, status, host registry,
   dotfiles and shared virtual-list behavior.
+- Final design-system fixes use ButtonGroup, menu-sized headers and an optional
+  ghost host chooser; all eight non-type-aware changed-line scans passed across
+  110 source files. Full typecheck and 4 UI test files / 15 tests passed afterward.
 - React Compiler ratchet passed. Sync success/no-op/conflict fixture passed with
   real disposable Git worktrees and pnpm validation commands stubbed.
 - Packaged Maestro launched only hidden with disposable HOME/userData. Saved
   section settings survived restart; collapse, reorder and reload checks passed.
   Final screenshots were inspected at 1440×1200 and 1280×800 CSS viewports.
-- The final `check:changed` result and coverage limits belong in
+- Broad `check:changed` hit its 30-minute limits in related tests/type-aware lint.
+  Its one logged relay failure did not reproduce: the full relay file passed all
+  18 tests with a disposable HOME. Generated evidence formatting was fixed.
+  A final 10-minute-per-step aggregate rerun follows the last edit/commit.
+- The `check:changed` evidence and coverage limits are recorded in
   [qa-rocco/REPORT.md](qa-rocco/REPORT.md). Do not infer broad gate success from
   focused checks. Branding-related test selection fans out widely.
 
@@ -66,4 +73,5 @@ The local package omits the optional cross-platform orcad template; release-matr
 and non-macOS installers require their own environments. No local app was installed.
 Official Orca data, real SSH/git credentials, ~/.maestro-smoke and the control-plane
 LaunchAgent were not modified. See ROCCO.md and qa-rocco/REPORT.md for evidence and
-remaining platform coverage. Push target: `git push origin rocco/core`.
+remaining platform coverage. All known code findings are fixed; full aggregate
+success is not claimed. Push target: `git push origin rocco/core`.
