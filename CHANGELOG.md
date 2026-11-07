@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-11-07 — Maestro core isolation fixes
+
+- Separated upstream verification from publishing credentials and added the root-entry guard to sync verification. Archived core notes and QA now live in `docs/maestro/`.
+- Isolated AppImage caches, service launchers/units, remote lifecycle state, agent hooks/trust and WSL holder coordination using `src/shared/branding.json`.
+- Exposed only Maestro PATH commands, including Windows/native and orchestration resume flows; branded the macOS notification helper's embedded identity.
+- Revert the `fix(sync)`, `fix(branding)`, `fix(remote)`, and `fix(macos)` commits from this branch to restore prior behavior. Preserve Maestro data before reverting; do not migrate it into official Orca directories. See `NOTES-fixes.md` and `docs/maestro/FIXES-VERIFICATION.md` for evidence and platform limits.
+
 ## 2026-11-07 — Maestro core
 
 - Added a separate Maestro app identity, profile and URL scheme in
