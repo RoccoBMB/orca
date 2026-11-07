@@ -1,3 +1,4 @@
+import { branding } from '../../../../../shared/branding'
 import type { UISlice, UISliceGet, UISliceSet } from './ui-slice-contract'
 import { workspaceHostScopeForVisibleHosts } from '../../../../../shared/workspace-view/workspace-host-visibility'
 import { createAgentsViewPreferenceActions } from './ui-slice-agents-view-preference-actions'
@@ -125,16 +126,16 @@ export function createUiPreferenceActions(set: UISliceSet, get: UISliceGet): Par
         if (!worktreeId) {
           return s
         }
-        const current = s.showDotfilesByWorktree[worktreeId] ?? true
+        const current = s.showDotfilesByWorktree[worktreeId] ?? branding.showDotfilesDefault
         if (current === showDotfiles) {
           return s
         }
         const next = { ...s.showDotfilesByWorktree }
-        // Why: showing dotfiles is the default; only persist worktree-level opt-outs.
-        if (showDotfiles) {
+        // Persist only deviations from this build’s default.
+        if (showDotfiles === branding.showDotfilesDefault) {
           delete next[worktreeId]
         } else {
-          next[worktreeId] = false
+          next[worktreeId] = showDotfiles
         }
         return { showDotfilesByWorktree: next }
       }),
@@ -143,12 +144,14 @@ export function createUiPreferenceActions(set: UISliceSet, get: UISliceGet): Par
         if (!worktreeId) {
           return s
         }
-        const nextShowDotfiles = !(s.showDotfilesByWorktree[worktreeId] ?? true)
+        const nextShowDotfiles = !(
+          s.showDotfilesByWorktree[worktreeId] ?? branding.showDotfilesDefault
+        )
         const next = { ...s.showDotfilesByWorktree }
-        if (nextShowDotfiles) {
+        if (nextShowDotfiles === branding.showDotfilesDefault) {
           delete next[worktreeId]
         } else {
-          next[worktreeId] = false
+          next[worktreeId] = nextShowDotfiles
         }
         return { showDotfilesByWorktree: next }
       }),

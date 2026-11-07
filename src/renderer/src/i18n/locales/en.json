@@ -19443,6 +19443,94 @@
         "setting-global-off": "Folder trust is turned off in Agents settings, so agents always ask.",
         "keyword-trust": "trust",
         "keyword-hooks": "hooks"
+      },
+      "maestro": {
+        "MaestroFolderNotice": {
+          "6b253ec274": "Pick a repository instead",
+          "690bc08a78": "A repository gives files and changes a focused scope.",
+          "f6c616c2ac": "This folder has more than 200 entries.",
+          "8d9361c7c3": "This project is your home directory."
+        },
+        "MaestroNavigation": {
+          "c6513675f2": "Create",
+          "c04ad93ca2": "Home",
+          "5dcc8763a4": "Dashboard",
+          "0fd2c6b21f": "All hosts"
+        },
+        "MaestroOpenIn": {
+          "e09ba92aba": "Customize apps…",
+          "577d2f1a52": "Choose Open in application",
+          "48f8170806": "No supported local application",
+          "f34fdaae80": "Open in {{value0}}",
+          "7d4dd6e652": "Open in unavailable",
+          "9196ccab4a": "Could not open application",
+          "00b4f8b29a": "Remove an app in Customize apps before adding another.",
+          "99c2e5de50": "Open in apps is full"
+        },
+        "MaestroSectionDialog": {
+          "8340502c6a": "Save section",
+          "7caa7bbadc": "Cancel",
+          "346b523112": "Optional",
+          "baa589c98e": "Emoji",
+          "97511ef268": "Name",
+          "57b06f7316": "Organize workspaces across projects and hosts.",
+          "bdd531a12d": "New section",
+          "72202dc21b": "Edit section"
+        },
+        "MaestroSettingsSection": {
+          "948dc382d3": "Orca source and attribution",
+          "3bc8846b9f": "Built on {{name}} · MIT License",
+          "9569a2b8d0": "About Maestro",
+          "d038b03b29": "Automatic updates are disabled. Build a new version locally to update Maestro.",
+          "a0ee737c8e": "Group by status and your own sections. Turn off to use Orca’s project grouping.",
+          "0dd0342921": "Conductor sidebar sections",
+          "7898f12dee": "Maestro"
+        },
+        "MaestroSidebar": {
+          "a901fe5d72": "New section",
+          "14cd54c3bc": "Workspace sections"
+        },
+        "MaestroSidebarSection": {
+          "16ac6f96ad": "Remove section",
+          "feee610456": "Move down",
+          "ed17c8edbb": "Move up",
+          "5bec085348": "Rename / emoji",
+          "e97c19d261": "Actions for {{value0}}"
+        },
+        "MaestroTopBar": {
+          "6e80f7322e": "Push",
+          "bce02cffcf": "Review",
+          "389c865f13": "Create draft PR",
+          "b62de08085": "Create PR",
+          "aa0be0be48": "Pull request actions",
+          "ecf59f211c": "Workspace actions"
+        },
+        "MaestroWorkspaceMenu": {
+          "f42c375ec7": "Automatic",
+          "41627ff176": "Status override",
+          "d795f4768c": "Project / automatic status",
+          "56c360d3b6": "Move to section"
+        },
+        "MaestroWorkspaceRow": {
+          "c463faa545": "Last activity",
+          "c1aa534eeb": "Workspace age",
+          "311fdd70ab": "Diff statistics unavailable",
+          "ef5798569a": "{{value0}} lines added, {{value1}} lines removed",
+          "73290a059e": "Agent working"
+        },
+        "use": {
+          "maestro": {
+            "review": {
+              "request": {
+                "20583e473d": "Check the branch status in Source Control.",
+                "ed30d37cf2": "Push is unavailable"
+              }
+            },
+            "settings": {
+              "c304e6ce1e": "Could not save Maestro settings"
+            }
+          }
+        }
       }
     },
     "i18n": {

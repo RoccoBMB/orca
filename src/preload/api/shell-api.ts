@@ -1,3 +1,4 @@
+import type { OpenInApplication } from '../../shared/ui-chrome-types'
 import type { RepoIconPickResult } from '../../shared/repo-icon-pick-failure-copy'
 import type { ExecutionHostId } from '../../shared/execution-host'
 import type { ShellPathExistence } from '../../shared/path-existence-batch'
@@ -9,6 +10,8 @@ import type {
 } from '../../shared/shell/opening/shell-open-types'
 
 export type ShellApi = {
+  listInstalledOpenInApplications?: () => Promise<OpenInApplication[]>
+  isHomeDirectory?: (path: string, ownerHostId: ExecutionHostId) => Promise<boolean>
   /** Every OS open names the path's owner; main refuses anything not owned by this computer. */
   openPath: (path: string, ownerHostId: ExecutionHostId) => Promise<void>
   openInFileManager: (

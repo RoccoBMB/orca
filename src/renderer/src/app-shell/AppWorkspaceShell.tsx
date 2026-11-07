@@ -1,3 +1,4 @@
+import { MaestroTopBar } from '@/components/maestro/MaestroTopBar'
 import { memo, Suspense, useCallback, useRef } from 'react'
 import { lazyWithRetry as lazy } from '@/lib/lazy-with-retry'
 import { translate } from '@/i18n/i18n'
@@ -184,6 +185,7 @@ export function AppWorkspaceShell(props: {
               )
             ) : null}
             <div className="flex flex-col flex-1 min-w-0 min-h-0 overflow-hidden">
+              <MaestroTopBar />
               {/* Automations/artifacts own their headers; another titlebar would leave an empty stripe. */}
               {layout.stackedSidebarOpen &&
               layout.activeView !== 'automations' &&

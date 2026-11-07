@@ -1,3 +1,5 @@
+import { MaestroFolderNotice } from '@/components/maestro/MaestroFolderNotice'
+import { branding } from '../../../../../../shared/branding'
 import React, { useCallback, useMemo } from 'react'
 import { useAppStore } from '@/store/index'
 import { runtimeEnvironmentIdOrLocalUnlessTwin } from '@/lib/workspace/ownership/worktree-runtime-owner'
@@ -72,7 +74,9 @@ function FileExplorerFiles(): React.JSX.Element {
   const openFiles = useAppStore((s) => s.openFiles)
   const rightSidebarOpen = useAppStore((s) => s.rightSidebarOpen)
   const showDotfiles = useAppStore((s) =>
-    activeWorktreeId ? (s.showDotfilesByWorktree[activeWorktreeId] ?? true) : true
+    activeWorktreeId
+      ? (s.showDotfilesByWorktree[activeWorktreeId] ?? branding.showDotfilesDefault)
+      : branding.showDotfilesDefault
   )
   const toggleShowDotfilesForWorktree = useAppStore((s) => s.toggleShowDotfilesForWorktree)
 
@@ -266,6 +270,12 @@ function FileExplorerFiles(): React.JSX.Element {
           onToggleGitIgnoredFiles={toggleGitIgnoredFiles}
           showDotfiles={showDotfiles}
           onToggleDotfiles={handleToggleDotfiles}
+        />
+        <MaestroFolderNotice
+          path={worktreePath}
+          owner={openInOwner}
+          supportsGit={activeRepoSupportsGit}
+          entryCount={tree.rootCache?.children.length ?? 0}
         />
         {activeWorktree?.isSparse && (
           <FileExplorerScopeNotice

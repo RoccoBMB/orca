@@ -1,3 +1,6 @@
+import { listInstalledOpenInApplications } from '../external-editors/installed-open-in-applications'
+import { homedir } from 'node:os'
+import { normalizeRuntimePathForComparison } from '../../shared/cross-platform-path'
 import { translateMain } from '../i18n/main-i18n'
 import { BrowserWindow, ipcMain, shell } from 'electron'
 import { showSingleFlightOpenDialog } from './single-flight-open-dialog'
@@ -151,6 +154,15 @@ export function registerShellHandlers(
   store: ShellHandlerStore,
   listRuntimeEnvironments: ListRuntimeEnvironments = listAppRuntimeEnvironments
 ): void {
+  ipcMain.handle('shell:listInstalledOpenInApplications', () => listInstalledOpenInApplications())
+  ipcMain.handle('shell:isHomeDirectory', async (_event, path: string, ownerHostId: unknown) => {
+    const target = await resolveOwnedPathTarget(path, ownerHostId)
+    return (
+      target.ok &&
+      normalizeRuntimePathForComparison(target.path) ===
+        normalizeRuntimePathForComparison(homedir())
+    )
+  })
   ipcMain.handle(
     'shell:openPath',
     async (_event, path: string, ownerHostId: unknown): Promise<void> => {

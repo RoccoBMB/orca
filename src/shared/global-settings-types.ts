@@ -2,6 +2,7 @@ import type { AgentLaunchChoices } from './agent-launch/choices/agent-launch-cho
 import type { TelemetrySettings } from './telemetry-settings-types'
 import type { BrowserProfileScope } from './browser-profile-scope'
 import type { GlobalSettingsBase } from './global-settings-base'
+import type { MaestroSettings } from './maestro-settings'
 import type { ExecutionHostId } from './execution-host'
 import type { OrcaWorkspaceLayout } from './orca-workspace-layout'
 import type { GitHubProjectSettings } from './github/project-types'
@@ -50,6 +51,7 @@ export type { WorktreeVisibilityDefaults } from './repo-types'
 export type MiniMaxEndpoint = 'overseas' | 'cn'
 
 export type GlobalSettings = GlobalSettingsBase & {
+  maestro?: MaestroSettings
   workspaceDir: string
   /** Host-owned defaults used when a repository has no explicit visibility override. */
   worktreeVisibilityDefaults?: WorktreeVisibilityDefaults

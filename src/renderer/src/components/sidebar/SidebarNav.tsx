@@ -1,3 +1,5 @@
+import { MaestroNavigation } from '@/components/maestro/MaestroNavigation'
+import { conductorSidebarEnabled } from '../../../../shared/maestro-settings'
 import React from 'react'
 import { BookOpen, CalendarClock, EyeOff, Files, Search, Smartphone } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
@@ -52,6 +54,7 @@ const SidebarNav = React.memo(function SidebarNav() {
   // Subscribe across this memo boundary; translate still handles pseudo-localization.
   useTranslation()
   const worktreePaletteShortcutCombos = useShortcutKeyComboDetails('worktree.palette')
+  const conductorSidebar = useAppStore((s) => conductorSidebarEnabled(s.settings))
   const openAutomationsPage = useAppStore((s) => s.openAutomationsPage)
   const openMobilePage = useAppStore((s) => s.openMobilePage)
   const openArtifactsPage = useAppStore((s) => s.openArtifactsPage)
@@ -87,6 +90,7 @@ const SidebarNav = React.memo(function SidebarNav() {
       className="flex flex-col gap-0.5 px-2 pt-2 pb-1"
       data-contextual-tour-target="sidebar-navigation"
     >
+      {conductorSidebar && <MaestroNavigation />}
       <button
         type="button"
         onClick={() => openModal('worktree-palette')}

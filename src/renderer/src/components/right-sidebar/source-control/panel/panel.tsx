@@ -1,3 +1,4 @@
+import { useMaestroReviewAction } from '@/components/maestro/use-maestro-review-request'
 import { memo } from 'react'
 import { translate } from '@/i18n/i18n'
 import { useUiLanguageRevision } from '@/i18n/use-ui-language-revision'
@@ -7,6 +8,7 @@ import { useSourceControlPanelModel } from './use-panel-model'
 export const SourceControlPanel = memo(function SourceControlPanel() {
   useUiLanguageRevision()
   const model = useSourceControlPanelModel()
+  useMaestroReviewAction(model)
   const { activeRepo, activeWorktree, isFolder, worktreePath } = model
 
   if (!activeWorktree || !activeRepo || !worktreePath) {

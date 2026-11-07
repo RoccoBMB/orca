@@ -1,3 +1,4 @@
+import { renderMaestroSidebar as maestroView } from '@/components/maestro/MaestroSidebar'
 import React, { useCallback, useMemo } from 'react'
 import { createPortal } from 'react-dom'
 import { useAppStore } from '@/store'
@@ -283,6 +284,10 @@ const WorktreeList = React.memo(function WorktreeList({
     },
     [announceProjectCollapse, toggleGroup]
   )
+  const maestro = maestroView(settings, visibleWorktrees, visibleScope, onWorktreeCardClick)
+  if (maestro) {
+    return maestro
+  }
   // Clear Filters must outrank empty project headers when filtering hides every workspace.
   if (rowModel.rows.length === 0 || filtersHideAllRows) {
     return <SidebarWorktreeListEmptyState hasFilters={hasFilters} onClearFilters={clearFilters} />

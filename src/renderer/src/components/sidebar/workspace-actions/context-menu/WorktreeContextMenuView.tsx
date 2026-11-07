@@ -2,7 +2,6 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuShortcut,
   DropdownMenuSub,
@@ -10,6 +9,7 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
+import { MaestroWorkspaceMenu } from '@/components/maestro/MaestroWorkspaceMenu'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import {
   Copy,
@@ -157,9 +157,6 @@ export default function WorktreeContextMenuView({ model }: { model: WorktreeCont
           onClickCapture={suppressOpeningPointerEvent}
           onCloseAutoFocus={handleCloseAutoFocus}
         >
-          <DropdownMenuLabel>
-            {translate('auto.components.sidebar.WorktreeContextMenu.workspaceSection', 'Workspace')}
-          </DropdownMenuLabel>
           {!isMultiContext && <WorktreeWslHostStartMenuItem worktreeId={worktree.id} />}
           {!isMultiContext && (
             <DropdownMenuItem onSelect={handleRename} disabled={isDeleting}>
@@ -174,6 +171,7 @@ export default function WorktreeContextMenuView({ model }: { model: WorktreeCont
             onAssignWorkspaceStatus={handleAssignWorkspaceStatus}
             workspaceStatuses={workspaceStatuses}
           />
+          <MaestroWorkspaceMenu worktrees={effectiveSelectedWorktrees} />
           <DropdownMenuSeparator />
           {!isMultiContext && (
             <>

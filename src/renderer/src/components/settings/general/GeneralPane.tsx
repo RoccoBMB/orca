@@ -1,3 +1,4 @@
+import { MaestroSettingsSection } from '@/components/maestro/MaestroSettingsSection'
 import type React from 'react'
 import type { GlobalSettings } from '../../../../../shared/global-settings-types'
 import { useAppStore } from '../../../store/index'
@@ -266,6 +267,7 @@ export function GeneralPane({
 
   return (
     <div className="space-y-6">
+      <MaestroSettingsSection />
       <SettingsSectionStack sections={visibleSections} spacing="section" />
       {matchesSettingsSearch(searchQuery, getGeneralSupportSearchEntries()) ? (
         <GeneralSupportSection

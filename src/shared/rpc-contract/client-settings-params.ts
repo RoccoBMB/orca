@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import { MaestroSettingsSchema } from '../maestro-settings'
 import { isTaskProvider } from '../task-providers'
 import type { TaskProvider } from '../task-providers'
 import { isTuiAgent } from '../agent-launch/catalog/tui-agent-config'
@@ -86,6 +87,7 @@ export const GitHubProjectSettings = z
 
 export const SettingsUpdate = z
   .object({
+    maestro: MaestroSettingsSchema.optional(),
     machineName: z.string().trim().max(MACHINE_NAME_MAX_LENGTH).optional(),
     worktreeVisibilityDefaults: WorktreeVisibilityDefaultsUpdate.optional(),
     defaultTuiAgent: z
