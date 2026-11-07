@@ -1,3 +1,4 @@
+import { managedHookFileName } from '../agent-hooks/managed-hook-paths'
 import { existsSync, readFileSync, rmSync } from 'node:fs'
 import { readFile } from 'node:fs/promises'
 import { dirname, join } from 'node:path'
@@ -19,7 +20,7 @@ import {
 } from '../agent-hooks/windows-native-hook-executable'
 import { WINDOWS_CLAUDE_BACKGROUND_JOB_GUARD } from '../agent-hooks/claude-background-job-guard'
 
-const PAYLOAD_FILE_NAME = 'claude-hook-impl.cmd'
+const PAYLOAD_FILE_NAME = managedHookFileName('claude-hook-impl.cmd')
 
 export function getWindowsClaudeHookPayloadPath(entryPath: string): string {
   return join(dirname(entryPath), PAYLOAD_FILE_NAME)

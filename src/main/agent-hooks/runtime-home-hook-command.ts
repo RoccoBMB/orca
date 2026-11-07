@@ -1,3 +1,4 @@
+import { managedHookFileName, managedHookRelativePath } from './managed-hook-paths'
 import { HOOK_PARENT_CAPTURE } from './hook-process-capture'
 import {
   POSIX_HOOK_STDIN_DRAIN_COMMAND,
@@ -23,10 +24,11 @@ function buildPosixBranch(
   missingScriptFallback: string,
   options: { requireHome?: boolean } = {}
 ): string {
-  const posixScript = `"\${HOME-}/.orca/agent-hooks/${scriptBaseName}.sh"`
+  const posixScript = `"\${HOME-}/${managedHookRelativePath(`${scriptBaseName}.sh`)}"`
   const homeGuard = options.requireHome ? '[ -n "${HOME-}" ] && ' : ''
   const parentCapture =
-    scriptBaseName === 'claude-hook' || scriptBaseName === 'openclaude-hook'
+    managedHookFileName(scriptBaseName) === managedHookFileName('claude-hook') ||
+    managedHookFileName(scriptBaseName) === managedHookFileName('openclaude-hook')
       ? HOOK_PARENT_CAPTURE
       : ''
   return `if ${homeGuard}[ -f ${posixScript} ] && [ -r ${posixScript} ] && [ -x ${posixScript} ]; then ${parentCapture}/bin/sh ${posixScript}; else ${missingScriptFallback}; fi`
@@ -43,7 +45,7 @@ export function wrapRuntimeHomeHookCommand(
 ): string {
   assertManagedScriptBaseName(scriptBaseName)
   // Grok rejects unresolved bare variables even in untaken platform branches.
-  const windowsScript = `"\${HOME-}/.orca/agent-hooks/${scriptBaseName}.cmd"`
+  const windowsScript = `"\${HOME-}/${managedHookRelativePath(`${scriptBaseName}.cmd`)}"`
   const drain = POSIX_HOOK_STDIN_DRAIN_COMMAND
   const neutralJson = options.neutralJsonWhenMissing ? `printf '{}\\n'` : ''
   // POSIX drains before answering; Windows answers and checks Orca context before reading abandoned stdin.
@@ -57,7 +59,7 @@ export function wrapRuntimeHomeHookCommand(
   const missingScriptFallback = `case "\${OSTYPE-}" in msys*|cygwin*|win32*) ${windowsMissingScriptFallback} ;; *) ${posixMissingScriptFallback} ;; esac`
   const powershell = '"${SYSTEMROOT-}/System32/WindowsPowerShell/v1.0/powershell.exe"'
   const powershellFallback = options.neutralJsonWhenMissing ? "; Write-Output '{}'" : ''
-  const powershellCommand = `$homePath = $env:HOME -replace '^/([A-Za-z])/', '$1:/'; $scriptPath = Join-Path $homePath '.orca\\agent-hooks\\${scriptBaseName}.cmd'; if (Test-Path -LiteralPath $scriptPath -PathType Leaf) { & $scriptPath; exit $LASTEXITCODE }${powershellFallback}; ${WINDOWS_POWERSHELL_HOOK_ENVIRONMENT_GUARD}; [Console]::In.ReadToEnd() | Out-Null; exit 0`
+  const powershellCommand = `$homePath = $env:HOME -replace '^/([A-Za-z])/', '$1:/'; $scriptPath = Join-Path $homePath '${managedHookRelativePath(`${scriptBaseName}.cmd`).replaceAll('/', '\\')}'; if (Test-Path -LiteralPath $scriptPath -PathType Leaf) { & $scriptPath; exit $LASTEXITCODE }${powershellFallback}; ${WINDOWS_POWERSHELL_HOOK_ENVIRONMENT_GUARD}; [Console]::In.ReadToEnd() | Out-Null; exit 0`
   const encodedCommand = encodeWindowsPowerShellHookCommand(powershellCommand)
   // Match native launcher switches to preserve AV compatibility across both entry paths.
   const powershellInvocation = `${powershell} ${WINDOWS_POWERSHELL_HOOK_SWITCHES} -EncodedCommand ${encodedCommand}`

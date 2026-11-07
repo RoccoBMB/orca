@@ -1,3 +1,4 @@
+import { managedHookRelativePath } from '../../../agent-hooks/managed-hook-paths'
 import { runProcess } from '@orca/process-host'
 import { posix as pathPosix, win32 as pathWin32 } from 'node:path'
 import { parseWslUncPath } from '../../../../shared/wsl-paths'
@@ -217,8 +218,8 @@ export function createCodexWslRuntimeHookInstallPlan(
   return {
     configPath: pathWin32.join(runtimeHomePath, 'hooks.json'),
     tomlPath: pathWin32.join(runtimeHomePath, 'config.toml'),
-    scriptPath: pathWin32.join(runtimeHomePath, '.orca', 'agent-hooks', 'codex-hook.sh'),
-    commandScriptPath: pathPosix.join(linuxRuntimeHome, '.orca', 'agent-hooks', 'codex-hook.sh'),
+    scriptPath: pathWin32.join(runtimeHomePath, managedHookRelativePath('codex-hook.sh')),
+    commandScriptPath: pathPosix.join(linuxRuntimeHome, managedHookRelativePath('codex-hook.sh')),
     trustConfigPath: pathPosix.join(linuxRuntimeHome, 'hooks.json'),
     wslDistro: distro,
     linuxRuntimeHome

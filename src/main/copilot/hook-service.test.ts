@@ -52,10 +52,10 @@ function makeStaleManagedHookDefinition(): Record<string, unknown> {
   if (process.platform === 'win32') {
     return {
       type: 'command',
-      powershell: 'powershell.exe -File C:/old/agent-hooks/copilot-hook.ps1'
+      powershell: 'powershell.exe -File C:/old/.maestro/agent-hooks/maestro-copilot-hook.ps1'
     }
   }
-  return { type: 'command', bash: '/bin/sh "/old/agent-hooks/copilot-hook.sh"' }
+  return { type: 'command', bash: '/bin/sh "/old/.maestro/agent-hooks/maestro-copilot-hook.sh"' }
 }
 
 describe('CopilotHookService', () => {
@@ -65,7 +65,7 @@ describe('CopilotHookService', () => {
     })
 
     it('replaces the legacy .ps1 registration on install and keeps user hooks', () => {
-      const legacyPath = join(tmpDir, '.orca', 'agent-hooks', 'copilot-hook.ps1')
+      const legacyPath = join(tmpDir, '.maestro', 'agent-hooks', 'maestro-copilot-hook.ps1')
       const configPath = join(copilotHome, 'hooks', 'orca.json')
       mkdirSync(join(copilotHome, 'hooks'), { recursive: true })
       const userHook = { type: 'command', powershell: 'Write-Output user-hook', timeoutSec: 3 }
@@ -90,7 +90,7 @@ describe('CopilotHookService', () => {
 
       expect(service.install().state).toBe('installed')
       const hooks = readHooksJson(configPath)?.hooks ?? {}
-      const scriptPath = join(tmpDir, '.orca', 'agent-hooks', 'copilot-hook.cmd')
+      const scriptPath = join(tmpDir, '.maestro', 'agent-hooks', 'maestro-copilot-hook.cmd')
       for (const eventName of COPILOT_EVENTS) {
         const managed = {
           type: 'command',
@@ -101,7 +101,7 @@ describe('CopilotHookService', () => {
           eventName === 'UserPromptSubmit' ? [userHook, managed] : [managed]
         )
       }
-      expect(JSON.stringify(hooks)).not.toContain('copilot-hook.ps1')
+      expect(JSON.stringify(hooks)).not.toContain('maestro-copilot-hook.ps1')
       expect(existsSync(scriptPath)).toBe(true)
     })
   })

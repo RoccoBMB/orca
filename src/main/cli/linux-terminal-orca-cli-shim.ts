@@ -1,3 +1,4 @@
+import { branding } from '../../shared/branding'
 import {
   chmodSync,
   existsSync,
@@ -24,7 +25,7 @@ import { getBundledLauncherPath } from './bundled-cli-launcher-path'
 import { buildBareOrcaCliScript } from './linux-bare-orca-dispatcher'
 import { quotePosixShellDoubleQuotedApostrophe } from '../../shared/shell/launch/shell-argument-quoting'
 
-const SHIM_DIR_NAME = 'linux-orca-cli-shim'
+const SHIM_DIR_NAME = `linux-${branding.cliCommand}-cli-shim`
 
 export type LinuxTerminalOrcaCliShimOptions = {
   userDataPath: string
@@ -177,7 +178,7 @@ function ensureShimForLauncher(userDataPath: string, launcherPath: string): stri
 
 function ensureShimForScript(userDataPath: string, script: string): string | null {
   const shimDir = join(userDataPath, SHIM_DIR_NAME)
-  const shimPath = join(shimDir, 'orca')
+  const shimPath = join(shimDir, branding.cliCommand)
   try {
     if (readShim(shimPath) !== script) {
       mkdirSync(shimDir, { recursive: true })

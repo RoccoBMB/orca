@@ -1,3 +1,4 @@
+import { managedHookFileName } from '../agent-hooks/managed-hook-paths'
 import { posixCurlCommand } from '../agent-hooks/hook-post-command'
 import { buildHookProcessCapture } from '../agent-hooks/hook-process-capture'
 import {
@@ -28,7 +29,7 @@ export function getManagedScript(
       ...buildWindowsHookEnvironmentGuardLines(),
       'set "ELECTRON_RUN_AS_NODE=1"',
       `if not defined ORCA_AGENT_HOOK_NODE set "ORCA_AGENT_HOOK_NODE=${windowsRuntimePath.replaceAll('%', '%%')}"`,
-      '"%ORCA_AGENT_HOOK_NODE%" "%~dp0antigravity-hook-post.cjs" >nul 2>nul',
+      `"%ORCA_AGENT_HOOK_NODE%" "%~dp0${managedHookFileName('antigravity-hook-post.cjs')}" >nul 2>nul`,
       'exit /b 0',
       ''
     ].join('\r\n')
@@ -84,7 +85,7 @@ export function getWindowsWrapperScript(eventName: string): string {
     // Preserve literal ! characters in the percent-expanded hooks path.
     'setlocal DisableDelayedExpansion',
     `set "ORCA_ANTIGRAVITY_EVENT=${eventName}"`,
-    'set "ORCA_ANTIGRAVITY_CORE=%~dp0antigravity-hook.cmd"',
+    `set "ORCA_ANTIGRAVITY_CORE=%~dp0${managedHookFileName('antigravity-hook.cmd')}"`,
     'if exist "%ORCA_ANTIGRAVITY_CORE%" (',
     '  call "%ORCA_ANTIGRAVITY_CORE%"',
     '  exit /b 0',

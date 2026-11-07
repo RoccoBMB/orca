@@ -31,7 +31,7 @@ const me = userInfo().uid
 
 beforeEach(() => {
   home = mkdtempSync(join(tmpdir(), 'orca-holder-script-'))
-  mkdirSync(join(home, '.orca'))
+  mkdirSync(join(home, '.maestro'))
   proc = join(home, 'proc')
   mkdirSync(proc)
   children = []
@@ -78,7 +78,7 @@ function within(ms: number, promise: Promise<number | null>): Promise<number | n
 /** Waits that end when the holder exits; generous so a loaded machine cannot fail them. */
 const RELEASE_BOUND_MS = 15_000
 
-const releasePath = (): string => join(home, '.orca', ORCAD_WSL_HOLDER_RELEASE_FILENAME)
+const releasePath = (): string => join(home, '.maestro', ORCAD_WSL_HOLDER_RELEASE_FILENAME)
 
 /** One fake /proc entry, as the kernel writes its status file. */
 function fakeProcess(
@@ -95,7 +95,7 @@ function fakeProcess(
   return dir
 }
 
-const blockedPath = (): string => join(home, '.orca', ORCAD_WSL_HOLDER_BLOCKED_FILENAME)
+const blockedPath = (): string => join(home, '.maestro', ORCAD_WSL_HOLDER_BLOCKED_FILENAME)
 
 /** A holder that already ran its start-up `rm -f`, then a request from an orcad that has exited. */
 /**
@@ -127,6 +127,20 @@ async function holderWithRequest(options: { procReadable?: boolean; path?: strin
 }
 
 describe.skipIf(process.platform === 'win32')('WSL distro holder script', () => {
+  it('consumes its release without clearing the official holder files', async () => {
+    const official = join(home, '.orca')
+    mkdirSync(official)
+    const release = join(official, ORCAD_WSL_HOLDER_RELEASE_FILENAME)
+    const blocked = join(official, ORCAD_WSL_HOLDER_BLOCKED_FILENAME)
+    writeFileSync(release, 'official request')
+    writeFileSync(blocked, 'official blocked')
+    const holder = await startHolderReady()
+    writeFileSync(releasePath(), '99999999\n')
+    expect(await within(RELEASE_BOUND_MS, holder.exited)).toBe(0)
+    expect(readFileSync(release, 'utf8')).toBe('official request')
+    expect(readFileSync(blocked, 'utf8')).toBe('official blocked')
+  })
+
   it('drops a request left from before it started: a client wants the distro now', async () => {
     writeFileSync(releasePath(), '999999\n')
     const { exited } = startHolder()

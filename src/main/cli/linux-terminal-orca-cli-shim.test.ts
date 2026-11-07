@@ -36,7 +36,7 @@ describe('ensureLinuxTerminalOrcaCliShimDir', () => {
 
     const first = ensureLinuxTerminalOrcaCliShimDir(options)
     expect(first).not.toBeNull()
-    const shimPath = join(first!, 'orca')
+    const shimPath = join(first!, 'maestro')
     chmodSync(shimPath, 0o644)
 
     const second = ensureLinuxTerminalOrcaCliShimDir(options)
@@ -46,9 +46,13 @@ describe('ensureLinuxTerminalOrcaCliShimDir', () => {
     const root = await mkdtemp(join(tmpdir(), 'orca-terminal-cli-shim-2-'))
     created.push(root)
     const otherUserData = join(root, 'user-data')
-    mkdirSync(join(otherUserData, 'linux-orca-cli-shim'), { recursive: true })
-    writeFileSync(join(otherUserData, 'linux-orca-cli-shim', 'orca'), 'stale contents', 'utf8')
-    chmodSync(join(otherUserData, 'linux-orca-cli-shim', 'orca'), 0o644)
+    mkdirSync(join(otherUserData, 'linux-maestro-cli-shim'), { recursive: true })
+    writeFileSync(
+      join(otherUserData, 'linux-maestro-cli-shim', 'maestro'),
+      'stale contents',
+      'utf8'
+    )
+    chmodSync(join(otherUserData, 'linux-maestro-cli-shim', 'maestro'), 0o644)
 
     const healed = ensureLinuxTerminalOrcaCliShimDir({
       userDataPath: otherUserData,
@@ -56,7 +60,7 @@ describe('ensureLinuxTerminalOrcaCliShimDir', () => {
       appImagePath: null
     })
     expect(healed).not.toBeNull()
-    const healedPath = join(healed!, 'orca')
+    const healedPath = join(healed!, 'maestro')
     expect(readFileSync(healedPath, 'utf8')).toContain('maestro')
     expect(statSync(healedPath).mode & 0o111).not.toBe(0)
   })
@@ -79,7 +83,7 @@ describe('ensureLinuxTerminalOrcaCliShimDir', () => {
         appImageCacheRootPath: cacheRootPath
       })
 
-      const shimPath = join(shimDir!, 'orca')
+      const shimPath = join(shimDir!, 'maestro')
       const content = readFileSync(shimPath, 'utf8')
       expect(content).toContain(liveLauncherPath)
       expect(content).not.toContain('/proc/')
@@ -108,7 +112,7 @@ describe('ensureLinuxTerminalOrcaCliShimDir', () => {
         appImageCacheRootPath: cacheRootPath
       }
       const shimDir = ensureLinuxTerminalOrcaCliShimDir(options)
-      const shimPath = join(shimDir!, 'orca')
+      const shimPath = join(shimDir!, 'maestro')
       const originalShim = readFileSync(shimPath, 'utf8')
 
       const nextResourcesPath = join(userDataPath, 'next-mount', 'resources')
@@ -146,7 +150,7 @@ describe('ensureLinuxTerminalOrcaCliShimDir', () => {
         appImagePath,
         appImageCacheRootPath: cacheRootPath
       })
-      const shimPath = join(shimDir!, 'orca')
+      const shimPath = join(shimDir!, 'maestro')
       await rm(liveLauncher)
       await writeFile(liveLauncher, '#!/usr/bin/env bash\nprintf replaced-by-another-mount', {
         mode: 0o755

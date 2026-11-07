@@ -1,10 +1,11 @@
+import { branding } from '../../shared/branding'
 import {
   ORCA_SCRUB_SAFE_LAUNCH_ENV,
   ORCA_SCRUB_SAFE_PANE_ENV
 } from '../../shared/agent-hook-listener/transport/agent-hook-scrub-safe-env'
 
-export const HERMES_PLUGIN_NAME = 'orca-status'
-export const HERMES_PLUGIN_MARKER = 'Managed by Orca. Do not edit; changes may be overwritten.'
+export const HERMES_PLUGIN_NAME = `${branding.cliCommand}-status`
+export const HERMES_PLUGIN_MARKER = `Managed by ${branding.productName}. Do not edit; changes may be overwritten.`
 
 export const HERMES_EVENTS = [
   'on_session_start',

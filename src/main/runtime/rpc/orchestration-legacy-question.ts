@@ -1,3 +1,4 @@
+import { branding } from '../../../shared/branding'
 import { clampOrchestrationAskTimeoutMs } from '../../../shared/orchestration-ask-timeout'
 import type { RpcRequest } from './core'
 import type { OrcaRuntimeService } from '../orca-runtime'
@@ -76,7 +77,9 @@ export async function handleLegacyAsk(args: {
       )
       if (lostAnswer) {
         const cliCommand =
-          params.compatibilityCliCommand ?? params.compatibilityWindowsCommand ?? 'orca'
+          params.compatibilityCliCommand ??
+          params.compatibilityWindowsCommand ??
+          branding.cliCommand
         throw new OrchestrationError(
           'operation_unknown',
           `A matching legacy answer may have been accepted before the update. Run ${cliCommand} orchestration check --terminal ${principal.terminal_handle} before asking again.`

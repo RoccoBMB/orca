@@ -62,10 +62,12 @@ describe('CliInstaller', () => {
       expect(installed.state).toBe('installed')
       expect(installed.commandName).toBe('maestro-dev')
       expect(installed.commandPath).toBe(join(commandDir, 'maestro-dev'))
-      expect(installed.launcherPath).toBe(join(fixture.userDataPath, 'cli', 'bin', 'maestro-dev'))
+      expect(installed.launcherPath).toBe(
+        join(fixture.userDataPath, 'cli', 'maestro-bin', 'maestro-dev')
+      )
       await expect(readlink(installed.commandPath as string)).resolves.toBe(installed.launcherPath)
       await expect(
-        readFile(join(fixture.userDataPath, 'cli', 'bin', 'maestro'), 'utf8')
+        readFile(join(fixture.userDataPath, 'cli', 'maestro-bin', 'maestro'), 'utf8')
       ).resolves.toBe(await readFile(installed.launcherPath as string, 'utf8'))
     }
   )

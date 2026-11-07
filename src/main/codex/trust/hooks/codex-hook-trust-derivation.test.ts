@@ -28,7 +28,7 @@ import {
 } from './codex-hook-trust-derivation'
 import { CODEX_EVENTS, CODEX_EVENT_LABEL } from '../../hooks/definitions/codex-hook-definition'
 
-const COMMAND = '/home/u/.orca/agent-hooks/codex-hook.sh'
+const COMMAND = '/home/u/.maestro/agent-hooks/maestro-codex-hook.sh'
 const LABELS = CODEX_EVENTS.map((eventName) => CODEX_EVENT_LABEL[eventName])
 const hashesOf = (answer: CodexHookAnswer) => (answer.kind === 'hashes' ? answer.hashes : null)
 
@@ -163,9 +163,9 @@ describe('sweepStaleCodexScratchHomes', () => {
       return join(root, name)
     }
     try {
-      const staleTrust = dir('orca-codex-hook-trust-old', hoursAgo(2))
-      const staleVersion = dir('orca-codex-version-old', hoursAgo(2))
-      const live = dir('orca-codex-hook-trust-live', new Date())
+      const staleTrust = dir('maestro-codex-hook-trust-old', hoursAgo(2))
+      const staleVersion = dir('maestro-codex-version-old', hoursAgo(2))
+      const live = dir('maestro-codex-hook-trust-live', new Date())
       const unrelated = dir('someone-else-old', hoursAgo(2))
 
       await sweepStaleCodexScratchHomes()

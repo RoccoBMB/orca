@@ -16,6 +16,17 @@ in `src/shared/branding.json`; electron-builder reads that same file.
 | Telemetry            | Off for a new profile; Settings can explicitly enable it |
 | Desktop updates      | Disabled, including manual download / install actions    |
 
+Remote installation and lifecycle state use `~/.maestro-remote`; shared-home
+machines get their own installation slots and shallow `.maestro-<machine-key>`
+data roots. Activation records carry the Maestro app ID. Unmarked or foreign
+records are refused rather than adopted. Agent hook scripts and locks use
+`~/.maestro`, with `maestro-` script names and separate provider metadata.
+Linux AppImage state uses `$XDG_CACHE_HOME/maestro/appimage` (or
+`~/.cache/maestro/appimage`), and systemd uses `maestro-serve.service` with a
+profile suffix when needed. Packaged and managed-child PATH directories expose
+Maestro commands only; official Orca commands remain available through their own
+PATH entries.
+
 The official Orca installation and profile are separate. Retained internal `orca`
 file names and APIs are upstream compatibility details. Do not seed a development
 profile from official Orca. Never point `ORCA_DEV_USER_DATA_PATH` at real Orca data.
@@ -91,18 +102,23 @@ bash scripts/sync-upstream.sh
 
 The script fetches `upstream/main`, creates `sync/upstream-<UTC date>` from
 `rocco/main` in a disposable worktree, merges, installs the lockfile, and runs
-`tc`, affected tests, and `check:changed`. It leaves `rocco/main` unchanged until
-review. Conflicts are printed and written to `qa-rocco/upstream-conflicts.txt`.
+the root-entry guard, `tc`, affected tests, and `check:changed`. It leaves `rocco/main` unchanged until
+review. Conflicts are printed and written to `docs/maestro/qa/upstream-conflicts.txt`.
 Override `SYNC_BASE`, `SYNC_BRANCH`, and `SYNC_REPORT` when needed. A failed sync
 keeps its branch for inspection and removes the disposable checkout.
 
-The weekly/on-demand workflow opens PRs **only in RoccoBMB/orca**, targeting
+The workflow verifies merged code in a read-only job without persisted checkout
+credentials, then transfers Git objects to a publishing job that never checks out
+or runs merged files. The weekly/on-demand workflow opens PRs **only in RoccoBMB/orca**, targeting
 `rocco/main`. Merge or verification failures open an issue with the report and run
 link. GitHub schedules execute workflows on the default branch; install this
 workflow there to enable the weekly schedule.
 
 ## Revert / handoff
 
-`NOTES-core.md` records build and validation evidence. Revert the relevant Maestro
+`docs/maestro/NOTES-core.md` records build and validation evidence. Revert the relevant Maestro
 commits to remove the integration; turn off Conductor sections for the upstream
 layout without reverting code. Back up the Maestro profile before any downgrade.
+
+Core isolation fixes and verification: [NOTES-fixes.md](NOTES-fixes.md) and
+[verification report](docs/maestro/FIXES-VERIFICATION.md).

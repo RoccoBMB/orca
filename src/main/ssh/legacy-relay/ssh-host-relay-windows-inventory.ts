@@ -5,7 +5,10 @@ import {
   quotePowerShellLiteral as powerShellLiteral,
   quotePowerShellNativeArgument as powerShellNativeArg
 } from '../../../shared/powershell-native-argument'
-import { windowsRelayPipePathsForSocketName } from './ssh-relay-endpoints'
+import {
+  WINDOWS_RELAY_PIPE_PREFIX,
+  windowsRelayPipePathsForSocketName
+} from './ssh-relay-endpoints'
 import {
   RELAY_INSTALL_MODEL,
   remoteInstallVersionDirRegex
@@ -28,7 +31,7 @@ export const WINDOWS_RELAY_INVENTORY_JS = [
   'var fs=require("fs"),path=require("path");var base=process.argv[1];',
   'var out={pipes:null,dirs:null};',
   'try{out.pipes=fs.readdirSync("\\\\\\\\.\\\\pipe\\\\").filter(function(n){',
-  'return /^orca-relay-[0-9a-f]{20}$/i.test(n)})}catch(e){}',
+  `return n.indexOf(${JSON.stringify(WINDOWS_RELAY_PIPE_PREFIX)})===0 && /^[0-9a-f]{20}$/i.test(n.slice(${WINDOWS_RELAY_PIPE_PREFIX.length}))})}catch(e){}`,
   'try{out.dirs={};fs.readdirSync(base).forEach(function(d){if(!/^relay-/.test(d))return;',
   'var entry={credentials:[],markers:{}};try{fs.readdirSync(path.join(base,d)).forEach(function(f){',
   `if(f.slice(-${CREDENTIAL_SUFFIX.length})===${JSON.stringify(CREDENTIAL_SUFFIX)})entry.credentials.push(f);`,
@@ -82,7 +85,12 @@ export function parseWindowsRelayInventory(
     return null
   }
   const pipes = raw.pipes
-    .filter((name): name is string => typeof name === 'string')
+    .filter(
+      (name): name is string =>
+        typeof name === 'string' &&
+        name.startsWith(WINDOWS_RELAY_PIPE_PREFIX) &&
+        /^[0-9a-f]{20}$/i.test(name.slice(WINDOWS_RELAY_PIPE_PREFIX.length))
+    )
     .map((name) => `\\\\.\\pipe\\${name}`)
   const owners = new Map<string, WindowsRelayPipeOwner>()
   const baseDir = joinRemotePath(host, remoteHome, RELAY_REMOTE_DIR)

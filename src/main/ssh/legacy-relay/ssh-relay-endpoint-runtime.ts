@@ -1,4 +1,6 @@
 /** Read runtimes from daemon argv so pinned-runtime hosts without Node on PATH can still answer relay probes. */
+import { RELAY_REMOTE_DIR } from '../remote-exec/remote-frame-protocol'
+import { SHORT_RELAY_SOCKET_DIR_PREFIX } from '../relay-socket-path-limit'
 import type { SshConnection } from '../connection/ssh-connection'
 import { execCommand } from '../remote-exec/remote-exec-command'
 
@@ -15,7 +17,13 @@ export function parseRelayDaemonRuntimes(output: string): Map<string, string> {
     const marker = line.indexOf(RELAY_DAEMON_MARKER)
     const sock = /\s--sock-path\s+(\/\S+)/.exec(line)?.[1]
     const node = marker > 0 ? line.slice(0, marker).trim() : ''
-    if (sock && node && !runtimes.has(sock)) {
+    const ownSocket =
+      sock &&
+      (sock.includes(`/${RELAY_REMOTE_DIR}/relay-`) ||
+        sock.startsWith(SHORT_RELAY_SOCKET_DIR_PREFIX))
+    const foreignRuntime =
+      /\/\.[^/]+-remote\//.test(node) && !node.includes(`/${RELAY_REMOTE_DIR}/`)
+    if (ownSocket && !foreignRuntime && sock && node && !runtimes.has(sock)) {
       runtimes.set(sock, node)
     }
   }

@@ -47,7 +47,7 @@ Branch: `rocco/core` in the existing isolated Orca-core worktree.
   18 tests with a disposable HOME. Generated evidence formatting was fixed.
   A final 10-minute-per-step aggregate rerun follows the last edit/commit.
 - The `check:changed` evidence and coverage limits are recorded in
-  [qa-rocco/REPORT.md](qa-rocco/REPORT.md). Do not infer broad gate success from
+  [qa/REPORT.md](qa/REPORT.md). Do not infer broad gate success from
   focused checks. Branding-related test selection fans out widely.
 
 ## Tooling / next-session reference
@@ -72,6 +72,6 @@ path to the same workspace set. Sync leaves rocco/main unchanged until review.
 The local package omits the optional cross-platform orcad template; release-matrix
 and non-macOS installers require their own environments. No local app was installed.
 Official Orca data, real SSH/git credentials, ~/.maestro-smoke and the control-plane
-LaunchAgent were not modified. See ROCCO.md and qa-rocco/REPORT.md for evidence and
+LaunchAgent were not modified. See ROCCO.md and docs/maestro/qa/REPORT.md for evidence and
 remaining platform coverage. All known code findings are fixed; full aggregate
 success is not claimed. Push target: `git push origin rocco/core`.

@@ -1,3 +1,4 @@
+import { branding } from '../../shared/branding'
 // Preserve user TOML while managing marker blocks and positively recognized Orca hook tables.
 
 import { MANAGED_HOOK_TIMEOUT_SECONDS } from '../agent-hooks/installer-utils'
@@ -22,8 +23,8 @@ export const KIMI_HOOK_EVENTS = [
 ] as const
 
 const MARKERS: ManagedTomlMarkers = {
-  startMarker: '# >>> orca-managed-kimi-hooks (managed by Orca; do not edit) >>>',
-  endMarker: '# <<< orca-managed-kimi-hooks <<<'
+  startMarker: `# >>> ${branding.cliCommand}-managed-kimi-hooks (managed by ${branding.productName}; do not edit) >>>`,
+  endMarker: `# <<< ${branding.cliCommand}-managed-kimi-hooks <<<`
 }
 const HOOK_TABLE_HEADER = '[[hooks]]'
 

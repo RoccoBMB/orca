@@ -38,10 +38,10 @@ export async function ensureDevLauncher(args: {
     mode: args.platform === 'win32' ? undefined : 0o755
   })
   if (args.commandName === DEV_COMMAND_NAME && args.platform !== 'win32') {
-    // Why: dev PTYs prepend this dir to PATH, so keep a local `orca` alias without claiming the global command.
-    for (const name of new Set(['orca', branding.cliCommand])) {
-      await writeFile(join(dirname(launcherPath), name), content, { encoding: 'utf8', mode: 0o755 })
-    }
+    await writeFile(join(dirname(launcherPath), branding.cliCommand), content, {
+      encoding: 'utf8',
+      mode: 0o755
+    })
   }
   return launcherPath
 }

@@ -1,3 +1,7 @@
+import {
+  managedHookFileName,
+  managedHookRelativePath
+} from '../../../agent-hooks/managed-hook-paths'
 // Shared HOME builds must freeze command bytes per form to avoid rewrite/trust loops.
 // Bump the form to change bytes; preserve entries from higher forms.
 export const CODEX_HOOK_COMMAND_FORM = 1
@@ -12,8 +16,8 @@ const POSIX_STDIN_DRAIN = '{ command -p cat 2>/dev/null || cat; } >/dev/null 2>&
 const WINDOWS_BARE_PATH = /^[A-Za-z0-9_.:/~-]+$/
 
 function buildPosixCommand(): string {
-  const rootScript = '"${ORCA_AGENT_HOOK_ROOT-}/agent-hooks/codex-hook.sh"'
-  const sharedScript = '"${HOME-}/.orca/agent-hooks/codex-hook.sh"'
+  const rootScript = `"\${ORCA_AGENT_HOOK_ROOT-}/agent-hooks/${managedHookFileName('codex-hook.sh')}"`
+  const sharedScript = `"\${HOME-}/${managedHookRelativePath('codex-hook.sh')}"`
   // The root branch stays dormant until Orca sets its root; shared hooks require a pane and port.
   // Outside Orca or with hooks off, only drain stdin, preserving the frozen command bytes.
   return [

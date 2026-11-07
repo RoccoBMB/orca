@@ -157,10 +157,10 @@ describe('ZCodeHookService', () => {
 
   it('registers a forward-slash cmd path on Windows and replaces the legacy backslash entry', () => {
     vi.spyOn(process, 'platform', 'get').mockReturnValue('win32')
-    const scriptPath = 'C:\\Users\\ada\\.orca\\agent-hooks\\zcode-hook.cmd'
+    const scriptPath = 'C:\\Users\\ada\\.maestro\\agent-hooks\\maestro-zcode-hook.cmd'
     const command = getZCodeManagedCommand(scriptPath)
     // Forward slashes survive Git Bash, which strips bare-path backslashes.
-    expect(command).toBe('C:/Users/ada/.orca/agent-hooks/zcode-hook.cmd')
+    expect(command).toBe('C:/Users/ada/.maestro/agent-hooks/maestro-zcode-hook.cmd')
 
     const next = applyZCodeManagedHooks(
       {
@@ -174,7 +174,7 @@ describe('ZCodeHookService', () => {
         }
       },
       command,
-      'zcode-hook.cmd'
+      'maestro-zcode-hook.cmd'
     )
     expect(next.hooks?.events?.Stop).toEqual([
       { hooks: [{ type: 'command', command: 'C:\\tools\\user-hook.cmd' }] },
@@ -186,9 +186,9 @@ describe('ZCodeHookService', () => {
     zcodeHookService.install()
     const scriptPath = join(
       hoisted.home,
-      '.orca',
+      '.maestro',
       'agent-hooks',
-      process.platform === 'win32' ? 'zcode-hook.cmd' : 'zcode-hook.sh'
+      process.platform === 'win32' ? 'maestro-zcode-hook.cmd' : 'maestro-zcode-hook.sh'
     )
     expect(existsSync(scriptPath)).toBe(true)
     expect(readFileSync(scriptPath, 'utf-8')).toContain('/hook/zcode')

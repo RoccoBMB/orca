@@ -1,3 +1,4 @@
+import { branding } from '../../../../shared/branding'
 import { existsSync, readFileSync, unlinkSync } from 'node:fs'
 import { join } from 'node:path'
 import {
@@ -25,9 +26,9 @@ import { runExclusivelyForCodexTrustConfig } from '../../trust/toml/codex-trust-
 import { getRealHomeHookKeySourcePaths } from './codex-real-home-hooks-json'
 import { mutateRealHomeHooksPreservingUserTrust } from '../../trust/hooks/codex-user-hook-trust-moves'
 
-const LEGACY_ORCA_PROFILE_NAME = 'orca-agent-status'
-const LEGACY_ORCA_PROFILE_BLOCK_START = '# BEGIN ORCA AGENT STATUS HOOKS'
-const LEGACY_ORCA_PROFILE_BLOCK_END = '# END ORCA AGENT STATUS HOOKS'
+const LEGACY_ORCA_PROFILE_NAME = `${branding.cliCommand}-agent-status`
+const LEGACY_ORCA_PROFILE_BLOCK_START = `# BEGIN ${branding.cliCommand.toUpperCase()} AGENT STATUS HOOKS`
+const LEGACY_ORCA_PROFILE_BLOCK_END = `# END ${branding.cliCommand.toUpperCase()} AGENT STATUS HOOKS`
 
 function getLegacyCodexProfileTomlPath(): string {
   return join(getSystemCodexHomePath(), `${LEGACY_ORCA_PROFILE_NAME}.config.toml`)

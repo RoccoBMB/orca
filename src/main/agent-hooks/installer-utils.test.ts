@@ -135,7 +135,7 @@ describe('removeManagedCommands', () => {
           hooks: [
             {
               type: 'command',
-              command: '/bin/sh "/path/agent-hooks/copilot-hook.sh"'
+              command: '/bin/sh "/path/.maestro/agent-hooks/maestro-copilot-hook.sh"'
             },
             { type: 'command', command: 'echo keep me' }
           ]
@@ -160,7 +160,7 @@ describe('removeManagedCommands', () => {
                 'C:\\Windows\\System32\\cmd.exe',
                 '/d',
                 '/c',
-                'C:\\Users\\alice\\.orca\\agent-hooks\\copilot-hook.cmd'
+                'C:\\Users\\alice\\.maestro\\agent-hooks\\maestro-copilot-hook.cmd'
               ]
             },
             { type: 'command', command: 'echo keep me' }
@@ -178,7 +178,7 @@ describe('writeManagedScript', () => {
   it.skipIf(process.platform === 'win32')(
     'repairs executable bits even when script content is unchanged',
     () => {
-      const scriptPath = join(tmpDir, 'agent-hooks', 'claude-hook.sh')
+      const scriptPath = join(tmpDir, 'agent-hooks', 'maestro-claude-hook.sh')
 
       writeManagedScript(scriptPath, '#!/bin/sh\nexit 0\n')
       chmodSync(scriptPath, 0o644)
@@ -299,7 +299,7 @@ describe('wrapWindowsHookCommand', () => {
   it.skipIf(process.platform !== 'win32')(
     'executes a script path containing a cmd.exe caret literally',
     () => {
-      const scriptDir = join(tmpDir, 'home with ^ caret', '.orca', 'agent-hooks')
+      const scriptDir = join(tmpDir, 'home with ^ caret', '.maestro', 'agent-hooks')
       mkdirSync(scriptDir, { recursive: true })
       const scriptPath = join(scriptDir, 'codex-hook.cmd')
       writeFileSync(scriptPath, '@echo off\r\nexit /b 7\r\n', 'utf-8')
@@ -327,25 +327,29 @@ describe('wrapRuntimeHomeHookCommand', () => {
   it('executes the destination HOME script for the current runtime', () => {
     const sourceHome = join(tmpDir, 'source profile')
     const destinationHome = join(tmpDir, "destination $HOME ' & profile")
-    const sourceScriptDir = join(sourceHome, '.orca', 'agent-hooks')
-    const destinationScriptDir = join(destinationHome, '.orca', 'agent-hooks')
+    const sourceScriptDir = join(sourceHome, '.maestro', 'agent-hooks')
+    const destinationScriptDir = join(destinationHome, '.maestro', 'agent-hooks')
     mkdirSync(sourceScriptDir, { recursive: true })
     mkdirSync(destinationScriptDir, { recursive: true })
     const windowsExitCode = process.platform === 'win32' ? 7 : 9
     const posixExitCode = process.platform === 'win32' ? 9 : 7
     writeFileSync(
-      join(destinationScriptDir, 'claude-hook.cmd'),
+      join(destinationScriptDir, 'maestro-claude-hook.cmd'),
       `@echo off\r\nexit /b ${windowsExitCode}\r\n`,
       'utf-8'
     )
     writeFileSync(
-      join(destinationScriptDir, 'claude-hook.sh'),
+      join(destinationScriptDir, 'maestro-claude-hook.sh'),
       `#!/bin/sh\nexit ${posixExitCode}\n`,
       'utf-8'
     )
-    writeFileSync(join(sourceScriptDir, 'claude-hook.cmd'), '@echo off\r\nexit /b 9\r\n', 'utf-8')
-    writeFileSync(join(sourceScriptDir, 'claude-hook.sh'), '#!/bin/sh\nexit 9\n', 'utf-8')
-    chmodSync(join(destinationScriptDir, 'claude-hook.sh'), 0o755)
+    writeFileSync(
+      join(sourceScriptDir, 'maestro-claude-hook.cmd'),
+      '@echo off\r\nexit /b 9\r\n',
+      'utf-8'
+    )
+    writeFileSync(join(sourceScriptDir, 'maestro-claude-hook.sh'), '#!/bin/sh\nexit 9\n', 'utf-8')
+    chmodSync(join(destinationScriptDir, 'maestro-claude-hook.sh'), 0o755)
 
     const result = runProcessSync({
       program: shell,
@@ -364,9 +368,9 @@ describe('wrapRuntimeHomeHookCommand', () => {
 
   it.skipIf(process.platform !== 'win32')('keeps common Windows profiles on the fast path', () => {
     const destinationHome = join(tmpDir, 'destination 国際 profile')
-    const scriptDir = join(destinationHome, '.orca', 'agent-hooks')
+    const scriptDir = join(destinationHome, '.maestro', 'agent-hooks')
     mkdirSync(scriptDir, { recursive: true })
-    writeFileSync(join(scriptDir, 'claude-hook.cmd'), '@echo off\r\nexit /b 7\r\n', 'utf-8')
+    writeFileSync(join(scriptDir, 'maestro-claude-hook.cmd'), '@echo off\r\nexit /b 7\r\n', 'utf-8')
     const result = runProcessSync({
       program: shell,
       args: ['-c', wrapRuntimeHomeHookCommand('claude-hook')],

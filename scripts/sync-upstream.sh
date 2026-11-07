@@ -4,7 +4,7 @@ set -euo pipefail
 root=$(git rev-parse --show-toplevel)
 base=${SYNC_BASE:-rocco/main}
 branch=${SYNC_BRANCH:-sync/upstream-$(date -u +%Y-%m-%d)}
-report=${SYNC_REPORT:-$root/qa-rocco/upstream-conflicts.txt}
+report=${SYNC_REPORT:-$root/docs/maestro/qa/upstream-conflicts.txt}
 checkout=$(mktemp -d "${TMPDIR:-/tmp}/maestro-upstream.XXXXXX")
 mkdir -p "$(dirname "$report")"
 : > "$report"
@@ -34,6 +34,8 @@ if ! git merge --no-edit upstream/main; then
   git merge --abort || true
   exit 2
 fi
+
+node .github/scripts/check-root-directory-entries.mjs "$base" HEAD
 
 export ORCA_BACKGROUND_LAUNCH=1
 "${package_manager[@]}" install --frozen-lockfile

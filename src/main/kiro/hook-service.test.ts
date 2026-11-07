@@ -117,7 +117,7 @@ describe('KiroHookService', () => {
       action: { type: 'command', command: 'audit.sh' },
       timeout: 10
     }
-    const stale = `/bin/sh '${join(home, '.orca', 'agent-hooks', 'kiro-hook.sh')}'`
+    const stale = `/bin/sh '${join(home, '.maestro', 'agent-hooks', 'maestro-kiro-hook.sh')}'`
     const extra = {
       permissions: { rules: [{ capability: 'shell', effect: 'allow' }] },
       kiroUpgrade: { notes: [] }

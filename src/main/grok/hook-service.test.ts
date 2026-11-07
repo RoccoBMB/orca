@@ -29,7 +29,8 @@ vi.mock('os', async () => {
 import { GrokHookService } from './hook-service'
 import { buildWindowsGrokHookScript } from './windows-grok-hook-script'
 
-const GROK_SCRIPT_FILE_NAME = process.platform === 'win32' ? 'grok-hook.cmd' : 'grok-hook.sh'
+const GROK_SCRIPT_FILE_NAME =
+  process.platform === 'win32' ? 'maestro-grok-hook.cmd' : 'maestro-grok-hook.sh'
 const WINDOWS_POWERSHELL_LAUNCHER =
   /^[A-Za-z]:\/[^"]*\/System32\/WindowsPowerShell\/v1\.0\/powershell\.exe -NoProfile -EncodedCommand \S+$/
 
@@ -127,7 +128,7 @@ describe('GrokHookService', () => {
   it.skipIf(process.platform !== 'win32')(
     'generated grok-hook.cmd exits 0 when GROK_HOME is unset (#9358)',
     async () => {
-      const scriptPath = join(homeDir, 'grok-hook-unset.cmd')
+      const scriptPath = join(homeDir, 'maestro-grok-hook-unset.cmd')
       writeFileSync(scriptPath, buildWindowsGrokHookScript(), 'utf8')
       // Delete rather than empty so cmd observes the undefined-variable path.
       const result = await runWindowsGrokHook(
@@ -149,7 +150,7 @@ describe('GrokHookService', () => {
   it.skipIf(process.platform !== 'win32')(
     'generated grok-hook.cmd exits 0 with trailing-backslash GROK_HOME (#9358)',
     async () => {
-      const scriptPath = join(homeDir, 'grok-hook-slash.cmd')
+      const scriptPath = join(homeDir, 'maestro-grok-hook-slash.cmd')
       writeFileSync(scriptPath, buildWindowsGrokHookScript(), 'utf8')
       const trailing = `${join(homeDir, 'grok-home-with-slash')}\\`
       const result = await runWindowsGrokHook(
@@ -171,7 +172,7 @@ describe('GrokHookService', () => {
   it.skipIf(process.platform !== 'win32')(
     'generated grok-hook.cmd exits 0 with an oversized GROK_HOME (#9358)',
     async () => {
-      const scriptPath = join(homeDir, 'grok-hook-oversized.cmd')
+      const scriptPath = join(homeDir, 'maestro-grok-hook-oversized.cmd')
       writeFileSync(scriptPath, buildWindowsGrokHookScript(), 'utf8')
       const result = await runWindowsGrokHook(
         scriptPath,
@@ -192,7 +193,7 @@ describe('GrokHookService', () => {
   it.skipIf(process.platform !== 'win32')(
     'omits a max-length trailing-backslash GROK_HOME after safe normalization (#9358)',
     async () => {
-      const scriptPath = join(homeDir, 'grok-hook-max-trailing.cmd')
+      const scriptPath = join(homeDir, 'maestro-grok-hook-max-trailing.cmd')
       writeFileSync(scriptPath, buildWindowsGrokHookScript(), 'utf8')
       const trailingAtLimit = `C:\\${'a'.repeat(4092)}\\`
       expect(trailingAtLimit).toHaveLength(4096)
@@ -213,7 +214,7 @@ describe('GrokHookService', () => {
 
   it('does not restore a user-cleared global hook config on the next launch', () => {
     const service = new GrokHookService()
-    const configPath = join(homeDir, '.grok', 'hooks', 'orca-status.json')
+    const configPath = join(homeDir, '.grok', 'hooks', 'maestro-status.json')
     const userClearedConfig = '{  "hooks" : {}  }\n'
 
     expect(service.install().state).toBe('installed')
@@ -226,7 +227,7 @@ describe('GrokHookService', () => {
 
   it('preserves a user-cleared config during session cleanup', () => {
     const service = new GrokHookService()
-    const configPath = join(homeDir, '.grok', 'hooks', 'orca-status.json')
+    const configPath = join(homeDir, '.grok', 'hooks', 'maestro-status.json')
     const userClearedConfig = '{  "hooks" : {}  }\n'
 
     expect(service.install().state).toBe('installed')
@@ -238,7 +239,7 @@ describe('GrokHookService', () => {
 
   it('removes the managed config even when a non-hook key remains', () => {
     const service = new GrokHookService()
-    const configPath = join(homeDir, '.grok', 'hooks', 'orca-status.json')
+    const configPath = join(homeDir, '.grok', 'hooks', 'maestro-status.json')
 
     expect(service.install().state).toBe('installed')
     const withSchema = JSON.parse(readFileSync(configPath, 'utf8')) as Record<string, unknown>
@@ -255,7 +256,7 @@ describe('GrokHookService', () => {
 
   it('restores a user-cleared config when the user turns hooks back on', () => {
     const service = new GrokHookService()
-    const configPath = join(homeDir, '.grok', 'hooks', 'orca-status.json')
+    const configPath = join(homeDir, '.grok', 'hooks', 'maestro-status.json')
     const userCleared = '{  "hooks" : {}  }\n'
 
     expect(service.install().state).toBe('installed')
@@ -270,8 +271,8 @@ describe('GrokHookService', () => {
   // Strip managed entries through symlinks so user dotfile links stay connected.
   it('writes through a symlinked config instead of destroying the link', async () => {
     const service = new GrokHookService()
-    const configPath = join(homeDir, '.grok', 'hooks', 'orca-status.json')
-    const realConfig = join(homeDir, 'dotfiles', 'orca-status.json')
+    const configPath = join(homeDir, '.grok', 'hooks', 'maestro-status.json')
+    const realConfig = join(homeDir, 'dotfiles', 'maestro-status.json')
 
     expect(service.install().state).toBe('installed')
     mkdirSync(dirname(realConfig), { recursive: true })
@@ -287,8 +288,8 @@ describe('GrokHookService', () => {
 
   it('respects an empty user-managed symlink as an opt-out', () => {
     const service = new GrokHookService()
-    const configPath = join(homeDir, '.grok', 'hooks', 'orca-status.json')
-    const realConfig = join(homeDir, 'dotfiles', 'orca-status.json')
+    const configPath = join(homeDir, '.grok', 'hooks', 'maestro-status.json')
+    const realConfig = join(homeDir, 'dotfiles', 'maestro-status.json')
     const userCleared = '{"hooks":{}}\n'
     mkdirSync(dirname(configPath), { recursive: true })
     mkdirSync(dirname(realConfig), { recursive: true })
@@ -302,8 +303,8 @@ describe('GrokHookService', () => {
 
   it('writes through a symlinked config on the sync remove path too', () => {
     const service = new GrokHookService()
-    const configPath = join(homeDir, '.grok', 'hooks', 'orca-status.json')
-    const realConfig = join(homeDir, 'dotfiles', 'orca-status.json')
+    const configPath = join(homeDir, '.grok', 'hooks', 'maestro-status.json')
+    const realConfig = join(homeDir, 'dotfiles', 'maestro-status.json')
 
     expect(service.install().state).toBe('installed')
     mkdirSync(dirname(realConfig), { recursive: true })
@@ -320,8 +321,8 @@ describe('GrokHookService', () => {
   // Identify Orca's prior emptying separately from a deliberate user opt-out after restart.
   it('reinstalls into a symlinked config on the launch after a quit', async () => {
     const service = new GrokHookService()
-    const configPath = join(homeDir, '.grok', 'hooks', 'orca-status.json')
-    const realConfig = join(homeDir, 'dotfiles', 'orca-status.json')
+    const configPath = join(homeDir, '.grok', 'hooks', 'maestro-status.json')
+    const realConfig = join(homeDir, 'dotfiles', 'maestro-status.json')
 
     expect(service.install().state).toBe('installed')
     mkdirSync(dirname(realConfig), { recursive: true })
@@ -338,7 +339,7 @@ describe('GrokHookService', () => {
   })
 
   it('preserves user-authored hook entries in the Orca Grok config file', () => {
-    const configPath = join(homeDir, '.grok', 'hooks', 'orca-status.json')
+    const configPath = join(homeDir, '.grok', 'hooks', 'maestro-status.json')
     mkdirSync(dirname(configPath), { recursive: true })
     writeFileSync(
       configPath,

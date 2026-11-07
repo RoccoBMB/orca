@@ -22,10 +22,10 @@ describe('prependOrcaCliDirToChildPath', () => {
   it.each(['linux', 'darwin'] as const)(
     'uses the %s execution host CLI and profile over inherited values',
     (platform) => {
-      const launcher = join(USER_DATA, 'cli', 'bin', 'orca')
+      const launcher = join(USER_DATA, 'cli', 'maestro-bin', 'maestro')
       installFakeAppEnvironment({ getCliLauncherPath: () => launcher })
       const env: Record<string, string> = {
-        PATH: `/usr/bin:${join(USER_DATA, 'cli', 'bin')}::/bin`,
+        PATH: `/usr/bin:${join(USER_DATA, 'cli', 'maestro-bin')}::/bin`,
         ORCA_USER_DATA_PATH: '/parent/profile',
         ORCA_CLI_COMMAND: '/parent/orca',
         ORCA_CLI_BIN_DIR: '/parent/bin'
@@ -38,10 +38,10 @@ describe('prependOrcaCliDirToChildPath', () => {
           platform
         })
       ).toBe(launcher)
-      expect(env.PATH).toBe(`${join(USER_DATA, 'cli', 'bin')}:/usr/bin:/bin`)
+      expect(env.PATH).toBe(`${join(USER_DATA, 'cli', 'maestro-bin')}:/usr/bin:/bin`)
       expect(env.ORCA_USER_DATA_PATH).toBe(USER_DATA)
       expect(env.ORCA_CLI_COMMAND).toBe(launcher)
-      expect(env.ORCA_CLI_BIN_DIR).toBe(join(USER_DATA, 'cli', 'bin'))
+      expect(env.ORCA_CLI_BIN_DIR).toBe(join(USER_DATA, 'cli', 'maestro-bin'))
       expect(shim.ensureLinuxTerminalOrcaCliShimDir).not.toHaveBeenCalled()
     }
   )
@@ -57,14 +57,14 @@ describe('prependOrcaCliDirToChildPath', () => {
       platform: 'linux'
     })
 
-    expect(launcher).toBe(join(SHIM_DIR, 'orca'))
+    expect(launcher).toBe(join(SHIM_DIR, 'maestro'))
     expect(env.ORCA_CLI_COMMAND).toBe(launcher)
     expect(env.ORCA_USER_DATA_PATH).toBe(USER_DATA)
     expect(env.PATH).toBe(`${SHIM_DIR}:/usr/bin:/bin`)
   })
 
   it('puts a Windows execution host CLI first on Path without a POSIX restore dir', () => {
-    const binDir = join(USER_DATA, 'cli', 'bin')
+    const binDir = join(USER_DATA, 'cli', 'maestro-bin')
     const launcher = join(binDir, 'orca.exe')
     installFakeAppEnvironment({ getCliLauncherPath: () => launcher })
     const env: Record<string, string> = {
@@ -104,6 +104,6 @@ describe('prependOrcaCliDirToChildPath', () => {
       }
     }
     // Why: an empty trailing segment resolves as `.` in some shells.
-    expect(env.PATH).toBe(join(USER_DATA, 'cli', 'bin'))
+    expect(env.PATH).toBe(join(USER_DATA, 'cli', 'maestro-bin'))
   })
 })

@@ -55,8 +55,8 @@ describe('JcodeHookService', () => {
   })
 
   it.each([
-    '/Users/previous/.orca/agent-hooks/jcode-hook.sh',
-    'C:\\Users\\previous\\.orca\\agent-hooks\\jcode-hook.cmd'
+    '/Users/previous/.maestro/agent-hooks/maestro-jcode-hook.sh',
+    'C:\\Users\\previous\\.maestro\\agent-hooks\\maestro-jcode-hook.cmd'
   ])('recognizes a stale managed command %s without a local script', (stalePath) => {
     const service = new JcodeHookService()
     const configPath = getJcodeConfigPath()
