@@ -2,9 +2,10 @@ import { existsSync } from 'node:fs'
 import { mkdir, mkdtemp, readFile, readdir, rm, symlink, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { dirname, join } from 'node:path'
-import { afterEach, describe, expect, it } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 import {
   ensureAppImageExtractedRoot,
+  getAppImageCacheRootPath,
   readAppImageSourceOfNamespace,
   resolveAppImageExtractedRoot
 } from './appimage-extracted-root'
@@ -14,6 +15,7 @@ import { resolveAppImageStableLauncherPath } from './appimage-stable-launcher'
 const created: string[] = []
 
 afterEach(async () => {
+  vi.unstubAllEnvs()
   await Promise.all(created.splice(0).map((path) => rm(path, { recursive: true, force: true })))
 })
 
@@ -37,6 +39,23 @@ async function writePayload(cwd: string, content = ''): Promise<void> {
 }
 
 describe('appimage extracted root', () => {
+  it('registers and prunes inside its cache without replacing the official AppImage endpoint', async () => {
+    const { root, appImagePath } = await makeFixture()
+    vi.stubEnv('XDG_CACHE_HOME', join(root, 'cache'))
+    const official = join(root, 'cache', 'orca', 'appimage', 'launcher')
+    await mkdir(official, { recursive: true })
+    await writeFile(join(official, 'installed'), 'official endpoint')
+    const extracted = await ensureAppImageExtractedRoot({
+      appImagePath,
+      runExtract: async (_path, cwd) => writePayload(cwd)
+    })
+    expect(getAppImageCacheRootPath(root)).toBe(join(root, 'cache', 'maestro', 'appimage'))
+    expect(extracted?.stableLauncherPath).toBe(
+      join(root, 'cache', 'maestro', 'appimage', 'launcher', 'maestro')
+    )
+    await expect(readFile(join(official, 'installed'), 'utf8')).resolves.toBe('official endpoint')
+  })
+
   // Why: a server running from the copy has no $APPIMAGE; this record is how it finds the file.
   it('records which AppImage a namespace came from, and rejects a record for another path', async () => {
     const { appImagePath, cacheRootPath } = await makeFixture()

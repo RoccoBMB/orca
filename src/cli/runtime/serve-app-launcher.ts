@@ -1,4 +1,6 @@
-import { accessSync, constants } from 'node:fs'
+import { branding } from '../../shared/branding'
+import { cliLauncherMarker } from '../../shared/cli-launcher-identity'
+import { accessSync, constants, readFileSync, statSync } from 'node:fs'
 import { delimiter, dirname, isAbsolute, join, relative } from 'node:path'
 import { RuntimeClientError } from './types'
 import { resolveLaunchUserDataPath } from './launch-user-data-path'
@@ -12,21 +14,19 @@ export function canStartOrcaServer(env: NodeJS.ProcessEnv): boolean {
   )
 }
 
-/** Linux installs the app's CLI as `orca-ide`: a bare `orca` there is often the screen reader. */
-export function appCliName(platform: NodeJS.Platform): string {
-  return platform === 'linux' ? 'orca-ide' : 'orca'
+export function appCliName(_platform: NodeJS.Platform): string {
+  return branding.cliCommand
 }
 
-const NOT_AN_APP_CLI =
-  "This `orca` command isn't running from an installed Orca app. On a host Orca reaches over SSH, it belongs to that connection's server and can't start one of its own."
+const NOT_AN_APP_CLI = `This \`${branding.cliCommand}\` command isn't running from an installed ${branding.productName} app. On an SSH host, it belongs to that connection's server and can't start one of its own.`
 
 export function serverOnlyServeMessage(platform: NodeJS.Platform): string {
-  return `${NOT_AN_APP_CLI} Install the Orca app on this machine and run \`${appCliName(platform)} serve\` from a plain login shell, or set ORCA_APP_EXECUTABLE to the Orca app executable.`
+  return `${NOT_AN_APP_CLI} Install the ${branding.productName} app on this machine and run \`${appCliName(platform)} serve\` from a plain login shell, or set ORCA_APP_EXECUTABLE to the ${branding.productName} app executable.`
 }
 
 function serverOnlyServiceInstallMessage(platform: NodeJS.Platform): string {
   const name = appCliName(platform)
-  return `Could not find the installed Orca app's \`${name}\` command on PATH. ${NOT_AN_APP_CLI} Install the Orca app on this machine, then run \`${name} serve service install\` from a plain login shell so the service uses the app's own profile, or pass --command <absolute path to the app's ${name}>.`
+  return `Could not find the installed ${branding.productName} app's \`${name}\` command on PATH. ${NOT_AN_APP_CLI} Install the ${branding.productName} app on this machine, then run \`${name} serve service install\` from a plain login shell so the service uses the app's own profile, or pass --command <absolute path to the app's ${name}>.`
 }
 
 function isVersionScopedDir(dir: string, userData: string): boolean {
@@ -39,7 +39,7 @@ function isVersionScopedDir(dir: string, userData: string): boolean {
   )
 }
 
-/** PATH for a persisted service: entries tied to one Orca version or AppImage launch are gone by its next start. */
+/** PATH for a persisted service: entries tied to one ${branding.productName} version or AppImage launch are gone by its next start. */
 export function resolveServicePath(env: NodeJS.ProcessEnv): string {
   const userData = resolveLaunchUserDataPath(env)
   const durable = (env.PATH ?? '')
@@ -72,7 +72,13 @@ export function resolveServiceCommand(
     if (isVersionScopedDir(dirname(explicit), userData)) {
       throw new RuntimeClientError(
         'invalid_argument',
-        `--command points at a launcher tied to one Orca version, which the next update replaces: ${explicit}. Pass the installed Orca app's \`${appCliName(deps.platform)}\` instead.`
+        `--command points at a launcher tied to one ${branding.productName} version, which the next update replaces: ${explicit}. Pass the installed ${branding.productName} app's \`${appCliName(deps.platform)}\` instead.`
+      )
+    }
+    if (!isBrandedLauncher(explicit)) {
+      throw new RuntimeClientError(
+        'invalid_argument',
+        `--command is not a ${branding.productName} launcher: ${explicit}`
       )
     }
     return explicit
@@ -80,14 +86,30 @@ export function resolveServiceCommand(
   const name = appCliName(deps.platform)
   for (const dir of (deps.env.PATH ?? '').split(delimiter).filter(isAbsolute)) {
     // Profile and AppImage launchers point at files that disappear with an update.
-    if (!isVersionScopedDir(dir, userData) && isExecutable(join(dir, name))) {
+    if (
+      !isVersionScopedDir(dir, userData) &&
+      isExecutable(join(dir, name)) &&
+      isBrandedLauncher(join(dir, name))
+    ) {
       return join(dir, name)
     }
   }
   throw new RuntimeClientError(
     'cli_not_found',
     canStartOrcaServer(deps.env)
-      ? `Could not find the \`${name}\` command on PATH. Install it from Orca Settings, or pass --command <absolute path>.`
+      ? `Could not find the \`${name}\` command on PATH. Install it from ${branding.productName} Settings, or pass --command <absolute path>.`
       : serverOnlyServiceInstallMessage(deps.platform)
   )
+}
+
+function isBrandedLauncher(path: string): boolean {
+  try {
+    const stat = statSync(path)
+    if (!stat.isFile() || stat.size > 16 * 1024) {
+      return false
+    }
+    return readFileSync(path, 'utf8').split('\n').slice(0, 4).includes(cliLauncherMarker)
+  } catch {
+    return false
+  }
 }

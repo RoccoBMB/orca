@@ -1,4 +1,4 @@
-import { chmod, mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises'
+import { chmod, mkdir, mkdtemp, readFile, rm, symlink, writeFile } from 'node:fs/promises'
 import { existsSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
@@ -26,6 +26,8 @@ describe('orca serve service', () => {
     await chmod(join(bin, 'orca'), 0o755)
     await writeFile(join(bin, 'orca-ide'), '#!/bin/sh\n')
     await chmod(join(bin, 'orca-ide'), 0o755)
+    await writeFile(join(bin, 'maestro'), '#!/bin/sh\n# dev.rocco.maestro CLI launcher\n')
+    await chmod(join(bin, 'maestro'), 0o755)
     calls = []
     answers = new Map()
   })
@@ -55,9 +57,9 @@ describe('orca serve service', () => {
     await writeFile(serveSupervisorBrakePath(join(home, 'profile')), '{}')
     const result = await installServeService({ command: null, dryRun: false }, deps('darwin'))
     const unitPath = String(result.unitPath)
-    expect(await readFile(unitPath, 'utf8')).toContain(`<string>${join(bin, 'orca')}</string>`)
+    expect(await readFile(unitPath, 'utf8')).toContain(`<string>${join(bin, 'maestro')}</string>`)
     expect(calls).toEqual([
-      expect.stringMatching(/^launchctl bootout gui\/501\/com\.stablyai\.orca\.serve\./),
+      expect.stringMatching(/^launchctl bootout gui\/501\/dev\.rocco\.maestro\.serve\./),
       `launchctl bootstrap gui/501 ${unitPath}`
     ])
     expect(existsSync(serveSupervisorBrakePath(join(home, 'profile')))).toBe(false)
@@ -131,7 +133,7 @@ describe('orca serve service', () => {
         platform: 'darwin',
         env: { PATH: `${scoped}:${bin}`, ORCA_USER_DATA_PATH: join(home, 'profile') }
       })
-    ).toBe(join(bin, 'orca'))
+    ).toBe(join(bin, 'maestro'))
     // Linux takes only orca-ide, never a bare `orca` (often the screen reader).
     const onlyOrca = join(home, 'only-orca')
     await mkdir(onlyOrca)
@@ -143,6 +145,37 @@ describe('orca serve service', () => {
         env: { PATH: onlyOrca, ORCA_USER_DATA_PATH: join(home, 'profile') }
       })
     ).toThrow(/PATH/)
+  })
+
+  it('refuses an alias pointing to official Orca, including an explicit command', async () => {
+    const aliases = join(home, 'aliases')
+    await mkdir(aliases)
+    const alias = join(aliases, 'maestro')
+    await symlink(join(bin, 'orca'), alias)
+    expect(() =>
+      resolveServiceCommand(null, { platform: 'darwin', env: { PATH: aliases } })
+    ).toThrow(/PATH/)
+    expect(() => resolveServiceCommand(alias, { platform: 'darwin', env: {} })).toThrow(
+      /not a Maestro launcher/
+    )
+  })
+
+  it('installs, queries and removes its Linux unit while preserving the official unit', async () => {
+    const d = deps('linux')
+    d.env.ORCA_USER_DATA_PATH = join(home, '.config', 'Maestro')
+    const units = join(home, '.config', 'systemd', 'user')
+    await mkdir(units, { recursive: true })
+    const official = join(units, 'orca-serve.service')
+    await writeFile(official, 'official service')
+    const result = await installServeService({ command: null, dryRun: false }, d)
+    expect(result.unitPath).toBe(join(units, 'maestro-serve.service'))
+    await readServeServiceStatus(d)
+    await uninstallServeService(d)
+    expect(await readFile(official, 'utf8')).toBe('official service')
+    expect(calls).toContain('systemctl --user disable --now maestro-serve.service')
+    expect(calls).toContain(
+      'systemctl --user show maestro-serve.service --property=ActiveState,SubState,MainPID'
+    )
   })
 
   it('refuses Windows and a relative --command', async () => {
@@ -167,17 +200,17 @@ describe('orca serve service', () => {
     await chmod(join(scoped, 'orca'), 0o755)
     await expect(
       installServeService({ command: null, dryRun: false }, serverCli('linux', scoped))
-    ).rejects.toThrow(/install the Orca app.*`orca-ide serve service install`/i)
+    ).rejects.toThrow(/install the Maestro app.*`maestro serve service install`/i)
     await expect(
       installServeService({ command: null, dryRun: true }, serverCli('darwin', scoped))
-    ).rejects.toThrow(/`orca serve service install`/)
+    ).rejects.toThrow(/`maestro serve service install`/)
     expect(calls).toEqual([])
     await expect(
       installServeService({ command: null, dryRun: true }, serverCli('linux', `${scoped}:${bin}`))
     ).resolves.toMatchObject({ dryRun: true })
     await expect(
       installServeService(
-        { command: join(bin, 'orca-ide'), dryRun: true },
+        { command: join(bin, 'maestro'), dryRun: true },
         serverCli('linux', scoped)
       )
     ).resolves.toMatchObject({ dryRun: true })
@@ -198,7 +231,7 @@ describe('orca serve service', () => {
         bin
       ].join(':')
     }
-    const result = await installServeService({ command: join(bin, 'orca-ide'), dryRun: true }, d)
+    const result = await installServeService({ command: join(bin, 'maestro'), dryRun: true }, d)
     expect(String(result.content)).toContain(`Environment=PATH=/usr/local/bin:${bin}\n`)
   })
 
@@ -212,7 +245,7 @@ describe('orca serve service', () => {
         platform: 'darwin',
         env: { ORCA_USER_DATA_PATH: join(home, 'profile') }
       })
-    ).toThrow(/one Orca version/)
+    ).toThrow(/one Maestro version/)
   })
 
   it('refuses a --command inside an extract-and-run AppImage copy', async () => {
@@ -225,6 +258,6 @@ describe('orca serve service', () => {
         platform: 'linux',
         env: { ORCA_USER_DATA_PATH: join(home, 'profile') }
       })
-    ).toThrow(/one Orca version/)
+    ).toThrow(/one Maestro version/)
   })
 })

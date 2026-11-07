@@ -1,3 +1,4 @@
+import { branding } from '../branding'
 import { z } from 'zod'
 import {
   OptionalBoolean,
@@ -42,7 +43,7 @@ export const CheckParams = z
     ack: OptionalString,
     compatibilityAck: OptionalString,
     compatibilityQuestionAck: OptionalString,
-    compatibilityCliCommand: z.enum(['orca', 'orca-ide', 'orca-dev']).optional(),
+    compatibilityCliCommand: z.enum([branding.cliCommand, `${branding.cliCommand}-dev`]).optional(),
     run: OptionalString,
     wait: OptionalBoolean,
     timeoutMs: OptionalFiniteNumber
@@ -135,8 +136,8 @@ export const AskParams = z
     wait: OptionalBoolean,
     from: OptionalString,
     run: OptionalString,
-    compatibilityCliCommand: z.enum(['orca', 'orca-ide', 'orca-dev']).optional(),
-    compatibilityWindowsCommand: z.enum(['orca', 'orca-ide']).optional()
+    compatibilityCliCommand: z.enum([branding.cliCommand, `${branding.cliCommand}-dev`]).optional(),
+    compatibilityWindowsCommand: z.enum([branding.cliCommand]).optional()
   })
   .superRefine((params, ctx) => {
     if ((params.question ? 1 : 0) + (params.resume ? 1 : 0) !== 1) {

@@ -1,3 +1,4 @@
+import { remoteManagedHookPath } from '../agent-hooks/managed-hook-paths'
 import type { SFTPWrapper } from 'ssh2'
 import type {
   AgentHookInstallState,
@@ -174,7 +175,10 @@ export class DevinHookService {
     // Remote hook scripts use POSIX syntax regardless of the local platform.
     const remoteConfigPath = getDevinRemoteConfigPath(remoteHome)
     const remoteScriptFileName = getDevinPosixManagedScriptFileName()
-    const remoteScriptPath = `${remoteHome.replace(/\/$/, '')}/.orca/agent-hooks/${remoteScriptFileName}`
+    const remoteScriptPath = remoteManagedHookPath(
+      remoteHome.replace(/\/$/, ''),
+      remoteScriptFileName
+    )
     try {
       const body = await readTextFileRemote(sftp, remoteConfigPath)
       const config =

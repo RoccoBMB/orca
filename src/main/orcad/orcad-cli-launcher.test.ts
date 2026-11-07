@@ -42,13 +42,12 @@ describe('orcad profile CLI launcher', () => {
       await writeCli()
       await prepareOrcadCliLauncher()
       const launcher = getOrcadCliLauncherPath()
-      expect(launcher).toBe(join(roots.profile, 'cli', 'bin', 'orca'))
+      expect(launcher).toBe(join(roots.profile, 'cli', 'maestro-bin', 'maestro'))
       if (!launcher) {
         throw new Error('CLI launcher is missing')
       }
       const args = ['orchestration', 'send', 'a body\nwith "quotes" and $HOME']
-      const launchers =
-        process.platform === 'linux' ? [launcher, join(dirname(launcher), 'orca-ide')] : [launcher]
+      const launchers = [launcher]
       for (const program of launchers) {
         const result = await runProcess({
           program,

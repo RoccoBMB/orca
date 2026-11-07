@@ -1,3 +1,4 @@
+import { remoteManagedHookPath } from '../agent-hooks/managed-hook-paths'
 import { homedir } from 'node:os'
 import { join } from 'node:path'
 import type { SFTPWrapper } from 'ssh2'
@@ -206,7 +207,7 @@ export class GeminiHookService {
   // Remote hooks use POSIX paths and the same event/config contract as local installation.
   async installRemote(sftp: SFTPWrapper, remoteHome: string): Promise<AgentHookInstallStatus> {
     const remoteConfigPath = `${remoteHome.replace(/\/$/, '')}/.gemini/settings.json`
-    const remoteScriptPath = `${remoteHome.replace(/\/$/, '')}/.orca/agent-hooks/gemini-hook.sh`
+    const remoteScriptPath = remoteManagedHookPath(remoteHome.replace(/\/$/, ''), 'gemini-hook.sh')
     try {
       const config = await readHooksJsonRemote(sftp, remoteConfigPath)
       if (!config) {

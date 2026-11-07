@@ -1,3 +1,4 @@
+import { branding } from '../../shared/branding'
 import { join, posix as pathPosix } from 'node:path'
 import { resolveKiroHomeDir } from '../../shared/kiro-home'
 import { isPlainObject } from '../agent-hooks/installer-utils'
@@ -7,7 +8,7 @@ import {
   kiroListHookRunsManagedCommand
 } from './hook-settings'
 
-const KIRO_STANDALONE_HOOKS_FILE_NAME = 'orca-agent-status.json'
+const KIRO_STANDALONE_HOOKS_FILE_NAME = `${branding.cliCommand}-agent-status.json`
 
 /** V3 triggers (kiro-cli 2.27+); the docs' `PromptSubmit`/`AgentStop` spellings are dropped on load. */
 export const KIRO_STANDALONE_HOOK_TRIGGERS = [

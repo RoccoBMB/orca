@@ -1,3 +1,4 @@
+import { managedHookRelativePath } from '../agent-hooks/managed-hook-paths'
 import { homedir } from 'node:os'
 import { basename, extname, join, win32 } from 'node:path'
 import {
@@ -179,7 +180,7 @@ export function getWindowsManagedLifecycleHook(scriptPath: string): HookCommandC
 
 function getWindowsPowerShellLifecycleCommand(scriptPath: string): string {
   const scriptFileName = win32.basename(scriptPath)
-  const quotedRelativePath = quotePowerShellLiteral(`.orca\\agent-hooks\\${scriptFileName}`)
+  const quotedRelativePath = quotePowerShellLiteral(managedHookRelativePath(scriptFileName, '\\'))
   return (
     `$scriptPath = Join-Path $env:USERPROFILE ${quotedRelativePath}; ` +
     'if (Test-Path -LiteralPath $scriptPath -PathType Leaf) { & $scriptPath; exit $LASTEXITCODE }; ' +

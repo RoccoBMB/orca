@@ -1,3 +1,5 @@
+import { managedHookFileName } from '../../../agent-hooks/managed-hook-paths'
+import { createManagedCommandMatcher } from '../../../agent-hooks/installer-utils'
 import { posix, win32 } from 'node:path'
 import { normalizeRuntimePathForComparison } from '../../../../shared/cross-platform-path'
 import { getManagedScriptPath } from '../definitions/codex-hook-definition'
@@ -19,7 +21,7 @@ const DECODED_LAUNCHER_PATH = /^if \(Test-Path -LiteralPath ('(?:[^']|'')*') -Pa
 function isAgentHooksScript(scriptPath: string, fileName: string): boolean {
   const pathApi = scriptPath.includes('\\') ? win32 : posix
   return (
-    pathApi.basename(scriptPath).toLowerCase() === fileName &&
+    pathApi.basename(scriptPath).toLowerCase() === managedHookFileName(fileName) &&
     pathApi.basename(pathApi.dirname(scriptPath)) === 'agent-hooks'
   )
 }
@@ -29,7 +31,7 @@ function unquotePosix(quoted: string): string {
 }
 
 export function isRetiredCodexHookCommand(command: string | undefined): boolean {
-  if (!command) {
+  if (!command || !createManagedCommandMatcher('codex-hook.sh')(command)) {
     return false
   }
   const doubleQuoted = DOUBLE_QUOTED_SH.exec(command)

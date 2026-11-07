@@ -1,3 +1,4 @@
+import { remoteManagedHookPath } from '../agent-hooks/managed-hook-paths'
 import { homedir } from 'node:os'
 import { join } from 'node:path'
 import type { SFTPWrapper } from 'ssh2'
@@ -151,7 +152,7 @@ export class CursorHookService {
   // Remote installs must match local hook behavior while using POSIX paths.
   async installRemote(sftp: SFTPWrapper, remoteHome: string): Promise<AgentHookInstallStatus> {
     const remoteConfigPath = `${remoteHome.replace(/\/$/, '')}/.cursor/hooks.json`
-    const remoteScriptPath = `${remoteHome.replace(/\/$/, '')}/.orca/agent-hooks/cursor-hook.sh`
+    const remoteScriptPath = remoteManagedHookPath(remoteHome.replace(/\/$/, ''), 'cursor-hook.sh')
     try {
       const config = await readHooksJsonRemote(sftp, remoteConfigPath)
       if (!config) {

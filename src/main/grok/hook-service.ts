@@ -1,3 +1,4 @@
+import { branding } from '../../shared/branding'
 import { lstatSync, mkdirSync, readFileSync, rmSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import type { SFTPWrapper } from 'ssh2'
@@ -46,7 +47,7 @@ import {
 
 function getConfigPath(): string {
   // Use Grok's selected home and a dedicated managed file so unrelated user hook files stay untouched.
-  return join(resolveGrokHomeDir(), 'hooks', 'orca-status.json')
+  return join(resolveGrokHomeDir(), 'hooks', `${branding.cliCommand}-status.json`)
 }
 
 export function getManagedCommandForTests(scriptPath: string): string {

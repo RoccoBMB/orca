@@ -90,8 +90,8 @@ it.skipIf(skip)(
       const launcher = join(
         userData,
         'cli',
-        'bin',
-        process.platform === 'win32' ? 'orca.exe' : 'orca'
+        'maestro-bin',
+        process.platform === 'win32' ? 'maestro.exe' : 'maestro'
       )
       expect(existsSync(launcher)).toBe(true)
       installFakeAppEnvironment({

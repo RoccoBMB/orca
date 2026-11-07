@@ -42,8 +42,8 @@ function createTestPlan(): CodexWslRuntimeHookInstallPlan {
   return {
     configPath: join(root, 'hooks.json'),
     tomlPath: join(root, 'config.toml'),
-    scriptPath: join(root, '.orca', 'agent-hooks', 'codex-hook.sh'),
-    commandScriptPath: `${linuxHome}/.orca/agent-hooks/codex-hook.sh`,
+    scriptPath: join(root, '.maestro', 'agent-hooks', 'maestro-codex-hook.sh'),
+    commandScriptPath: `${linuxHome}/.maestro/agent-hooks/maestro-codex-hook.sh`,
     trustConfigPath: `${linuxHome}/hooks.json`,
     wslDistro: 'Ubuntu',
     linuxRuntimeHome: linuxHome
@@ -204,7 +204,7 @@ describe('Codex WSL runtime hook install', () => {
                 {
                   type: 'command',
                   command:
-                    "if [ -x '/old/.orca/agent-hooks/codex-hook.sh' ]; then /bin/sh '/old/.orca/agent-hooks/codex-hook.sh'; fi"
+                    "if [ -x '/old/.maestro/agent-hooks/maestro-codex-hook.sh' ]; then /bin/sh '/old/.maestro/agent-hooks/maestro-codex-hook.sh'; fi"
                 }
               ]
             }

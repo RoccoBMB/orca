@@ -1,3 +1,4 @@
+import { remoteManagedHookPath } from '../agent-hooks/managed-hook-paths'
 import {
   copyFileSync,
   chmodSync,
@@ -228,12 +229,7 @@ export class KimiHookService {
   // Remote hooks assume POSIX sh.
   async installRemote(sftp: SFTPWrapper, remoteHome: string): Promise<AgentHookInstallStatus> {
     const remoteConfigPath = pathPosix.join(remoteHome, '.kimi-code', 'config.toml')
-    const remoteScriptPath = pathPosix.join(
-      remoteHome,
-      '.orca',
-      'agent-hooks',
-      POSIX_SCRIPT_FILE_NAME
-    )
+    const remoteScriptPath = remoteManagedHookPath(remoteHome, POSIX_SCRIPT_FILE_NAME)
     try {
       // Kimi creates config lazily; a missing remote file starts empty.
       const text = (await readTextFileRemote(sftp, remoteConfigPath)) ?? ''

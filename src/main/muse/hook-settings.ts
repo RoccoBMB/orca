@@ -1,3 +1,4 @@
+import { remoteManagedHookPath } from '../agent-hooks/managed-hook-paths'
 import { homedir } from 'node:os'
 import { join } from 'node:path'
 import { readFile } from 'node:fs/promises'
@@ -62,7 +63,7 @@ export function getMuseRemoteConfigPath(remoteHome: string): string {
 }
 
 export function getMuseRemoteManagedHooksPath(remoteHome: string): string {
-  return `${remoteHome.replace(/\/$/, '')}/.orca/agent-hooks/${MUSE_MANAGED_HOOKS_FILE_NAME}`
+  return remoteManagedHookPath(remoteHome.replace(/\/$/, ''), MUSE_MANAGED_HOOKS_FILE_NAME)
 }
 
 export function getMuseManagedCommand(scriptPath: string): string {

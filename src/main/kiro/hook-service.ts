@@ -1,3 +1,4 @@
+import { remoteManagedHookPath } from '../agent-hooks/managed-hook-paths'
 import { existsSync, readdirSync, readFileSync } from 'node:fs'
 import { join, posix as pathPosix } from 'node:path'
 import type { SFTPWrapper } from 'ssh2'
@@ -224,7 +225,7 @@ export class KiroHookService {
     kiroHomeDir?: string
   ): Promise<AgentHookInstallStatus> {
     const agentsDir = getKiroRemoteAgentsDir(remoteHome, kiroHomeDir)
-    const scriptPath = `${remoteHome.replace(/\/$/, '')}/.orca/agent-hooks/kiro-hook.sh`
+    const scriptPath = remoteManagedHookPath(remoteHome.replace(/\/$/, ''), 'kiro-hook.sh')
     try {
       // Write the script first so no hooks file ever points at a missing file.
       await writeManagedScriptRemote(sftp, scriptPath, getManagedScript('posix'))

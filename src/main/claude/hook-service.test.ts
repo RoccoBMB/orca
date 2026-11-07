@@ -22,9 +22,10 @@ import { ClaudeHookService } from './hook-service'
 import { CLAUDE_EVENTS } from './claude-managed-hook-events'
 import { getWindowsManagedLifecycleHook, OPENCLAUDE_HOOK_SETTINGS } from './hook-settings'
 
-const CLAUDE_SCRIPT_FILE_NAME = process.platform === 'win32' ? 'claude-hook.cmd' : 'claude-hook.sh'
+const CLAUDE_SCRIPT_FILE_NAME =
+  process.platform === 'win32' ? 'maestro-claude-hook.cmd' : 'maestro-claude-hook.sh'
 const OPENCLAUDE_SCRIPT_FILE_NAME =
-  process.platform === 'win32' ? 'openclaude-hook.cmd' : 'openclaude-hook.sh'
+  process.platform === 'win32' ? 'maestro-openclaude-hook.cmd' : 'maestro-openclaude-hook.sh'
 const isClaudeManagedCommand = createManagedCommandMatcher(CLAUDE_SCRIPT_FILE_NAME)
 const isOpenClaudeManagedCommand = createManagedCommandMatcher(OPENCLAUDE_SCRIPT_FILE_NAME)
 
@@ -147,7 +148,7 @@ describe('ClaudeHookService.install', () => {
                 hooks: [
                   {
                     type: 'command',
-                    command: '/Users/old/.orca/agent-hooks/claude-hook.sh'
+                    command: '/Users/old/.maestro/agent-hooks/maestro-claude-hook.sh'
                   }
                 ]
               }
@@ -187,7 +188,7 @@ describe('ClaudeHookService.install', () => {
       ).toBe(true)
       expect(
         legacyHooks.some((hook: TestHook) =>
-          hook.command.includes('/Users/old/.orca/agent-hooks/claude-hook.sh')
+          hook.command.includes('/Users/old/.maestro/agent-hooks/maestro-claude-hook.sh')
         )
       ).toBe(false)
       expect(hasManagedCommand(legacy.hooks.StopFailure[0].hooks[0], isClaudeManagedCommand)).toBe(
@@ -196,9 +197,9 @@ describe('ClaudeHookService.install', () => {
       const managedScript = readFileSync(
         join(
           tmpHome,
-          '.orca',
+          '.maestro',
           'agent-hooks',
-          process.platform === 'win32' ? 'claude-hook-impl.cmd' : CLAUDE_SCRIPT_FILE_NAME
+          process.platform === 'win32' ? 'maestro-claude-hook-impl.cmd' : CLAUDE_SCRIPT_FILE_NAME
         ),
         'utf-8'
       )
@@ -324,7 +325,7 @@ describe('ClaudeHookService.install', () => {
       const tmpHome = mkdtempSync(join(tmpdir(), 'orca-claude-migrate-'))
       vi.stubEnv('HOME', tmpHome)
       vi.stubEnv('USERPROFILE', tmpHome)
-      const scriptPath = join(tmpHome, '.orca', 'agent-hooks', CLAUDE_SCRIPT_FILE_NAME)
+      const scriptPath = join(tmpHome, '.maestro', 'agent-hooks', CLAUDE_SCRIPT_FILE_NAME)
       if (!WINDOWS_CMD_SAFE_PATH.test(scriptPath)) {
         vi.unstubAllEnvs()
         rmSync(tmpHome, { recursive: true, force: true })
@@ -334,7 +335,7 @@ describe('ClaudeHookService.install', () => {
         const settingsPath = join(tmpHome, '.claude', 'settings.json')
         mkdirSync(join(tmpHome, '.claude'), { recursive: true })
         const stale = getWindowsManagedLifecycleHook(
-          'C:\\Users\\%name%\\.orca\\agent-hooks\\claude-hook.cmd'
+          'C:\\Users\\%name%\\.maestro\\agent-hooks\\maestro-claude-hook.cmd'
         )
         writeFileSync(
           settingsPath,
@@ -372,7 +373,7 @@ describe('ClaudeHookService.install', () => {
       const tmpHome = mkdtempSync(join(tmpdir(), 'orca-claude-moved-'))
       vi.stubEnv('HOME', tmpHome)
       vi.stubEnv('USERPROFILE', tmpHome)
-      const scriptPath = join(tmpHome, '.orca', 'agent-hooks', CLAUDE_SCRIPT_FILE_NAME)
+      const scriptPath = join(tmpHome, '.maestro', 'agent-hooks', CLAUDE_SCRIPT_FILE_NAME)
       if (!WINDOWS_CMD_SAFE_PATH.test(scriptPath)) {
         vi.unstubAllEnvs()
         rmSync(tmpHome, { recursive: true, force: true })
@@ -381,7 +382,8 @@ describe('ClaudeHookService.install', () => {
       try {
         const settingsPath = join(tmpHome, '.claude', 'settings.json')
         mkdirSync(join(tmpHome, '.claude'), { recursive: true })
-        const staleCommand = 'C:/Users/someone-else/.orca/agent-hooks/claude-hook.cmd || echo {}'
+        const staleCommand =
+          'C:/Users/someone-else/.maestro/agent-hooks/maestro-claude-hook.cmd || echo {}'
         const stale = { type: 'command', command: staleCommand, timeout: 10 }
         writeFileSync(
           settingsPath,
@@ -425,7 +427,7 @@ describe('ClaudeHookService.installRemote', () => {
 
     await svc.installRemote(sftp, '/home/dev', { claudeVersion: '2.1.78' })
     const upgraded = JSON.parse(fs.files.get(settingsPath)!)
-    expect(upgraded.hooks.StopFailure[0].hooks[0].command).toContain('claude-hook.sh')
+    expect(upgraded.hooks.StopFailure[0].hooks[0].command).toContain('maestro-claude-hook.sh')
     expect(upgraded.hooks.Stop[0]).toEqual(userStop)
     expect(upgraded.env).toEqual({ A: '1' })
   })
@@ -446,7 +448,7 @@ describe('ClaudeHookService.installRemote', () => {
                 {
                   type: 'command',
                   command:
-                    'if [ -x /home/dev/.orca/agent-hooks/claude-hook.sh ]; then /bin/sh /home/dev/.orca/agent-hooks/claude-hook.sh; fi'
+                    'if [ -x /home/dev/.maestro/agent-hooks/maestro-claude-hook.sh ]; then /bin/sh /home/dev/.maestro/agent-hooks/maestro-claude-hook.sh; fi'
                 }
               ]
             }
@@ -459,7 +461,7 @@ describe('ClaudeHookService.installRemote', () => {
     const stopDefs = parsed.hooks.Stop as { hooks: { command: string }[] }[]
     const userCmds = stopDefs.flatMap((d) => d.hooks.map((h) => h.command))
     expect(userCmds).toContain('/usr/local/bin/my-user-hook')
-    expect(userCmds.filter((c) => c.includes('claude-hook.sh'))).toHaveLength(1)
+    expect(userCmds.filter((c) => c.includes('maestro-claude-hook.sh'))).toHaveLength(1)
   })
 })
 
@@ -491,18 +493,18 @@ describe('OpenClaudeHookService-compatible install', () => {
       for (const event of ['UserPromptSubmit', 'Stop', 'StopFailure']) {
         const command = parsed.hooks[event][0].hooks[0].command as string
         expect(isOpenClaudeManagedCommand(command)).toBe(true)
-        expect(command).toContain('"${HOME-}/.orca/agent-hooks/openclaude-hook.cmd"')
-        expect(command).toContain('"${HOME-}/.orca/agent-hooks/openclaude-hook.sh"')
+        expect(command).toContain('"${HOME-}/.maestro/agent-hooks/maestro-openclaude-hook.cmd"')
+        expect(command).toContain('"${HOME-}/.maestro/agent-hooks/maestro-openclaude-hook.sh"')
         expect(command).not.toContain(tmpHome.replaceAll('\\', '/'))
       }
       expect(
-        readFileSync(join(tmpHome, '.orca', 'agent-hooks', OPENCLAUDE_SCRIPT_FILE_NAME), 'utf-8')
+        readFileSync(join(tmpHome, '.maestro', 'agent-hooks', OPENCLAUDE_SCRIPT_FILE_NAME), 'utf-8')
       ).toContain('/hook/claude')
       expect(
-        readFileSync(join(tmpHome, '.orca', 'agent-hooks', OPENCLAUDE_SCRIPT_FILE_NAME), 'utf-8')
+        readFileSync(join(tmpHome, '.maestro', 'agent-hooks', OPENCLAUDE_SCRIPT_FILE_NAME), 'utf-8')
       ).not.toContain('DEVIN_PROJECT_DIR')
       expect(
-        readFileSync(join(tmpHome, '.orca', 'agent-hooks', OPENCLAUDE_SCRIPT_FILE_NAME), 'utf-8')
+        readFileSync(join(tmpHome, '.maestro', 'agent-hooks', OPENCLAUDE_SCRIPT_FILE_NAME), 'utf-8')
       ).not.toContain('GROK_HOOK_EVENT')
       expect(parsed.statusLine).toBeUndefined()
       expect(existsSync(join(tmpHome, '.claude', 'settings.json'))).toBe(false)

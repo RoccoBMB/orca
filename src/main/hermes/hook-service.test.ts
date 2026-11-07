@@ -104,7 +104,7 @@ describe('HermesHookService', () => {
   })
 
   it('refreshes named profiles that keep the plugin enabled, and only those', () => {
-    const stale = '# Managed by Orca. Do not edit; changes may be overwritten.\n# stale\n'
+    const stale = '# Managed by Maestro. Do not edit; changes may be overwritten.\n# stale\n'
     // `hermes profile create --clone` copies the plugin but not later passthrough edits.
     const profile = (name: string, config: string): string => {
       const home = join(homeDir, 'profiles', name)
@@ -120,8 +120,8 @@ describe('HermesHookService', () => {
     const broken = profile('broken', '')
     rmSync(join(broken, 'config.yaml'))
     mkdirSync(join(broken, 'config.yaml'))
-    const work = profile('work', 'plugins:\n  enabled: [orca-status]\n')
-    const disabledConfig = 'plugins:\n  enabled: [orca-status]\n  disabled: [orca-status]\n'
+    const work = profile('work', 'plugins:\n  enabled: [maestro-status]\n')
+    const disabledConfig = 'plugins:\n  enabled: [maestro-status]\n  disabled: [maestro-status]\n'
     const disabled = profile('off', disabledConfig)
     const service = new HermesHookService()
 
@@ -156,7 +156,7 @@ describe('HermesHookService', () => {
       readFileSync(join(homeDir, 'config.yaml'), 'utf-8')
     )
     const { terminal: original, ...originalRest } = parse(input)
-    expect(plugins.enabled).toEqual(['orca-status'])
+    expect(plugins.enabled).toEqual(['maestro-status'])
     expect(rest).toEqual(originalRest)
     expect(terminal).toEqual(
       passesThrough
@@ -170,13 +170,13 @@ describe('HermesHookService', () => {
     const configPath = join(homeDir, 'config.yaml')
     writeFileSync(
       configPath,
-      'plugins:\n  disabled:\n    - keep\n    - orca-status # managed entry\n# End notes\n'
+      'plugins:\n  disabled:\n    - keep\n    - maestro-status # managed entry\n# End notes\n'
     )
 
     expect(new HermesHookService().install().state).toBe('installed')
     const installed = readFileSync(configPath, 'utf-8')
     expect(parse(installed)).toEqual({
-      plugins: { disabled: ['keep'], enabled: ['orca-status'] },
+      plugins: { disabled: ['keep'], enabled: ['maestro-status'] },
       terminal: { client_env_passthrough: expect.arrayContaining(['ORCA_AGENT_PANE']) }
     })
     expect(installed.split('# End notes')).toHaveLength(2)

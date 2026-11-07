@@ -1,3 +1,4 @@
+import { branding } from '../../../../shared/branding'
 import { existsSync, readFileSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { isDefinitiveAbsence } from '../../../../shared/definitive-filesystem-absence'
@@ -42,7 +43,7 @@ type HookTrustProvenanceFile = {
 }
 
 function getProvenancePath(runtimeHomePath: string): string {
-  return join(runtimeHomePath, '.orca-hook-trust-provenance.json')
+  return join(runtimeHomePath, `${branding.homeDirectoryName}-hook-trust-provenance.json`)
 }
 
 /** Missing, unreadable or malformed provenance cannot establish an approval's origin. */

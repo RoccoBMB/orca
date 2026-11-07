@@ -59,6 +59,7 @@ vi.mock('./codex-real-home-hooks-json', async (importOriginal) => {
 })
 
 import { reconcileRealHomeCodexHookEntries } from './codex-real-home-hook-install'
+import { sweepRealHomeCodexHook } from './codex-real-home-hook-sweep'
 import {
   buildCodexManagedHook,
   CODEX_EVENT_LABEL,
@@ -95,7 +96,7 @@ const orcaGroup = (command: string = frozen()): HookDefinition => ({
 })
 
 function olderBuildCommand(): string {
-  const script = join(home, '.orca', 'agent-hooks', 'codex-hook.sh')
+  const script = join(home, '.maestro', 'agent-hooks', 'maestro-codex-hook.sh')
   return process.platform === 'win32' ? script : wrapPosixHookCommand(script)
 }
 
@@ -197,6 +198,23 @@ afterEach(() => {
 })
 
 describe('reconcileRealHomeCodexHookEntries', () => {
+  it('preserves official Orca hooks and their approval while installing Maestro beside them', async () => {
+    const official: HookDefinition = {
+      hooks: [{ type: 'command', command: '/bin/sh "/home/user/.orca/agent-hooks/codex-hook.sh"' }]
+    }
+    writeHooks({ hooks: { Stop: [official] } })
+    upsertHookTrustEntries(configPath(), [
+      { ...stopEntryAt(0, official), trustedHash: 'sha256:official-orca', enabled: true }
+    ])
+    await reconcile()
+    expect(readHooks().hooks.Stop[0]).toEqual(official)
+    sweepRealHomeCodexHook()
+    expect(readHooks().hooks.Stop).toEqual([official])
+    expect(
+      readHookTrustEntries(configPath()).get(computeTrustKey(stopEntryAt(0, official)))?.trustedHash
+    ).toBe('sha256:official-orca')
+  })
+
   it("converts an older build's entry once, in its slot, with one pristine backup", async () => {
     const olderRaw = writeHooks({ hooks: { Stop: [USER_A, orcaGroup(olderBuildCommand())] } })
 
@@ -232,7 +250,7 @@ describe('reconcileRealHomeCodexHookEntries', () => {
   })
 
   it('never rewrites a newer build form or appends beside it', async () => {
-    const newer = `: orca-agent-hook-form=2; /bin/sh "\${HOME-}/.orca/agent-hooks/codex-hook.sh"`
+    const newer = `: orca-agent-hook-form=2; /bin/sh "\${HOME-}/.maestro/agent-hooks/maestro-codex-hook.sh"`
     writeHooks({ hooks: { Stop: [orcaGroup(newer)] } })
 
     await reconcile()

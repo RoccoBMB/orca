@@ -12,6 +12,10 @@ fn main() {
     println!("cargo:rerun-if-env-changed=ORCA_LAUNCHER_VERSION");
     println!("cargo:rerun-if-env-changed=ORCA_LAUNCHER_ICON");
     println!("cargo:rerun-if-env-changed=ORCA_LAUNCHER_FILENAME");
+    println!("cargo:rerun-if-env-changed=ORCA_LAUNCHER_CLI_COMMAND");
+    let command = env::var("ORCA_LAUNCHER_CLI_COMMAND")
+        .expect("ORCA_LAUNCHER_CLI_COMMAND must be set by build-windows-cli-launcher.mjs");
+    println!("cargo:rustc-env=ORCA_LAUNCHER_CLI_COMMAND={command}");
 
     if env::var("CARGO_CFG_TARGET_OS").as_deref() != Ok("windows") {
         return;

@@ -1,12 +1,13 @@
 /** Edit only Orca's marker-delimited region in the user-owned YAML patch layer. */
 
+import { branding } from '../../shared/branding'
 import { DSH_HOOK_EXECUTOR_PACKAGE } from './dsh-hook-packages'
 
-const START_MARKER = '# >>> orca-managed-dsh-hooks (managed by Orca; do not edit) >>>'
-const END_MARKER = '# <<< orca-managed-dsh-hooks <<<'
+const START_MARKER = `# >>> ${branding.cliCommand}-managed-dsh-hooks (managed by ${branding.productName}; do not edit) >>>`
+const END_MARKER = `# <<< ${branding.cliCommand}-managed-dsh-hooks <<<`
 
 /** DSH targets patch rows by ID, so keep this stable. */
-const MANAGED_ROW_ID = 'orca-agent-hooks'
+const MANAGED_ROW_ID = `${branding.cliCommand}-agent-hooks`
 
 const EMPTY_FLOW_SEQUENCE = '[]'
 

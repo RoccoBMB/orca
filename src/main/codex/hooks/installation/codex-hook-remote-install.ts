@@ -1,3 +1,4 @@
+import { remoteManagedHookPath } from '../../../agent-hooks/managed-hook-paths'
 import type { SFTPWrapper } from 'ssh2'
 import type { AgentHookInstallStatus } from '../../../../shared/agent-hook-listener/configuration/agent-hook-types'
 import {
@@ -38,8 +39,8 @@ export async function installCodexHooksRemote(
   // WSL must match runtime script paths/commands to avoid trust-key races; SSH uses guest-home scripts.
   const redirectedCodexHome = options?.codexHomeDir?.replace(/\/$/, '')
   const remoteScriptPath = redirectedCodexHome
-    ? `${redirectedCodexHome}/.orca/agent-hooks/codex-hook.sh`
-    : `${remoteHome.replace(/\/$/, '')}/.orca/agent-hooks/codex-hook.sh`
+    ? remoteManagedHookPath(redirectedCodexHome, 'codex-hook.sh')
+    : remoteManagedHookPath(remoteHome.replace(/\/$/, ''), 'codex-hook.sh')
   try {
     const config = await readHooksJsonRemote(sftp, remoteConfigPath)
     if (!config) {

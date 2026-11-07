@@ -1,3 +1,4 @@
+import { remoteManagedHookPath } from '../agent-hooks/managed-hook-paths'
 import { homedir } from 'node:os'
 import { join, posix as pathPosix } from 'node:path'
 import {
@@ -50,12 +51,7 @@ export function getDshManagedHooksPath(): string {
 }
 
 export function getDshRemoteManagedHooksPath(remoteHome: string): string {
-  return pathPosix.join(
-    remoteHome.replace(/\/$/, ''),
-    '.orca',
-    'agent-hooks',
-    DSH_MANAGED_HOOKS_FILE_NAME
-  )
+  return remoteManagedHookPath(remoteHome, DSH_MANAGED_HOOKS_FILE_NAME)
 }
 
 export function getDshManagedCommand(scriptPath: string): string {

@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+import branding from '../../../../src/shared/branding.json' with { type: 'json' }
 import { dirname, join, resolve } from 'node:path'
 import { pathToFileURL } from 'node:url'
 import { compileWindowsRustExecutable } from './windows-rust-executable-build.mjs'
@@ -25,12 +26,14 @@ if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) 
         join(crateRoot, 'src', 'administrator_restart.rs'),
         join(crateRoot, 'src', 'administrator_launcher.rs'),
         iconPath,
+        join(repoRoot, 'src/shared/branding.json'),
         join(repoRoot, 'config/scripts/native-build/windows/build-windows-cli-launcher.mjs')
       ],
       arch: readArg('--arch'),
       outputPath: binName === 'orca' ? output : join(dirname(output), `${binName}.exe`),
       buildEnv: (version) => ({
         ORCA_LAUNCHER_VERSION: version,
+        ORCA_LAUNCHER_CLI_COMMAND: branding.cliCommand,
         ORCA_LAUNCHER_ICON: iconPath,
         ORCA_LAUNCHER_FILENAME: `${binName}.exe`
       })

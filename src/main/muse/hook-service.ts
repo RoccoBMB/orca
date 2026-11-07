@@ -1,3 +1,4 @@
+import { remoteManagedHookPath } from '../agent-hooks/managed-hook-paths'
 import { existsSync, readFileSync, unlinkSync } from 'node:fs'
 import type { SFTPWrapper } from 'ssh2'
 
@@ -226,7 +227,7 @@ export class MuseHookService {
 
   async installRemote(sftp: SFTPWrapper, remoteHome: string): Promise<AgentHookInstallStatus> {
     const remoteConfigPath = getMuseRemoteConfigPath(remoteHome)
-    const remoteScriptPath = `${remoteHome.replace(/\/$/, '')}/.orca/agent-hooks/muse-hook.sh`
+    const remoteScriptPath = remoteManagedHookPath(remoteHome.replace(/\/$/, ''), 'muse-hook.sh')
     const remoteManagedHooksPath = getMuseRemoteManagedHooksPath(remoteHome)
     try {
       const body = await readTextFileRemote(sftp, remoteConfigPath)

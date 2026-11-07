@@ -48,11 +48,12 @@ describe('GeminiHookService', () => {
   })
 
   it('preserves user-authored PreToolUse hooks while sweeping stale managed Gemini hooks', () => {
-    const managedHookFileName = process.platform === 'win32' ? 'gemini-hook.cmd' : 'gemini-hook.sh'
+    const managedHookFileName =
+      process.platform === 'win32' ? 'maestro-gemini-hook.cmd' : 'maestro-gemini-hook.sh'
     const staleManagedHookPath =
       process.platform === 'win32'
-        ? `C:\\Users\\ramzi\\.orca\\agent-hooks\\${managedHookFileName}`
-        : `/Users/ramzi/.orca/agent-hooks/${managedHookFileName}`
+        ? `C:\\Users\\ramzi\\.maestro\\agent-hooks\\${managedHookFileName}`
+        : `/Users/ramzi/.maestro/agent-hooks/${managedHookFileName}`
     const staleManagedCommand =
       process.platform === 'win32'
         ? staleManagedHookPath
@@ -90,7 +91,7 @@ describe('GeminiHookService', () => {
     expect(preToolCommands).toEqual(['echo user-authored'])
     expect(config.hooks.BeforeTool[0].hooks[0].command).toMatch(
       process.platform === 'win32'
-        ? wrapWindowsBatchHookCommand(join(homeDir, '.orca', 'agent-hooks', managedHookFileName))
+        ? wrapWindowsBatchHookCommand(join(homeDir, '.maestro', 'agent-hooks', managedHookFileName))
         : new RegExp(managedHookFileName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))
     )
   })

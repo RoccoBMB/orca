@@ -75,13 +75,15 @@ describe('DevinHookService', () => {
     const previous = process.platform
     Object.defineProperty(process, 'platform', { value: 'win32' })
     try {
-      const scriptPath = 'C:\\Users\\ada\\.orca\\agent-hooks\\devin-hook.cmd'
+      const scriptPath = 'C:\\Users\\ada\\.maestro\\agent-hooks\\maestro-devin-hook.cmd'
       const command = getDevinManagedCommand(scriptPath)
       // Forward slashes survive Git Bash path handling.
-      expect(command).toBe('C:/Users/ada/.orca/agent-hooks/devin-hook.cmd')
+      expect(command).toBe('C:/Users/ada/.maestro/agent-hooks/maestro-devin-hook.cmd')
       // UNC paths retain the encoded launcher because they have no drive letter.
       expect(
-        getDevinManagedCommand('\\\\server\\share\\ada\\.orca\\agent-hooks\\devin-hook.cmd')
+        getDevinManagedCommand(
+          '\\\\server\\share\\ada\\.maestro\\agent-hooks\\maestro-devin-hook.cmd'
+        )
       ).toMatch(/ -EncodedCommand \S+$/)
 
       const next = applyDevinManagedHooks(
@@ -94,7 +96,7 @@ describe('DevinHookService', () => {
           }
         },
         command,
-        'devin-hook.cmd'
+        'maestro-devin-hook.cmd'
       )
       expect(next.hooks?.Stop?.flatMap((definition) => definition.hooks ?? [])).toEqual([
         { type: 'command', command: 'C:\\tools\\user-hook.cmd' },

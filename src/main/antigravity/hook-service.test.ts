@@ -20,11 +20,17 @@ import { AntigravityHookService } from './hook-service'
 import { createManagedCommandMatcher } from '../agent-hooks/installer-utils'
 
 const ANTIGRAVITY_PRE_INVOCATION_COMMAND =
-  process.platform === 'win32' ? 'antigravity-pre-invocation.cmd' : 'antigravity-hook.sh'
+  process.platform === 'win32'
+    ? 'maestro-antigravity-pre-invocation.cmd'
+    : 'maestro-antigravity-hook.sh'
 const ANTIGRAVITY_POST_TOOL_USE_COMMAND =
-  process.platform === 'win32' ? 'antigravity-post-tool-use.cmd' : 'antigravity-hook.sh'
+  process.platform === 'win32'
+    ? 'maestro-antigravity-post-tool-use.cmd'
+    : 'maestro-antigravity-hook.sh'
 const ANTIGRAVITY_PRE_TOOL_USE_COMMAND =
-  process.platform === 'win32' ? 'antigravity-pre-tool-use.cmd' : 'antigravity-hook.sh'
+  process.platform === 'win32'
+    ? 'maestro-antigravity-pre-tool-use.cmd'
+    : 'maestro-antigravity-hook.sh'
 const PRE_TOOL_USE_DECISION = '{"decision":"ask"}'
 
 function withPlatform<T>(platform: NodeJS.Platform, run: () => T): T {
@@ -59,7 +65,7 @@ describe('AntigravityHookService', () => {
 
       const result = spawnSync(
         '/bin/sh',
-        [join(homeDir, '.orca', 'agent-hooks', 'antigravity-hook.sh')],
+        [join(homeDir, '.maestro', 'agent-hooks', 'maestro-antigravity-hook.sh')],
         {
           env: {
             ...process.env,
@@ -83,12 +89,12 @@ describe('AntigravityHookService', () => {
     'keeps answering the PreToolUse gate when the managed script is missing',
     () => {
       new AntigravityHookService().install()
-      rmSync(join(homeDir, '.orca', 'agent-hooks'), { recursive: true, force: true })
+      rmSync(join(homeDir, '.maestro', 'agent-hooks'), { recursive: true, force: true })
 
       const config = JSON.parse(
         readFileSync(join(homeDir, '.gemini', 'config', 'hooks.json'), 'utf8')
-      ) as { 'orca-status': Record<string, { hooks?: { command: string }[] }[]> }
-      const command = config['orca-status'].PreToolUse[0].hooks?.[0]?.command
+      ) as { 'maestro-status': Record<string, { hooks?: { command: string }[] }[]> }
+      const command = config['maestro-status'].PreToolUse[0].hooks?.[0]?.command
 
       const result = spawnSync('/bin/sh', ['-c', command!], {
         input: '{"toolCall":{"name":"run_command"}}',
@@ -105,15 +111,15 @@ describe('AntigravityHookService', () => {
     'leaves non-gate Antigravity events silent when the managed script is missing',
     () => {
       new AntigravityHookService().install()
-      rmSync(join(homeDir, '.orca', 'agent-hooks'), { recursive: true, force: true })
+      rmSync(join(homeDir, '.maestro', 'agent-hooks'), { recursive: true, force: true })
 
       const config = JSON.parse(
         readFileSync(join(homeDir, '.gemini', 'config', 'hooks.json'), 'utf8')
       ) as {
-        'orca-status': Record<string, { command?: string; hooks?: { command: string }[] }[]>
+        'maestro-status': Record<string, { command?: string; hooks?: { command: string }[] }[]>
       }
-      const postToolUse = config['orca-status'].PostToolUse[0].hooks?.[0]?.command
-      const preInvocation = config['orca-status'].PreInvocation[0].command
+      const postToolUse = config['maestro-status'].PostToolUse[0].hooks?.[0]?.command
+      const preInvocation = config['maestro-status'].PreInvocation[0].command
 
       for (const command of [postToolUse, preInvocation]) {
         const result = spawnSync('/bin/sh', ['-c', command!], { input: '{}', encoding: 'utf8' })
@@ -127,9 +133,9 @@ describe('AntigravityHookService', () => {
     withPlatform('win32', () => {
       const service = new AntigravityHookService()
       expect(service.install().state).toBe('installed')
-      const hookDir = join(homeDir, '.orca', 'agent-hooks')
-      const readerPath = join(hookDir, 'antigravity-hook-post.cjs')
-      const corePath = join(hookDir, 'antigravity-hook.cmd')
+      const hookDir = join(homeDir, '.maestro', 'agent-hooks')
+      const readerPath = join(hookDir, 'maestro-antigravity-hook-post.cjs')
+      const corePath = join(hookDir, 'maestro-antigravity-hook.cmd')
       const configPath = join(homeDir, '.gemini', 'config', 'hooks.json')
       writeFileSync(corePath, 'previous installed core')
       const previousConfig = readFileSync(configPath, 'utf8')
@@ -152,7 +158,7 @@ describe('AntigravityHookService', () => {
           'user-hook': {
             PreInvocation: [{ type: 'command', command: '/usr/local/bin/user-hook' }]
           },
-          'orca-status': {
+          'maestro-status': {
             PreInvocation: [{ type: 'command', command: '/usr/local/bin/orca-extra' }]
           }
         },
@@ -165,10 +171,10 @@ describe('AntigravityHookService', () => {
 
     const config = JSON.parse(readFileSync(configPath, 'utf8')) as {
       'user-hook': { PreInvocation: { command: string }[] }
-      'orca-status': { PreInvocation: { command: string }[] }
+      'maestro-status': { PreInvocation: { command: string }[] }
     }
     expect(config['user-hook'].PreInvocation[0].command).toBe('/usr/local/bin/user-hook')
-    const commands = config['orca-status'].PreInvocation.map((entry) => entry.command)
+    const commands = config['maestro-status'].PreInvocation.map((entry) => entry.command)
     expect(commands).toContain('/usr/local/bin/orca-extra')
     expect(commands.some((command) => command.includes(ANTIGRAVITY_PRE_INVOCATION_COMMAND))).toBe(
       true
@@ -182,17 +188,22 @@ describe('AntigravityHookService', () => {
       configPath,
       `${JSON.stringify(
         {
-          'orca-status': {
+          'maestro-status': {
             OldEvent: [
               {
                 type: 'command',
-                command: '/tmp/old/agent-hooks/antigravity-hook.sh'
+                command: '/tmp/old/.maestro/agent-hooks/maestro-antigravity-hook.sh'
               }
             ],
             PreToolUse: [
               {
                 matcher: '*',
-                hooks: [{ type: 'command', command: '/tmp/old/agent-hooks/antigravity-hook.sh' }]
+                hooks: [
+                  {
+                    type: 'command',
+                    command: '/tmp/old/.maestro/agent-hooks/maestro-antigravity-hook.sh'
+                  }
+                ]
               }
             ]
           }
@@ -205,23 +216,31 @@ describe('AntigravityHookService', () => {
     new AntigravityHookService().install()
 
     const config = JSON.parse(readFileSync(configPath, 'utf8')) as {
-      'orca-status': Record<string, { command?: string; hooks?: { command: string }[] }[]>
+      'maestro-status': Record<string, { command?: string; hooks?: { command: string }[] }[]>
     }
-    expect(config['orca-status'].OldEvent).toBeUndefined()
-    const preToolCommands = config['orca-status'].PreToolUse.flatMap((definition) =>
+    expect(config['maestro-status'].OldEvent).toBeUndefined()
+    const preToolCommands = config['maestro-status'].PreToolUse.flatMap((definition) =>
       (definition.hooks ?? []).map((hook) => hook.command)
     )
     expect(preToolCommands).toHaveLength(1)
     expect(preToolCommands[0]).toContain(
-      join(homeDir, '.orca', 'agent-hooks', ANTIGRAVITY_PRE_TOOL_USE_COMMAND).replaceAll('\\', '/')
+      join(homeDir, '.maestro', 'agent-hooks', ANTIGRAVITY_PRE_TOOL_USE_COMMAND).replaceAll(
+        '\\',
+        '/'
+      )
     )
-    expect(preToolCommands[0]).not.toContain('/tmp/old/agent-hooks/antigravity-hook.sh')
-    const commands = config['orca-status'].PostToolUse.flatMap((definition) =>
+    expect(preToolCommands[0]).not.toContain(
+      '/tmp/old/.maestro/agent-hooks/maestro-antigravity-hook.sh'
+    )
+    const commands = config['maestro-status'].PostToolUse.flatMap((definition) =>
       (definition.hooks ?? []).map((hook) => hook.command)
     )
     expect(commands).toHaveLength(1)
     expect(commands[0]).toContain(
-      join(homeDir, '.orca', 'agent-hooks', ANTIGRAVITY_POST_TOOL_USE_COMMAND).replaceAll('\\', '/')
+      join(homeDir, '.maestro', 'agent-hooks', ANTIGRAVITY_POST_TOOL_USE_COMMAND).replaceAll(
+        '\\',
+        '/'
+      )
     )
   })
 
@@ -229,14 +248,15 @@ describe('AntigravityHookService', () => {
     withPlatform('win32', () => {
       const configPath = join(homeDir, '.gemini', 'config', 'hooks.json')
       // Git Bash strips backslashes from legacy bare paths.
-      const legacyStop = 'C:\\Users\\ada\\.orca\\agent-hooks\\antigravity-stop.cmd'
-      const legacyPreToolUse = 'C:\\Users\\ada\\.orca\\agent-hooks\\antigravity-pre-tool-use.cmd'
+      const legacyStop = 'C:\\Users\\ada\\.maestro\\agent-hooks\\maestro-antigravity-stop.cmd'
+      const legacyPreToolUse =
+        'C:\\Users\\ada\\.maestro\\agent-hooks\\maestro-antigravity-pre-tool-use.cmd'
       const userHook = { type: 'command', command: 'C:\\tools\\user-hook.cmd' }
       mkdirSync(dirname(configPath), { recursive: true })
       writeFileSync(
         configPath,
         `${JSON.stringify({
-          'orca-status': {
+          'maestro-status': {
             Stop: [{ type: 'command', command: legacyStop }, userHook],
             PreToolUse: [{ matcher: '*', hooks: [{ type: 'command', command: legacyPreToolUse }] }]
           }
@@ -248,14 +268,14 @@ describe('AntigravityHookService', () => {
       expect(service.install().state).toBe('installed')
 
       const config = JSON.parse(readFileSync(configPath, 'utf8')) as {
-        'orca-status': Record<string, { command?: string; hooks?: { command: string }[] }[]>
+        'maestro-status': Record<string, { command?: string; hooks?: { command: string }[] }[]>
       }
-      const [keptUserHook, stop] = config['orca-status'].Stop
-      expect(config['orca-status'].Stop).toHaveLength(2)
+      const [keptUserHook, stop] = config['maestro-status'].Stop
+      expect(config['maestro-status'].Stop).toHaveLength(2)
       expect(keptUserHook).toEqual(userHook)
       expect(stop.command).not.toBe(legacyStop)
-      expect(createManagedCommandMatcher('antigravity-stop.cmd')(stop.command)).toBe(true)
-      const preToolUse = config['orca-status'].PreToolUse.flatMap((d) => d.hooks ?? [])
+      expect(createManagedCommandMatcher('maestro-antigravity-stop.cmd')(stop.command)).toBe(true)
+      const preToolUse = config['maestro-status'].PreToolUse.flatMap((d) => d.hooks ?? [])
       expect(preToolUse).toHaveLength(1)
       expect(preToolUse[0].command).not.toBe(legacyPreToolUse)
     })

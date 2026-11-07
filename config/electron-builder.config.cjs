@@ -425,18 +425,10 @@ module.exports = {
       context.electronPlatformName === 'linux' ? branding.cliCommand : branding.productName
     )
     const cliDirectory = join(resourcesDir, 'bin')
-    const aliases =
-      context.electronPlatformName === 'win32'
-        ? [
-            ['orca.exe', `${branding.cliCommand}.exe`],
-            ['orca.cmd', `${branding.cliCommand}.cmd`]
-          ]
-        : [[context.electronPlatformName === 'linux' ? 'orca-ide' : 'orca', branding.cliCommand]]
-    for (const [original, alias] of aliases) {
-      if (original !== alias) {
-        require('node:fs').copyFileSync(join(cliDirectory, original), join(cliDirectory, alias))
-      }
-    }
+    require('./scripts/desktop-distribution/cli/brand-cli-launchers.cjs').brandCliLaunchers(
+      cliDirectory,
+      context.electronPlatformName
+    )
     if (!existsSync(resourcesDir)) {
       throw new Error(`Missing packaged resources directory: ${resourcesDir}`)
     }
@@ -580,13 +572,13 @@ module.exports = {
       },
       {
         from: 'native/windows-cli-launcher/.build/orca-administrator-restart.exe',
-        to: 'bin/orca-administrator-restart.exe'
+        to: 'internal/orca-administrator-restart.exe'
       },
       // Why resources/bin: SignPath signs every unsigned PE under win-unpacked, and the hook
       // installer copies this signed file into ~/.orca/agent-hooks (#20913).
       {
         from: 'native/windows-agent-hook/.build/orca-agent-hook.exe',
-        to: 'bin/orca-agent-hook.exe'
+        to: 'agent-hooks/orca-agent-hook.exe'
       },
       {
         from: 'node_modules/agent-browser/bin/agent-browser-win32-x64.exe',

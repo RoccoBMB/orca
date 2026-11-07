@@ -1,3 +1,4 @@
+import { remoteManagedHookPath } from '../agent-hooks/managed-hook-paths'
 import type { SFTPWrapper } from 'ssh2'
 import type { AgentHookInstallStatus } from '../../shared/agent-hook-listener/configuration/agent-hook-types'
 import {
@@ -24,7 +25,7 @@ export async function installCopilotHooksRemote(
 ): Promise<AgentHookInstallStatus> {
   const home = remoteHome.replace(/\/$/, '')
   const remoteConfigPath = `${home}/.copilot/hooks/orca.json`
-  const remoteScriptPath = `${home}/.orca/agent-hooks/copilot-hook.sh`
+  const remoteScriptPath = remoteManagedHookPath(home, 'copilot-hook.sh')
 
   try {
     const config = await readHooksJsonRemote(sftp, remoteConfigPath)

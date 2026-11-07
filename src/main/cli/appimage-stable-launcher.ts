@@ -1,3 +1,5 @@
+import { branding } from '../../shared/branding'
+import { cliLauncherMarker } from '../../shared/cli-launcher-identity'
 import { randomUUID } from 'node:crypto'
 import {
   closeSync,
@@ -21,7 +23,7 @@ import { quotePosixShellDoubleQuotedApostrophe } from '../../shared/shell/launch
 const LAUNCHER_DIRECTORY_NAME = 'launcher'
 const LIVE_ENDPOINT_NAME = 'live'
 const INSTALLED_ENDPOINT_NAME = 'installed'
-const LAUNCHER_MARKER = '# orca-appimage-stable-launcher'
+const LAUNCHER_MARKER = `# ${branding.cliCommand}-appimage-stable-launcher`
 const LAUNCHER_WAIT_SECONDS = 5
 const LAUNCHER_MAX_BYTES = 16 * 1024
 
@@ -129,7 +131,7 @@ function replaceOwnedLauncher(
 ): boolean {
   const displacedPath = join(
     dirname(launcherPath),
-    `.orca-preserved-launcher-${process.pid}-${randomUUID()}`
+    `.${branding.cliCommand}-preserved-launcher-${process.pid}-${randomUUID()}`
   )
   try {
     renameSync(launcherPath, displacedPath)
@@ -229,6 +231,7 @@ function buildStableLauncherScript(cacheRootPath: string): string {
   const launcherDirectory = dirname(resolveAppImageStableLauncherPath(cacheRootPath))
   return `#!/usr/bin/env bash
 ${LAUNCHER_MARKER}
+${cliLauncherMarker}
 shopt -s execfail
 launcher_dir=${quotePosixShellDoubleQuotedApostrophe(launcherDirectory)}
 deadline=$((SECONDS + ${LAUNCHER_WAIT_SECONDS}))

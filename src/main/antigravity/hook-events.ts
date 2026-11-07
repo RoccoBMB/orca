@@ -1,4 +1,6 @@
-export const ANTIGRAVITY_HOOK_BUNDLE_NAME = 'orca-status'
+import { branding } from '../../shared/branding'
+
+export const ANTIGRAVITY_HOOK_BUNDLE_NAME = `${branding.cliCommand}-status`
 
 export const ANTIGRAVITY_EVENTS = [
   {

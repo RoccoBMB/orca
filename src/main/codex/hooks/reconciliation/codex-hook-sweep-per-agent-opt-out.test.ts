@@ -29,12 +29,14 @@ import '../installation/hook-service'
 import { CodexHookService } from '../installation/codex-hook-service-implementation'
 
 const homes = setupCodexHookHomes(homedirMock, getPathMock)
+const OFFICIAL_COMMAND = '/bin/sh "/home/official/.orca/agent-hooks/codex-hook.sh"'
 
 function orcaEntryCommand(): string {
   const scriptPath = join(
-    homes.userDataDir,
+    homes.tmpHome,
+    '.maestro',
     'agent-hooks',
-    process.platform === 'win32' ? 'codex-hook.cmd' : 'codex-hook.sh'
+    process.platform === 'win32' ? 'maestro-codex-hook.cmd' : 'maestro-codex-hook.sh'
   )
   return process.platform === 'win32' ? scriptPath : wrapPosixHookCommand(scriptPath)
 }
@@ -49,7 +51,8 @@ function seedRealHomeHooks(): string {
       hooks: {
         Stop: [
           { hooks: [{ type: 'command', command: 'user-hook' }] },
-          { hooks: [{ type: 'command', command: orcaEntryCommand() }] }
+          { hooks: [{ type: 'command', command: orcaEntryCommand() }] },
+          { hooks: [{ type: 'command', command: OFFICIAL_COMMAND }] }
         ]
       }
     })}\n`,
@@ -63,13 +66,14 @@ function realHomeStopHooks(systemHooksPath: string): unknown {
 }
 
 describe('Codex turned off per agent', () => {
-  it('removes the Orca entry from the real ~/.codex and keeps user hooks', async () => {
+  it('removes Maestro hooks while preserving official Orca and user hooks', async () => {
     const systemHooksPath = seedRealHomeHooks()
 
     await new CodexHookService().remove()
 
     expect(realHomeStopHooks(systemHooksPath)).toEqual([
-      { hooks: [{ type: 'command', command: 'user-hook' }] }
+      { hooks: [{ type: 'command', command: 'user-hook' }] },
+      { hooks: [{ type: 'command', command: OFFICIAL_COMMAND }] }
     ])
   })
 })

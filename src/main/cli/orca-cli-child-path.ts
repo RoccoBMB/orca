@@ -1,11 +1,12 @@
 // PTY and structured children must reach this app's CLI regardless of global registration.
+import { branding } from '../../shared/branding'
 import { delimiter, dirname, join } from 'node:path'
 import { getAppEnvironment, hasAppEnvironment } from '../../shared/app-environment'
 import { readInheritedPath } from '../ipc/pty/host-env/path'
 import { resolvePathEnvKey } from '../pty/environment/windows-path-segment-merge'
 import { ensureLinuxTerminalOrcaCliShimDir } from './linux-terminal-orca-cli-shim'
 import { getBundledLauncherPath } from './bundled-cli-launcher-path'
-import { DEV_COMMAND_NAME } from './cli-install-constants'
+import { DEV_COMMAND_NAME, DEV_LAUNCHER_DIR } from './cli-install-constants'
 
 export type OrcaCliChildPathOptions = {
   isPackaged: boolean
@@ -40,7 +41,7 @@ export function prependOrcaCliDirToChildPath(
   }
   // Development children must reach their build rather than a globally installed release.
   if (!opts.isPackaged) {
-    const devCliBin = join(opts.userDataPath, 'cli', 'bin')
+    const devCliBin = join(opts.userDataPath, ...DEV_LAUNCHER_DIR)
     if (platform !== 'win32') {
       env.ORCA_CLI_BIN_DIR = devCliBin
     }
@@ -59,7 +60,7 @@ export function prependOrcaCliDirToChildPath(
         .split(pathDelimiter)
         .filter((entry) => entry.length > 0 && entry !== shimDir)
       env.PATH = [shimDir, ...inheritedEntries].join(pathDelimiter)
-      const launcher = join(shimDir, 'orca')
+      const launcher = join(shimDir, branding.cliCommand)
       env.ORCA_CLI_COMMAND = launcher
       env.ORCA_USER_DATA_PATH = opts.userDataPath
       return launcher

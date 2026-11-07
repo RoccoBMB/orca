@@ -1,3 +1,4 @@
+import { branding } from '../../shared/branding'
 import { randomUUID } from 'node:crypto'
 import { chmod, mkdir, readFile, readdir, rename, rm } from 'node:fs/promises'
 import { existsSync } from 'node:fs'
@@ -30,15 +31,14 @@ export async function prepareOrcadCliLauncher(): Promise<void> {
     return
   }
   const userDataPath = resolveUserDataPath()
-  const binDir = join(userDataPath, 'cli', 'bin')
+  const binDir = join(userDataPath, 'cli', `${branding.cliCommand}-bin`)
   if (process.platform === 'win32') {
     launcherPath = await prepareWindowsLauncher(installRoot, entry, userDataPath, binDir)
     return
   }
   const script = buildUnixCliLauncher(process.execPath, entry, userDataPath, 'node')
   await mkdir(binDir, { recursive: true })
-  // Older clients type the Linux desktop `orca-ide claude-teams` into server terminals.
-  const names = process.platform === 'linux' ? ['orca', 'orca-ide'] : ['orca']
+  const names = [branding.cliCommand]
   for (const name of names) {
     const path = join(binDir, name)
     const current = await readFile(path, 'utf8').catch(() => null)
@@ -47,7 +47,7 @@ export async function prepareOrcadCliLauncher(): Promise<void> {
     }
     await chmod(path, 0o700)
   }
-  launcherPath = join(binDir, 'orca')
+  launcherPath = join(binDir, branding.cliCommand)
 }
 
 export function buildWindowsCliLauncherConfig(
@@ -69,7 +69,7 @@ async function prepareWindowsLauncher(
   if (!existsSync(source)) {
     return null
   }
-  const path = join(binDir, 'orca.exe')
+  const path = join(binDir, `${branding.cliCommand}.exe`)
   await mkdir(binDir, { recursive: true })
   await removeRetiredLaunchers(binDir)
   const binary = await readFile(source)
@@ -94,7 +94,10 @@ async function removeRetiredLaunchers(binDir: string): Promise<void> {
   const names = await readdir(binDir).catch(() => [])
   await Promise.all(
     names
-      .filter((name) => name.startsWith('orca.exe.') && name.endsWith(RETIRED_LAUNCHER_SUFFIX))
+      .filter(
+        (name) =>
+          name.startsWith(`${branding.cliCommand}.exe.`) && name.endsWith(RETIRED_LAUNCHER_SUFFIX)
+      )
       // Running retired images remain until a later cleanup.
       .map((name) => rm(join(binDir, name), { force: true }).catch(() => {}))
   )
