@@ -1,3 +1,4 @@
+import { branding } from '../../shared/branding'
 import { dirname, join, resolve } from 'node:path'
 import { SERVE_USER_DATA_PATH_ENV } from '../../shared/serve-user-data-path'
 import { getPlatformUserDataPath } from './metadata'
@@ -14,7 +15,8 @@ export function resolveLaunchUserDataPath(env: NodeJS.ProcessEnv = process.env):
   }
   if (launchesDevApp(env)) {
     return resolve(
-      env.ORCA_DEV_USER_DATA_PATH || join(dirname(getPlatformUserDataPath()), 'orca-dev')
+      env.ORCA_DEV_USER_DATA_PATH ||
+        join(dirname(getPlatformUserDataPath()), `${branding.userDataName}-dev`)
     )
   }
   return getPlatformUserDataPath()

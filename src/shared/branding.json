@@ -1,0 +1,12 @@
+{
+  "productName": "Maestro",
+  "appId": "dev.rocco.maestro",
+  "userDataName": "Maestro",
+  "protocol": "maestro",
+  "autoUpdate": false,
+  "telemetryDefault": false,
+  "conductorLayoutDefault": true,
+  "showDotfilesDefault": false,
+  "attribution": "Maestro — built on Orca. Copyright (c) 2026 Lovecast Inc. Licensed under the MIT License.",
+  "sourceUrl": "https://github.com/stablyai/orca"
+}

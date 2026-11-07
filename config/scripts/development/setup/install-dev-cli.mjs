@@ -1,4 +1,11 @@
 #!/usr/bin/env node
+import { createRequire } from 'node:module'
+const branding = createRequire(import.meta.url)('../../../../src/shared/branding.json')
+if (branding.productName !== 'Orca') {
+  console.log('Skipping the upstream global CLI symlink for this branded build.')
+  process.exit(0)
+}
+
 // Symlink orca-dev into /usr/local/bin after build:cli for global dev access.
 import { existsSync, lstatSync, readlinkSync } from 'node:fs'
 import { execFileSync } from 'node:child_process'

@@ -1,4 +1,5 @@
 import { isAllowedPluginGitUrl } from '../installation/plugin-install-lockfile'
+import { branding } from '../../branding'
 import { isQualifiedPluginKey } from '../frames/plugin-tab-key'
 import {
   isOfficialMarketplaceGitSource,
@@ -8,7 +9,7 @@ import {
 
 export const PLUGIN_INSTALL_LINK_MAX_LENGTH = 2048
 const CATALOG_URL_MAX_LENGTH = 512
-const PLUGIN_INSTALL_LINK_PREFIX = 'orca://plugins'
+const PLUGIN_INSTALL_LINK_PREFIX = `${branding.protocol}://plugins`
 
 export const COMMUNITY_MARKETPLACE_GIT_SOURCE: PluginMarketplaceGitSource = {
   kind: 'git',
@@ -25,11 +26,13 @@ export type PluginInstallLink = { pluginKey: string; catalog: PluginInstallLinkC
 
 /** True for anything shaped like a plugin link, valid or not, so a malformed one still reaches the error toast. */
 export function isPluginInstallLinkArgument(value: string): boolean {
-  const lower = value
-    .trim()
-    .slice(0, PLUGIN_INSTALL_LINK_PREFIX.length + 1)
-    .toLowerCase()
-  return lower === `${PLUGIN_INSTALL_LINK_PREFIX}/` || lower === `${PLUGIN_INSTALL_LINK_PREFIX}?`
+  return [PLUGIN_INSTALL_LINK_PREFIX, 'orca://plugins'].some((prefix) => {
+    const lower = value
+      .trim()
+      .slice(0, prefix.length + 1)
+      .toLowerCase()
+    return lower === `${prefix}/` || lower === `${prefix}?`
+  })
 }
 
 export function pluginInstallLinkFromArguments(argv: readonly string[]): string | null {

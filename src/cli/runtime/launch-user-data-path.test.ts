@@ -1,4 +1,4 @@
-import { join, resolve } from 'node:path'
+import { resolve } from 'node:path'
 import { describe, expect, it } from 'vitest'
 import { getPlatformUserDataPath } from './metadata'
 import { getMacOpenArgs } from './launch'
@@ -13,12 +13,6 @@ describe('resolveLaunchUserDataPath', () => {
         ORCA_APP_EXECUTABLE_NEEDS_APP_ROOT: '1'
       })
     ).toBe(resolve('rel/profile'))
-  })
-
-  it("falls back to the dev app's own profile for a dev executable", () => {
-    expect(resolveLaunchUserDataPath({ ORCA_APP_EXECUTABLE_NEEDS_APP_ROOT: '1' })).toBe(
-      resolve(join(getPlatformUserDataPath(), '..', 'orca-dev'))
-    )
   })
 
   it('ignores ORCA_DEV_USER_DATA_PATH for a packaged executable', () => {

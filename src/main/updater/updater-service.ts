@@ -1,3 +1,4 @@
+import { branding } from '../../shared/branding'
 import type { BrowserWindow } from 'electron'
 import type {
   LinuxPackageInstallInstructions,
@@ -48,18 +49,30 @@ export function installRemoteServerUpdate(runtimeId: string): RemoteServerUpdate
 }
 
 export function checkForUpdates(): void {
+  if (!branding.autoUpdate) {
+    return
+  }
   updater.checkForUpdates()
 }
 
 export function checkForUpdatesFromMenu(options?: UpdateCheckOptions): void {
+  if (!branding.autoUpdate) {
+    return
+  }
   updater.checkForUpdatesFromMenu(options)
 }
 
 export function downloadUpdate(): void {
+  if (!branding.autoUpdate) {
+    return
+  }
   updater.downloadUpdate()
 }
 
 export function quitAndInstall(): void {
+  if (!branding.autoUpdate) {
+    return
+  }
   updater.quitAndInstall()
 }
 
@@ -79,6 +92,9 @@ export async function listAvailableReleaseBuilds(
   channel: ReleaseChannel,
   options?: ReleaseBuildListOptions
 ): Promise<ReleaseBuild[]> {
+  if (!branding.autoUpdate) {
+    return []
+  }
   return updater.listAvailableReleaseBuilds(channel, options)
 }
 
@@ -94,5 +110,8 @@ export function setupAutoUpdater(
   mainWindow: BrowserWindow | null,
   opts?: UpdaterSetupOptions
 ): void {
+  if (!branding.autoUpdate) {
+    return
+  }
   updater.setupAutoUpdater(mainWindow, opts)
 }

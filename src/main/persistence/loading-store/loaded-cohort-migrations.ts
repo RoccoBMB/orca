@@ -137,7 +137,7 @@ export class LoadedCohortMigrationOperations {
               ? existing.optedIn
               : resolvedExistedBefore
                 ? null
-                : true,
+                : branding.telemetryDefault,
           installId:
             typeof existing?.installId === 'string' && existing.installId.length > 0
               ? existing.installId
@@ -151,3 +151,4 @@ export class LoadedCohortMigrationOperations {
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value)
 }
+import { branding } from '../../../shared/branding'

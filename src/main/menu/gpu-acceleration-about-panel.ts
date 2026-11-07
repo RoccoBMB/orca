@@ -1,4 +1,5 @@
 import { translateMain } from '../i18n/main-i18n'
+import { branding } from '../../shared/branding'
 export type GpuAccelerationAboutPanelOptions = {
   appName: string
   appVersion: string
@@ -37,7 +38,6 @@ export function describeGpuAcceleration(
 export function createGpuAccelerationAboutPanelOptions({
   appName,
   appVersion,
-  platform,
   gpuFallbackActive,
   gpuFeatureStatus
 }: GpuAccelerationAboutPanelOptions): Electron.AboutPanelOptionsOptions {
@@ -47,6 +47,8 @@ export function createGpuAccelerationAboutPanelOptions({
   return {
     applicationName: appName,
     applicationVersion: appVersion,
-    ...(platform === 'linux' ? { copyright: status } : { credits: status })
+    copyright: branding.attribution,
+    website: branding.sourceUrl,
+    credits: `${branding.attribution}\n${status}`
   }
 }
