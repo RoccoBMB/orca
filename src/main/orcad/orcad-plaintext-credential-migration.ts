@@ -1,3 +1,4 @@
+import { branding } from '../../shared/branding'
 // Seal legacy integration credentials after key loading; gh/glab own their tokens separately.
 import { existsSync, readdirSync, readFileSync } from 'node:fs'
 import { homedir } from 'node:os'
@@ -40,7 +41,7 @@ function encFilesIn(dir: string): string[] {
 
 /** Keep credentials outside disposable ORCA_USER_DATA roots. */
 export function orcadCredentialRoot(): string {
-  return join(homedir(), '.orca')
+  return join(homedir(), branding.homeDirectoryName)
 }
 
 function listPlaintextCredentialTargets(): PlaintextCredentialTarget[] {

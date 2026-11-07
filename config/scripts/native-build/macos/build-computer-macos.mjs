@@ -1,3 +1,5 @@
+import { createRequire } from 'node:module'
+const branding = createRequire(import.meta.url)('../../../../src/shared/branding.json')
 import { spawnSync } from 'node:child_process'
 import { chmodSync, copyFileSync, mkdirSync, rmSync, writeFileSync } from 'node:fs'
 import path from 'node:path'
@@ -14,7 +16,7 @@ const entitlementsPath = path.join(
   'build',
   'entitlements.computer-use.mac.plist'
 )
-const bundleId = process.env.ORCA_COMPUTER_MACOS_BUNDLE_ID ?? 'com.stablyai.orca.computer-use'
+const bundleId = process.env.ORCA_COMPUTER_MACOS_BUNDLE_ID ?? `${branding.appId}.computer-use`
 const displayName = 'Orca Computer Use'
 const signingIdentity = resolveSigningIdentity()
 const universalTriples = ['arm64-apple-macosx', 'x86_64-apple-macosx']
@@ -109,6 +111,8 @@ function infoPlist() {
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+  <key>OrcaParentBundleIdentifier</key>
+  <string>${escapePlist(branding.appId)}</string>
   <key>CFBundleDevelopmentRegion</key>
   <string>en</string>
   <key>CFBundleExecutable</key>

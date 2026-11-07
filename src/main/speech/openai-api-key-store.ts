@@ -1,3 +1,4 @@
+import { branding } from '../../shared/branding'
 import { getSecretStore } from '../../shared/secret-store'
 import { readCredentialFileProtection } from '../credentials/credential-file-protection'
 import {
@@ -16,7 +17,7 @@ const OPENAI_SPEECH_TOKEN_FILE = 'openai-speech-token.enc'
 let cachedOpenAiSpeechApiKey: string | null = null
 
 function getOrcaDir(): string {
-  return join(homedir(), '.orca')
+  return join(homedir(), branding.homeDirectoryName)
 }
 
 function ensureOrcaDir(): void {

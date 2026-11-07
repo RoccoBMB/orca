@@ -119,6 +119,7 @@ const devChannelRepo = isHourlyChannel
       : null
 const branding = require('../src/shared/branding.json')
 const appId = branding.appId
+const brandingAssets = require('./maestro-packaging.cjs').maestroPackaging(branding)
 const featureWallResources = {
   from: 'resources/onboarding/feature-wall',
   to: 'onboarding/feature-wall'
@@ -161,6 +162,7 @@ const emojiShortcodeDatasetResource = {
   to: 'node_modules/emojibase-data/en/shortcodes/emojibase.json'
 }
 const commonExtraResources = [
+  { from: brandingAssets.executableNamePath, to: 'app-executable-name' },
   relayExtraResource,
   orcadTemplateExtraResource,
   orcadTemplateNodeModulesExtraResource,
@@ -262,11 +264,14 @@ module.exports = {
   productName: branding.productName,
   protocols: [{ name: branding.productName, schemes: [branding.protocol] }],
   toolsets: { appimage: '1.0.3' },
-  ...(devChannelBuildVersion
-    ? { extraMetadata: { version: devChannelBuildVersion } }
-    : localBuildVersion
-      ? { extraMetadata: { version: localBuildVersion } }
-      : {}),
+  extraMetadata: {
+    name: branding.cliCommand,
+    ...(devChannelBuildVersion
+      ? { version: devChannelBuildVersion }
+      : localBuildVersion
+        ? { version: localBuildVersion }
+        : {})
+  },
   directories: {
     buildResources: 'resources/build'
   },
@@ -415,6 +420,23 @@ module.exports = {
             'Resources'
           )
         : join(context.appOutDir, 'resources')
+    writeFileSync(
+      join(resourcesDir, 'app-executable-name'),
+      context.electronPlatformName === 'linux' ? branding.cliCommand : branding.productName
+    )
+    const cliDirectory = join(resourcesDir, 'bin')
+    const aliases =
+      context.electronPlatformName === 'win32'
+        ? [
+            ['orca.exe', `${branding.cliCommand}.exe`],
+            ['orca.cmd', `${branding.cliCommand}.cmd`]
+          ]
+        : [[context.electronPlatformName === 'linux' ? 'orca-ide' : 'orca', branding.cliCommand]]
+    for (const [original, alias] of aliases) {
+      if (original !== alias) {
+        require('node:fs').copyFileSync(join(cliDirectory, original), join(cliDirectory, alias))
+      }
+    }
     if (!existsSync(resourcesDir)) {
       throw new Error(`Missing packaged resources directory: ${resourcesDir}`)
     }
@@ -535,7 +557,7 @@ module.exports = {
     }
   },
   win: {
-    executableName: 'Orca',
+    executableName: branding.productName,
     // SignPath signs Windows installers after packaging, so set release publisherName explicitly.
     // Unsigned dev channels omit it or updater signature checks reject dev updates and return to stable.
     // Sign hook signs nothing: it relays transient NSIS uninstaller files to CI SignPath; unset relay env leaves local/dev builds inert.
@@ -587,6 +609,7 @@ module.exports = {
     include: resolve(__dirname, 'nsis', 'orca-installer-hooks.nsh')
   },
   mac: {
+    identity: '-',
     // Alternate rank preserves Finder’s default; one entry per extension because app-builder globs the value as a string.
     fileAssociations: [
       ...MARKDOWN_FILE_EXTENSIONS.map((ext) => ({
@@ -679,14 +702,14 @@ module.exports = {
     // Omit mdx because Ubuntu 24.04 maps it to application/x-genesis-32x-rom; claiming it would need a glob override.
     mimeTypes: ['text/markdown', 'text/csv', 'text/tab-separated-values'],
     // Avoid GNOME Orca’s orca package and /usr/bin/orca names.
-    executableName: 'orca-ide',
+    executableName: branding.cliCommand,
     // Use icns to generate hicolor sizes; some Linux docks ignore a lone 1024px PNG.
     icon: 'resources/build/icon.icns',
     desktop: {
       entry: {
         // Why: Electron reports WM_CLASS=orca for the visible Linux window;
         // GNOME docks need an exact match to group it with orca-ide.desktop.
-        StartupWMClass: 'orca'
+        StartupWMClass: branding.cliCommand
       }
     },
     extraResources: [
@@ -720,8 +743,8 @@ module.exports = {
     artifactName: isLinuxArm64Release ? 'orca-linux-arm64.${ext}' : 'orca-linux.${ext}'
   },
   deb: {
-    packageName: 'orca-ide',
-    artifactName: 'orca-ide_${version}_${arch}.${ext}',
+    packageName: branding.cliCommand,
+    artifactName: `${branding.cliCommand}_${'${version}'}_${'${arch}'}.${'${ext}'}`,
     // Headless Chromium still needs display service; orca serve starts packaged Xvfb when available (ensure-virtual-display.ts).
     depends: [
       ...debElectronRuntimeDependencies,
@@ -734,14 +757,14 @@ module.exports = {
       'xvfb'
     ],
     // Install CLI onto PATH for headless hosts where GUI-triggered CliInstaller can never run.
-    afterInstall: 'resources/linux/packaging/after-install.sh',
-    afterRemove: 'resources/linux/packaging/after-remove.sh',
+    afterInstall: join(brandingAssets.directory, 'after-install.sh'),
+    afterRemove: join(brandingAssets.directory, 'after-remove.sh'),
     // Why: only an AppImage's files can vanish under a running daemon (see appimage-node-runtime.cjs).
     fpm: appImageNodeRuntimeFpmArgs
   },
   rpm: {
-    packageName: 'orca-ide',
-    artifactName: 'orca-ide-${version}.${arch}.${ext}',
+    packageName: branding.cliCommand,
+    artifactName: `${branding.cliCommand}-${'${version}'}.${'${arch}'}.${'${ext}'}`,
     // Why: see deb depends. RPM distros ship Xvfb as xorg-x11-server-Xvfb (there
     // is no `xvfb` package), so the name differs from the deb here.
     depends: [
@@ -753,8 +776,8 @@ module.exports = {
       'xorg-x11-server-Xvfb'
     ],
     // Why: same headless CLI-on-PATH registration as deb; rpm runs these via fpm.
-    afterInstall: 'resources/linux/packaging/after-install.sh',
-    afterRemove: 'resources/linux/packaging/after-remove.sh',
+    afterInstall: join(brandingAssets.directory, 'after-install.sh'),
+    afterRemove: join(brandingAssets.directory, 'after-remove.sh'),
     // Why: only an AppImage's files can vanish under a running daemon (see appimage-node-runtime.cjs).
     fpm: appImageNodeRuntimeFpmArgs
   },
@@ -787,7 +810,7 @@ function chmodUnixCliLaunchers(resourcesDir, electronPlatformName) {
   if (electronPlatformName === 'win32') {
     return
   }
-  for (const launcherName of ['orca', 'orca-ide']) {
+  for (const launcherName of ['orca', 'orca-ide', branding.cliCommand]) {
     const launcherPath = join(resourcesDir, 'bin', launcherName)
     if (!existsSync(launcherPath)) {
       continue

@@ -1,3 +1,4 @@
+import { branding } from '../../../shared/branding'
 import { mkdirSync, readFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { runProcessSync } from '@orca/process-host'
@@ -18,7 +19,7 @@ const DEFAULTS_TIMEOUT_MS = 5_000
 // defaults uses exit 1 for an absent key; other failures leave its presence unknown.
 const DEFAULTS_MISSING_STATUS = 1
 
-const ORCA_BUNDLE_ID = 'com.stablyai.orca'
+const ORCA_BUNDLE_ID = branding.appId
 
 export type PressAndHoldDecision =
   | 'not-macos'

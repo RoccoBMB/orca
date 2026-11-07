@@ -7,6 +7,8 @@
   "telemetryDefault": false,
   "conductorLayoutDefault": true,
   "showDotfilesDefault": false,
-  "attribution": "Maestro — built on Orca. Copyright (c) 2026 Lovecast Inc. Licensed under the MIT License.",
-  "sourceUrl": "https://github.com/stablyai/orca"
+  "attribution": "Maestro \u2014 built on Orca. Copyright (c) 2026 Lovecast Inc. Licensed under the MIT License.",
+  "sourceUrl": "https://github.com/stablyai/orca",
+  "cliCommand": "maestro",
+  "homeDirectoryName": ".maestro"
 }

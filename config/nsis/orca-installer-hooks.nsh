@@ -7,8 +7,8 @@
 ; #10138/#23225: electron-builder’s APP_ASSOCIATE overwrites the extension’s default without backup,
 ; and APP_UNASSOCIATE never restores it. Register only additive ProgID/OpenWithProgids/SupportedTypes
 ; entries; never write the extension’s default handler. Sync extensions with isOsOpenedDocumentName().
-!define MARKDOWN_PROGID "Orca.Markdown"
-!define TABULAR_PROGID "Orca.Tabular"
+!define MARKDOWN_PROGID "${APP_FILENAME}.Markdown"
+!define TABULAR_PROGID "${APP_FILENAME}.Tabular"
 
 !macro ORCA_REGISTER_DOCUMENT_OPEN_WITH EXT PROGID
   WriteRegNone SHELL_CONTEXT "Software\Classes\${EXT}\OpenWithProgids" "${PROGID}"
@@ -59,8 +59,10 @@
     ${endIf}
     nsExec::Exec 'taskkill /F /IM "${APP_EXECUTABLE_FILENAME}" $2'
     Pop $0
-    nsExec::Exec 'taskkill /F /IM "orca-terminal-daemon.exe" $2'
-    Pop $0
+    !if "${PRODUCT_NAME}" == "Orca"
+      nsExec::Exec 'taskkill /F /IM "orca-terminal-daemon.exe" $2'
+      Pop $0
+    !endif
     ; WSL hosts: the detached wsl.exe holders and each host's server keep their distros running. Orca
     ; ends only the holders its profile recorded, each checked by pid, start time and command line.
     ; The last install for this user also stops each recorded host's server in a running distro: the
@@ -116,10 +118,12 @@
     ; Best effort: the exit code never blocks uninstall.
     ; Sync the flag with AGENT_HOOKS_UNINSTALL_FLAG in src/main/startup/agent-hooks-uninstall-preflight.ts.
     !insertmacro ORCA_OTHER_INSTALL_STATE $1
-    ${if} $1 == "none"
-      nsExec::Exec '"$INSTDIR\${APP_EXECUTABLE_FILENAME}" --orca-uninstall-remove-agent-hooks'
-      Pop $0
-    ${endIf}
+    !if "${PRODUCT_NAME}" == "Orca"
+      ${if} $1 == "none"
+        nsExec::Exec '"$INSTDIR\${APP_EXECUTABLE_FILENAME}" --orca-uninstall-remove-agent-hooks'
+        Pop $0
+      ${endIf}
+    !endif
     ; The `orca` command's PATH entry (Settings → Command line) would otherwise outlive the app.
     !insertmacro ORCA_REMOVE_USER_PATH_ENTRY "$INSTDIR\resources\bin"
     Pop $2
@@ -127,8 +131,8 @@
     Pop $0
     ; Give the OS a moment to release the image lock before removing the tree.
     Sleep 500
-    RMDir /r "$LOCALAPPDATA\Orca\daemon-host"
-    RMDir /r "$LOCALAPPDATA\Orca\daemon-host-profiles"
+    RMDir /r "$LOCALAPPDATA\${PRODUCT_NAME}\daemon-host"
+    RMDir /r "$LOCALAPPDATA\${PRODUCT_NAME}\daemon-host-profiles"
   ${endIf}
   ; customInstall rewrites associations on every update, so remove them during uninstallOldVersion too.
   DeleteRegKey SHELL_CONTEXT "Software\Classes\${MARKDOWN_PROGID}"

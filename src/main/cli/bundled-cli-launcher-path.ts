@@ -1,7 +1,8 @@
+import { branding } from '../../shared/branding'
 import { join } from 'node:path'
 
 // Why `orca-ide` on Linux: GNOME Orca ships /usr/bin/orca, so the CLI never claims that name.
-export const LINUX_CLI_COMMAND_NAME = 'orca-ide'
+export const LINUX_CLI_COMMAND_NAME = branding.cliCommand
 
 // Keep path-only callers independent of cli-installer's Electron dependency.
 export function getBundledLauncherPath(
@@ -9,13 +10,13 @@ export function getBundledLauncherPath(
   resourcesPath: string
 ): string | null {
   if (platform === 'darwin') {
-    return join(resourcesPath, 'bin', 'orca')
+    return join(resourcesPath, 'bin', branding.cliCommand)
   }
   if (platform === 'linux') {
     return join(resourcesPath, 'bin', LINUX_CLI_COMMAND_NAME)
   }
   if (platform === 'win32') {
-    return join(resourcesPath, 'bin', 'orca.exe')
+    return join(resourcesPath, 'bin', `${branding.cliCommand}.exe`)
   }
   return null
 }

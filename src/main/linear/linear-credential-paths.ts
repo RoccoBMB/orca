@@ -1,3 +1,4 @@
+import { branding } from '../../shared/branding'
 import { existsSync, mkdirSync } from 'node:fs'
 import { homedir } from 'node:os'
 import { join } from 'node:path'
@@ -5,7 +6,7 @@ import { join } from 'node:path'
 export const LEGACY_WORKSPACE_ID = 'legacy'
 
 function getOrcaDir(): string {
-  return join(homedir(), '.orca')
+  return join(homedir(), branding.homeDirectoryName)
 }
 
 function getLegacyTokenPath(): string {

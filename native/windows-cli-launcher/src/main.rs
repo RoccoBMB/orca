@@ -51,7 +51,13 @@ fn main() {
         ))
     };
 
-    let electron_path = app_directory.join("Orca.exe");
+    let executable_name = std::fs::read_to_string(resources_directory.join("app-executable-name"))
+        .unwrap_or_else(|_| "Orca".to_string());
+    let executable_name = executable_name.trim();
+    if executable_name.is_empty() || executable_name.contains(['/', '\\']) {
+        fail("Invalid packaged application executable name");
+    }
+    let electron_path = app_directory.join(format!("{executable_name}.exe"));
     if !electron_path.is_file() {
         fail(&format!(
             "Unable to locate Orca.exe next to \"{}\"",

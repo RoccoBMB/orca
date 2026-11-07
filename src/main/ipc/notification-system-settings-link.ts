@@ -1,6 +1,7 @@
+import { branding } from '../../shared/branding'
 import { shell } from 'electron'
 
-const MACOS_PACKAGED_BUNDLE_ID = 'com.stablyai.orca'
+const MACOS_PACKAGED_BUNDLE_ID = branding.appId
 const MACOS_NOTIFICATION_SETTINGS_URL =
   'x-apple.systempreferences:com.apple.Notifications-Settings.extension'
 

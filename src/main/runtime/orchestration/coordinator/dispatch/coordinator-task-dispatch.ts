@@ -1,3 +1,4 @@
+import { branding } from '../../../../../shared/branding'
 import type { OrchestrationDb } from '../../db/orchestration-db'
 import type { TaskRow } from '../../db/orchestration-records'
 import { buildDispatchPreamble } from '../../workers/launch/worker-dispatch-preamble'
@@ -102,7 +103,7 @@ export async function dispatchTaskToWorker(params: {
     taskSpec: strippedSpec,
     coordinatorHandle: params.coordinatorHandle,
     workerHandle: targetHandle,
-    devMode: process.env.ORCA_USER_DATA_PATH?.includes('orca-dev'),
+    devMode: process.env.ORCA_USER_DATA_PATH?.includes(`${branding.userDataName}-dev`),
     ...(runtime.getTerminalOrchestrationCliCommand
       ? { cliCommand: runtime.getTerminalOrchestrationCliCommand(targetHandle) }
       : {}),

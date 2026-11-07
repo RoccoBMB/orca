@@ -1,3 +1,4 @@
+import { branding } from '../../shared/branding'
 import { existsSync, mkdirSync, readFileSync, unlinkSync, writeFileSync } from 'node:fs'
 import { homedir } from 'node:os'
 import { join } from 'node:path'
@@ -27,7 +28,7 @@ export function getCredentialError(siteId: string): string | undefined {
 }
 
 function getOrcaDir(): string {
-  return join(homedir(), '.orca')
+  return join(homedir(), branding.homeDirectoryName)
 }
 
 function getSiteFilePath(): string {

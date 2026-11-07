@@ -1,3 +1,4 @@
+import { branding } from '../../shared/branding'
 // Prepare daemon copies in the background so a disappearing FUSE mount cannot sever them.
 import { existsSync } from 'node:fs'
 import { lstat, stat } from 'node:fs/promises'
@@ -22,7 +23,7 @@ export const APPIMAGE_COPY_DAEMON_WAIT_MS = 8_000
 const NICE_PROGRAM_PATHS = ['/usr/bin/nice', '/bin/nice'] as const
 // electron-updater keeps a custom AppImage name unless it carries a version (AppImageUpdater.doInstall).
 const VERSIONED_NAME = /\d+\.\d+\.\d+/
-const GENERATION_EXECUTABLE_NAME = 'orca-ide'
+const GENERATION_EXECUTABLE_NAME = branding.cliCommand
 
 export type AppImageCopyPreExtractionOptions = {
   /** The running AppImage; defaults to this process's validated one. */

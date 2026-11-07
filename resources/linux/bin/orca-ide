@@ -14,7 +14,11 @@ APP_DIR="$(cd "$RESOURCES_DIR/.." >/dev/null 2>&1 && pwd)"
 
 # orca-ide avoids the GNOME Orca name; -f excludes executable directories.
 ELECTRON=""
-for candidate in orca-ide orca Orca; do
+BRANDED_EXECUTABLE=""
+if [ -f "$RESOURCES_DIR/app-executable-name" ]; then
+  BRANDED_EXECUTABLE="$(cat "$RESOURCES_DIR/app-executable-name")"
+fi
+for candidate in "$BRANDED_EXECUTABLE" orca-ide orca Orca; do
 	if [ -f "$APP_DIR/$candidate" ] && [ -x "$APP_DIR/$candidate" ]; then
 		ELECTRON="$APP_DIR/$candidate"
 		break

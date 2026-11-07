@@ -1,3 +1,4 @@
+import { branding } from '../../shared/branding'
 import { spawn, spawnSync } from 'node:child_process'
 import { RuntimeClientError } from './runtime-client-error'
 import { isHostShuttingDown } from '../startup/quit/host-shutdown-state'
@@ -12,7 +13,7 @@ import type {
   ComputerUsePermissionStatusResult
 } from '../../shared/computer-use-permissions-types'
 
-const DEFAULT_COMPUTER_USE_BUNDLE_ID = 'com.stablyai.orca.computer-use'
+const DEFAULT_COMPUTER_USE_BUNDLE_ID = `${branding.appId}.computer-use`
 
 export { getComputerUsePermissionStatus } from './macos-computer-use-permission-status'
 

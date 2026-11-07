@@ -1,3 +1,4 @@
+import { branding } from '../../../shared/branding'
 import type { NodeRuntimeTarget } from '../../../shared/node-runtime-pin'
 import type { SshTarget } from '../../../shared/ssh-types'
 import type { OrcadActivationRecord } from '../activation/orcad-activation-record'
@@ -148,7 +149,7 @@ export async function resolveOrcadMachineHome(
     return {
       loginHome,
       orcadHome: loginHome,
-      userDataDir: joinRemotePath(host, loginHome, '.orca')
+      userDataDir: joinRemotePath(host, loginHome, branding.homeDirectoryName)
     }
   }
   const probe = parseOrcadMachineHomeProbe(
@@ -182,7 +183,7 @@ export async function resolveOrcadMachineHome(
     return {
       loginHome,
       orcadHome: loginHome,
-      userDataDir: joinRemotePath(host, loginHome, '.orca')
+      userDataDir: joinRemotePath(host, loginHome, branding.homeDirectoryName)
     }
   }
   const orcadHome = orcadMachineHomeDir(host, loginHome, decision.machineKey)

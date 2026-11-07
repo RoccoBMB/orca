@@ -1,3 +1,4 @@
+import { branding } from '../../shared/branding'
 import { getSecretStore } from '../../shared/secret-store'
 import { existsSync, readFileSync, rmSync } from 'node:fs'
 import { homedir } from 'node:os'
@@ -16,7 +17,7 @@ type MiniMaxCookieEnvelope = {
 }
 
 function getOrcaDir(): string {
-  return join(homedir(), '.orca')
+  return join(homedir(), branding.homeDirectoryName)
 }
 
 export function getMiniMaxCookiePath(): string {

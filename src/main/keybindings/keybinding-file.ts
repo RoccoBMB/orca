@@ -1,3 +1,4 @@
+import { branding } from '../../shared/branding'
 import { existsSync } from 'node:fs'
 import { join } from 'node:path'
 import {
@@ -26,7 +27,7 @@ import {
 } from './keybinding-file-parser'
 
 export function getUserKeybindingsPath(homePath: string): string {
-  return join(homePath, '.orca', 'keybindings.json')
+  return join(homePath, branding.homeDirectoryName, 'keybindings.json')
 }
 
 export function readKeybindingFile(

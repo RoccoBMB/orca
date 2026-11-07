@@ -1,3 +1,4 @@
+import { branding } from '../../shared/branding'
 import { app } from 'electron'
 import { resolveAppImageRuntimeIdentity } from '../updater/linux-package/appimage-runtime-identity'
 import { prepareAppImageCopyForServe } from '../cli/appimage-serve-preparation'
@@ -6,6 +7,9 @@ import { installLinuxBareOrcaDispatcher } from '../cli/linux-bare-orca-dispatche
 
 /** Headless serve has no renderer to run the normal cli:install flow, so it registers here. */
 export async function registerCliForHeadlessServe(): Promise<void> {
+  if (branding.productName !== 'Orca') {
+    return
+  }
   // Windows registry PATH installation cannot fix this server's existing child environments.
   if (process.platform !== 'darwin' && process.platform !== 'linux') {
     return

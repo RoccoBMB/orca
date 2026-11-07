@@ -1,3 +1,4 @@
+import { branding } from '../../shared/branding'
 // Return real Node-host paths or throw: plausible catch-all directories can be forked as executables.
 import { realpathSync } from 'node:fs'
 import { homedir, tmpdir } from 'node:os'
@@ -17,7 +18,7 @@ export function resolveUserDataPath(): string {
     return explicit
   }
   const xdg = env('XDG_DATA_HOME')
-  return xdg ? join(xdg, 'Orca') : join(homedir(), '.orca')
+  return xdg ? join(xdg, branding.userDataName) : join(homedir(), branding.homeDirectoryName)
 }
 
 function resolveAppDataPath(): string {

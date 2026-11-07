@@ -156,3 +156,7 @@ ci-shards/
 /.build/windows-native-benchmark/
 
 .local/static-analysis-research/
+
+# Maestro local build inputs and disposable CDP driver state.
+/.cache/maestro-packaging/
+/.local/maestro-qa/

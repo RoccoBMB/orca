@@ -1,3 +1,4 @@
+import { branding } from '../../shared/branding'
 import { dirname, join } from 'node:path'
 import { resolveAppImageGenerationOfExecutable } from './appimage-generation-lease'
 import {
@@ -7,7 +8,9 @@ import {
 
 // Generation services lack $APPIMAGE; register the stable launcher so later pruning cannot break it.
 export function resolveGenerationStableLauncherPath(resourcesPath: string): string | null {
-  const generation = resolveAppImageGenerationOfExecutable(join(dirname(resourcesPath), 'orca-ide'))
+  const generation = resolveAppImageGenerationOfExecutable(
+    join(dirname(resourcesPath), branding.cliCommand)
+  )
   if (!generation || !isAppImageStableLauncherReady(generation.cacheRootPath)) {
     return null
   }

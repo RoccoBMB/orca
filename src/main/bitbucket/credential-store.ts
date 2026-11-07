@@ -1,3 +1,4 @@
+import { branding } from '../../shared/branding'
 import { existsSync, mkdirSync, readFileSync, unlinkSync } from 'node:fs'
 import { homedir } from 'node:os'
 import { join } from 'node:path'
@@ -46,7 +47,7 @@ let cachedSecret: BitbucketStoredSecret | null = null
 let credentialError: string | null = null
 
 function getOrcaDir(): string {
-  return join(homedir(), '.orca')
+  return join(homedir(), branding.homeDirectoryName)
 }
 
 function getMetadataPath(): string {

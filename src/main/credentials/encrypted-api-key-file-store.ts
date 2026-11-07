@@ -1,3 +1,4 @@
+import { branding } from '../../shared/branding'
 import { getSecretStore } from '../../shared/secret-store'
 import { existsSync, readFileSync, rmSync } from 'node:fs'
 import { homedir } from 'node:os'
@@ -40,7 +41,7 @@ export function createEncryptedApiKeyFileStore({
   }
 
   function getOrcaDir(): string {
-    return join(homedir(), '.orca')
+    return join(homedir(), branding.homeDirectoryName)
   }
 
   function getApiKeyPath(): string {
