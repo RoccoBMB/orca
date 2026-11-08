@@ -175,7 +175,7 @@ function RightSidebarInner(): React.JSX.Element {
       >
         {conductor ? (
           <>
-            <div className="maestro-panel-titlebar right-sidebar-header-inset right-sidebar-header-drag flex h-10 shrink-0 items-center justify-end border-b border-border px-2">
+            <div className="right-sidebar-header-inset right-sidebar-header-drag flex h-10 shrink-0 items-center justify-end border-b border-border px-2">
               <div className="right-sidebar-header-no-drag">
                 <MaestroReviewButton />
               </div>

@@ -128,7 +128,7 @@ export function SourceControlPanelReady(props: SourceControlPanelReadyProps) {
           </div>
         )}
         {conductor ? (
-          <details className="maestro-git-actions">
+          <details>
             <summary className="px-4 py-2 text-xs text-muted-foreground">
               {translate(
                 'auto.components.right.sidebar.source.control.panel.panel.ready.58f2a1fefc',

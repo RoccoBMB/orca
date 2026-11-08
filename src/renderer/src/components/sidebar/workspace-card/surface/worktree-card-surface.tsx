@@ -117,9 +117,7 @@ export function WorktreeCardSurface({ card }: { card: WorktreeCardController }):
       style={cardStyle}
     >
       {card.leadingContent && (
-        <span className="maestro-workspace-identity flex shrink-0 items-center gap-2 pl-3">
-          {card.leadingContent}
-        </span>
+        <span className="flex shrink-0 items-center gap-2 pl-3">{card.leadingContent}</span>
       )}
       {isDeleting && (
         <div className="absolute inset-0 z-10 flex items-center justify-center rounded-lg bg-background/50 backdrop-blur-[1px]">
