@@ -28,3 +28,12 @@ The chat root (`.native-chat-appearance`) redefines these steps as ratios of the
 - **Theme overrides:** plugin themes can set `--chat-bold-foreground`, `--chat-muted-foreground`, `--chat-inline-code`, `--chat-inline-code-foreground`, `--chat-code-block`, `--chat-selection` and `--chat-selection-foreground`. They feed `text-chat-foreground-faint`, `bg-chat-inline-code-surface`, `bg-chat-code-surface` and the chat root's `::selection`, so use those rather than reading the theme tokens directly.
 - **Selection** inside the chat is the link hue mixed into the canvas (close to the system highlight), with selected text in the full foreground so every role stays 4.5:1. Don't add per-component `selection:` colors in transcript text.
 - **State colours:** warnings use `text-chat-warning`; diff lines use `text-chat-diff-added` / `text-chat-diff-removed`. They are mixed toward the foreground so they pass text contrast in light and dark. Don't use raw palette colours (`text-yellow-500`) or the git decoration tokens for text on a tinted row.
+
+## Maestro presentation
+
+Maestro builds select 16px/full defaults through the shared appearance resolver;
+ordinary Orca builds retain 14px/comfortable. Rendering, settings, zoom and resets
+must use that resolver rather than duplicate defaults. Explicit smaller values
+remain valid. The optional Maestro theme stays in `main.css` and selects chat
+surfaces by `data-native-chat-scheme`, including when a terminal-matching chat uses
+a different scheme from the app.

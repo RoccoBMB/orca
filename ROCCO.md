@@ -91,8 +91,8 @@ off to retain Orca's standard per-project sidebar and grouping options.
   shows each workspace once; project grouping remains available by turning
   Conductor sections off in Settings → General → Maestro.
 - Section settings and host-qualified assignments persist through Orca's settings
-  store. Compact 32px rows retain activity, inline non-zero diff stats, age, keyboard
-  navigation, rename and context menus. Project and branch details live in the
+  store. Maestro appearance uses 38px rows (32px when disabled), with activity,
+  inline non-zero diff stats, age, keyboard navigation, rename and context menus. Project and branch details live in the
   title hover card; empty status sections are hidden.
 - The top bar reuses the workspace context menu. Open in remembers the last app,
   discovers supported installed editors, supports configured custom commands,
@@ -102,6 +102,17 @@ off to retain Orca's standard per-project sidebar and grouping options.
   opens the existing review/checks panel. Git actions disappear for folders.
 - Files hide dotfiles initially. Files menu → Show Dotfiles persists per workspace.
   Home-directory projects and large non-git folders offer Pick a repository instead.
+
+## Conductor appearance
+
+General → Maestro controls the optional warm appearance, status grouping and hidden
+navigation/status-bar entries. Chat UI settings share Maestro's 16px/full defaults
+with rendering and reset controls; explicit smaller/comfortable choices persist.
+Open-in remembers the last target and shows its native icon where available. The
+right panel keeps Git actions/Commit and sync in expandable controls and provides a
+resizable Setup/Run/Terminal split. Home-directory files require an explicit reveal.
+
+Implementation, rendered evidence and revert guidance: [NOTES-look.md](docs/maestro/NOTES-look.md).
 
 ## Upstream updates
 

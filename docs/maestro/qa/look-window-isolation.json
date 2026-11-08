@@ -1,0 +1,23 @@
+{
+  "before": {
+    "home": "/private/tmp/maestro-look-ui-home",
+    "userData": "/private/tmp/maestro-look-ui-data",
+    "windows": [
+      {
+        "visible": false,
+        "focused": false
+      }
+    ]
+  },
+  "after": {
+    "home": "/private/tmp/maestro-look-ui-home",
+    "userData": "/private/tmp/maestro-look-ui-data",
+    "windows": [
+      {
+        "visible": false,
+        "focused": false
+      }
+    ]
+  },
+  "pageErrors": []
+}

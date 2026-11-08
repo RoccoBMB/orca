@@ -1,0 +1,20 @@
+{
+  "passed": true,
+  "untrackedDiff": {
+    "added": 21,
+    "removed": 30
+  },
+  "geometry": {
+    "viewport": [1440, 900],
+    "dock": {
+      "x": 1091,
+      "y": 864,
+      "width": 349,
+      "height": 36,
+      "top": 864,
+      "right": 1440,
+      "bottom": 900,
+      "left": 1091
+    }
+  }
+}

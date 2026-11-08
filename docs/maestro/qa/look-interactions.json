@@ -1,0 +1,84 @@
+[
+  {
+    "name": "navigation and workspace presentation",
+    "passed": true,
+    "evidence": {
+      "nav": "Rocco's Mac\nDashboard\nHome\nCreate\nSearch",
+      "headings": ["Done\n1", "In review\n1", "In progress\n3", "Backlog\n1", "Canceled\n1"],
+      "rows": [
+        {
+          "height": 38,
+          "text": "✅\nCompleted task\n1h",
+          "font": "14px"
+        },
+        {
+          "height": 38,
+          "text": "🎨\nBoffo branding\n1h",
+          "font": "14px"
+        },
+        {
+          "height": 38,
+          "text": "🦉\nConductor.build clone\n+21\n−30",
+          "font": "14px"
+        },
+        {
+          "height": 38,
+          "text": "🦉\nmaestro-look-ui-home\n27m",
+          "font": "14px"
+        },
+        {
+          "height": 38,
+          "text": "🟣\nMeta Leads Workspace\n1h",
+          "font": "14px"
+        },
+        {
+          "height": 38,
+          "text": "🖥️\nMac window rotation\n1h",
+          "font": "14px"
+        },
+        {
+          "height": 38,
+          "text": "🎮\nFix win98 games\n1h",
+          "font": "14px"
+        }
+      ],
+      "bar": "🦉\nreverse-engineer-v1\nfeature/workspace-0\nfeature/workspace-0",
+      "statusBars": 0
+    }
+  },
+  {
+    "name": "tool disclosure uses existing expandable group",
+    "passed": true,
+    "evidence": {
+      "before": "false",
+      "after": "false"
+    }
+  },
+  {
+    "name": "assistant copy and menu",
+    "passed": true,
+    "evidence": {
+      "copyButtons": 6
+    }
+  },
+  {
+    "name": "commit controls remain available",
+    "passed": true,
+    "evidence": "Commit input opens in collapsed controls"
+  },
+  {
+    "name": "Open-in menu and remembered icon",
+    "passed": true,
+    "evidence": ["VS Code", "Cursor", "Terminal", "Finder", "Customize apps…"]
+  },
+  {
+    "name": "dedicated terminal dock and resize",
+    "passed": true,
+    "evidence": {
+      "before": 3,
+      "after": 4,
+      "height": 276.7578125,
+      "resized": 314.53125
+    }
+  }
+]

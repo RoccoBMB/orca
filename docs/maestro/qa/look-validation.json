@@ -1,0 +1,43 @@
+{
+  "sourceCommit": "4ea5aeab654b421cacdbdf6d5b1a18319ec81423",
+  "build": {
+    "command": "pnpm build:maestro",
+    "passed": true,
+    "codesignDeepStrictPassed": true,
+    "packagedDaemonPtyPassed": true,
+    "appAsarSha256": "bac499c7c4017689cf6c836cafa8331d9fe7f0162c84380a9a7f98a17abf04b0"
+  },
+  "typecheckPassed": true,
+  "focused": {
+    "files": 14,
+    "passed": 39,
+    "failed": 0
+  },
+  "rendererChecks": {
+    "interactions": 6,
+    "settingsAndHome": 4,
+    "diffTotalsAndCollapsedDock": 1,
+    "allPassed": true
+  },
+  "screenshotsPixelDimensions": {
+    "look-dark.png": [1440, 900],
+    "look-home-folder.png": [1440, 900],
+    "look-main-1440.png": [1440, 900],
+    "look-main-2000.png": [2000, 1300],
+    "look-mixed-theme.png": [1440, 900],
+    "look-open-in.png": [1440, 900],
+    "look-settings.png": [1440, 900],
+    "look-terminal-dock.png": [2880, 1800]
+  },
+  "cssViewports": [
+    [1440, 900],
+    [2000, 1300]
+  ],
+  "windowIsolation": "look-window-isolation.json",
+  "review": "Independent Codex review completed; findings fixed and follow-ups reviewed.",
+  "limits": [
+    "Native focus/visible-window checks intentionally paused",
+    "Windows/Linux packaging, real SSH hosts and provider authentication not exercised",
+    "Broad branch gate has inherited compiler bailouts and related-test time limit; see look-check-changed.txt"
+  ]
+}

@@ -1,0 +1,84 @@
+$ node config/scripts/preflight/changed-checks/check-changed.mjs --base=14635e6ed5 --maxWorkers=2 --timeout=5
+check:changed: 74 changed file(s) since 14635e6ed5 (14635e6ed5); running 31 check(s).
+✓ typecheck (tsconfig.node, tsconfig.tc.web, tsconfig.tc.cli) (4.5s)
+
+✗ format (0.1s)
+Checking formatting...
+
+docs/maestro/qa/look-final-interactions.json (1ms)
+docs/maestro/qa/look-interactions.json (1ms)
+docs/maestro/qa/look-window-isolation.json (2ms)
+
+Format issues found in above 3 files. Run without `--check` to fix.
+Finished in 26ms on 62 files using 10 threads.
+✓ oxlint (0.5s)
+✓ daemon-blocking-call-ratchet (1.9s)
+✓ direct-link-open-ratchet (6.1s)
+✓ changed-code quality (49.5s)
+✓ flaky-test-pattern-ratchet (38.8s)
+✓ host-list-render-ratchet (0.4s)
+✓ focus-read-ratchet (3.0s)
+✓ layout-writer-ratchets (4.2s)
+… 61.9s elapsed; running: unit tests 60.0s, legacy-relay-fence-ratchet 7.4s, main-sync-spawn-ratchet 3.6s
+✓ main-sync-spawn-ratchet (4.5s)
+✓ legacy-relay-fence-ratchet (8.7s)
+✓ memo-translate-subscription-ratchet (0.2s)
+✓ path-literal-ratchet (0.4s)
+✓ max-lines-ratchet (2.7s)
+✓ repo-host-read-ratchet (2.0s)
+✓ runtime-electron-ratchet (3.8s)
+
+✗ react-compiler-compat-ratchet (7.7s)
+::error::src/renderer/src/components/maestro/use-maestro-sidebar-reveal.ts: 2 bailout(s), baseline allows 0.
+  src/renderer/src/components/maestro/use-maestro-sidebar-reveal.ts:94 (BuildHIR::lowerExpression) Handle UpdateExpression to variables captured within lambdas.
+    Fix: Fix or isolate the pattern so the function compiles.
+  src/renderer/src/components/maestro/use-maestro-sidebar-reveal.ts:30 Existing memoization could not be preserved
+    Fix: Make the useMemo/useCallback deps list exactly what the callback reads.
+
+react-compiler-compat ratchet failed (8847 files, 7.5s).
+✓ unproven-pty-retirement-ratchet (1.4s)
+✓ ts-nocheck-ratchet (2.2s)
+✓ workspace-record-read-ratchet (0.9s)
+✓ worktree-id-composer-ratchet (1.7s)
+✓ rpc params catalog (1.6s)
+✓ localization coverage (4.1s)
+✓ localization catalogs (13.6s)
+✓ test file runners (21.1s)
+✓ compiled :has() restyle scope (3.9s)
+… 121.9s elapsed; running: unit tests 120.0s, localization extraction 42.3s, import boundaries 8.2s
+✓ localization extraction (52.9s)
+
+✗ dead design-system classes (5.4s)
+src/renderer/src/components/right-sidebar/source-control/panel/panel-ready.tsx:131:30: error shadcn(no-unknown-classes): "maestro-git-actions" is not a class this project's Tailwind knows, so no CSS is generated for it. Fix the spelling, or declare it with @utility in src/renderer/src/assets/main.css. See docs/STYLEGUIDE.md for the role each token and primitive plays.
+src/renderer/src/components/right-sidebar/index.tsx:178:28: error shadcn(no-unknown-classes): "maestro-panel-titlebar" is not a class this project's Tailwind knows, so no CSS is generated for it. Fix the spelling, or declare it with @utility in src/renderer/src/assets/main.css. See docs/STYLEGUIDE.md for the role each token and primitive plays.
+src/renderer/src/components/sidebar/workspace-card/surface/worktree-card-surface.tsx:120:25: error shadcn(no-unknown-classes): "maestro-workspace-identity" is not a class this project's Tailwind knows, so no CSS is generated for it. Fix the spelling, or declare it with @utility in src/renderer/src/assets/main.css. See docs/STYLEGUIDE.md for the role each token and primitive plays.
+✓ import boundaries (25.3s)
+… 182.0s elapsed; running: unit tests 180.0s
+… 242.0s elapsed; running: unit tests 240.0s
+… 302.0s elapsed; running: unit tests 300.0s
+
+✗ unit tests (300.7s)
+
+ RUN  v5.0.5 /Users/roccobombardieri/Coding Projects/Personal Projects/Orca-look
+
+ ❯ |node-runtime| src/main/runtime/orchestration-message-delivery-identity.test.ts (5 tests | 1 failed) 1375ms
+   ❯ STA-4325 message and delivery identity (5)
+     × keeps the built CLI count and Delivery output aligned with isolated SQLite state 554ms
+(node:96460) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/roccobombardieri/Coding%20Projects/Personal%20Projects/Orca-look/src/shared/orcad-artifacts.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/roccobombardieri/Coding Projects/Personal Projects/Orca-look/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+Timed out after 5 min; pass --timeout=<minutes> to extend.
+
+✗ 4 of 31 check(s) failed in 302.6s: format, react-compiler-compat-ratchet, dead design-system classes, unit tests
+[ELIFECYCLE] Command failed with exit code 1.
+
+Follow-up verification:
+- The three unused marker classes were removed; oxlint --config config/oxlint-dead-classes.json src/renderer passed (exit 0).
+- Generated QA JSON was formatted; the final format check runs before push.
+- use-maestro-sidebar-reveal.ts SHA-256 is fc1c9eee9e96b41076c5c16a6aee5180e88140577587f68e7ca2bd82d1e7003e in BOTH 14635e6ed5 and this branch. Its two React compiler bailouts are inherited.
+- Broad unit selection timed out at five minutes. A Maestro-branded out/cli artifact also caused an integration mismatch in that broad run; the explicit parity run used the ordinary Orca CLI and preserved all 1,212 baseline passes (zero regressions; 31 baseline failures).
+- Final focused selection: 14 files, 39 assertions passed, zero failures.
+- All changed-code quality scans, full typecheck and localization checks passed in the branch run above.
+- Final pre-push gate uses the ordinary Orca CLI and a two-minute per-step cap; its complete output is retained in ignored .local/look/check-changed-before-push.log. No whole-suite pass is claimed.

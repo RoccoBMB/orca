@@ -1,5 +1,17 @@
 # Changelog
 
+## 2026-11-08 — Conductor appearance for Maestro
+
+- Added a Maestro-only warm theme, larger chat defaults, status sidebar avatars/diffs,
+  underline session tabs, transcript summaries/metadata and the reordered composer.
+- Moved PR actions above the right panel; added native Open-in icons, labeled file
+  tabs, a retained terminal dock, collapsed home files and reversible navigation/
+  status-bar settings. Ordinary Orca defaults and the 148-file parity set remain intact.
+- Implementation and QA/reproduction: `docs/maestro/NOTES-look.md` and
+  `docs/maestro/qa/look-*`. No installed app was replaced.
+- Revert this task's commits beginning at `a6a1d821ab`, newest first. Appearance and
+  sidebar sections can also be disabled independently in General → Maestro.
+
 ## 2026-11-07 — Orca unit-test parity with explicit Maestro builds
 
 - Restored Orca defaults for source execution and ordinary unit tests through

@@ -1,0 +1,36 @@
+[
+  {
+    "name": "text size controls preserve Maestro defaults and explicit 14",
+    "passed": true,
+    "evidence": {
+      "default": 16,
+      "increased": 17,
+      "explicit": {
+        "fontSize": 14,
+        "width": "comfortable"
+      }
+    }
+  },
+  {
+    "name": "mixed light app and dark terminal chat",
+    "passed": true,
+    "evidence": {
+      "scheme": "dark",
+      "background": "lab(7.78929 0.448503 1.75044)",
+      "foreground": "color(srgb 1 1 1)"
+    }
+  },
+  {
+    "name": "Maestro settings restore hidden navigation and status bar",
+    "passed": true,
+    "evidence": ["Tasks", "Automations", "Orca Mobile", "Onboarding checklist"]
+  },
+  {
+    "name": "home directory is named, guarded and collapsed",
+    "passed": true,
+    "evidence": {
+      "id": "5cac64ee-3c31-44b2-97f0-17fd35221b86::/tmp/maestro-look-ui-home",
+      "name": "maestro-look-ui-home"
+    }
+  }
+]

@@ -1,0 +1,21 @@
+{
+  "files": 14,
+  "passed": 39,
+  "failed": 0,
+  "selection": [
+    "src/shared/native-chat/native-chat-appearance-settings.test.ts",
+    "src/renderer/src/components/maestro/MaestroSidebar.test.tsx",
+    "src/renderer/src/components/maestro/MaestroTranscript.test.tsx",
+    "src/renderer/src/components/maestro/MaestroTerminalDock.test.tsx",
+    "src/renderer/src/components/maestro/maestro-sidebar-groups.test.ts",
+    "src/renderer/src/components/maestro/maestro-workspace-status.test.ts",
+    "src/renderer/src/components/native-chat/NativeChatToolRun.test.tsx",
+    "src/renderer/src/components/native-chat/NativeChatMessageList.turn-status.test.tsx",
+    "src/renderer/src/components/native-chat/NativeChatComposerToolbar.test.tsx",
+    "src/renderer/src/components/native-chat/NativeChatMessageList.turn-membership.test.tsx",
+    "src/renderer/src/components/native-chat/NativeChatJumpToLatest.test.tsx",
+    "src/renderer/src/components/tab-bar/TabBarItemRow.test.tsx",
+    "src/renderer/src/components/native-chat/appearance/native-chat-appearance-write.test.ts",
+    "src/main/external-editors/home-directory-path.test.ts"
+  ]
+}

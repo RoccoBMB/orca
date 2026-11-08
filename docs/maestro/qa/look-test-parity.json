@@ -1,0 +1,32 @@
+{
+  "baseline": {
+    "files": 148,
+    "passed": 1212,
+    "failed": 110,
+    "pending": 89,
+    "assertions": 1411
+  },
+  "current": {
+    "files": 148,
+    "passed": 1365,
+    "failed": 31,
+    "pending": 15,
+    "assertions": 1411
+  },
+  "transitions": {
+    "failed->failed": 31,
+    "passed->passed": 1212,
+    "skipped->skipped": 15,
+    "failed->passed": 79,
+    "skipped->passed": 74
+  },
+  "regressions": [],
+  "inputs": {
+    "base-tests.json": "48b3c9068f5955e4f64cc816c8d0614099c967e5617419c5929d6f4288bbff97",
+    "base-existing.txt": "c68958c8f7755fe353a2ba3f2b071a8782888044e08f566112c3e443cba1ff8d"
+  },
+  "resultSha256": "5ab2e42dd15b3f52b88a26582dc4423d9054617051cfc0ff616f2f300c8785f0",
+  "testedSourceCommit": "4ea5aeab654b421cacdbdf6d5b1a18319ec81423",
+  "parityFilesUnmodified": true,
+  "note": "All baseline passes preserved. All 31 current failures were already failed in the baseline; no skipped-to-failed transitions."
+}
