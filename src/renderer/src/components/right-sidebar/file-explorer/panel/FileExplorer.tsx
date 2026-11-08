@@ -100,7 +100,10 @@ function FileExplorerFiles(): React.JSX.Element {
     rightSidebarOpen,
     worktreePath
   })
-  const repoName = activeRepo?.displayName ?? (worktreePath ? basename(worktreePath) : '')
+  const repoName =
+    conductor && activeRepo?.displayName === '~' && worktreePath
+      ? basename(worktreePath)
+      : (activeRepo?.displayName ?? (worktreePath ? basename(worktreePath) : ''))
   const activeRepoSupportsGit = activeRepo ? isGitRepoKind(activeRepo) : false
 
   const expanded = useMemo(
