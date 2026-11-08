@@ -705,7 +705,7 @@ module.exports = {
       entry: {
         // Why: Electron reports WM_CLASS=orca for the visible Linux window;
         // GNOME docks need an exact match to group it with orca-ide.desktop.
-        StartupWMClass: branding.linuxCliCommand
+        StartupWMClass: branding.cliCommand
       }
     },
     extraResources: [
@@ -740,7 +740,7 @@ module.exports = {
   },
   deb: {
     packageName: branding.linuxCliCommand,
-    artifactName: `${branding.cliCommand}_${'${version}'}_${'${arch}'}.${'${ext}'}`,
+    artifactName: `${branding.linuxCliCommand}_${'${version}'}_${'${arch}'}.${'${ext}'}`,
     // Headless Chromium still needs display service; orca serve starts packaged Xvfb when available (ensure-virtual-display.ts).
     depends: [
       ...debElectronRuntimeDependencies,
@@ -760,7 +760,7 @@ module.exports = {
   },
   rpm: {
     packageName: branding.linuxCliCommand,
-    artifactName: `${branding.cliCommand}-${'${version}'}.${'${arch}'}.${'${ext}'}`,
+    artifactName: `${branding.linuxCliCommand}-${'${version}'}.${'${arch}'}.${'${ext}'}`,
     // Why: see deb depends. RPM distros ship Xvfb as xorg-x11-server-Xvfb (there
     // is no `xvfb` package), so the name differs from the deb here.
     depends: [

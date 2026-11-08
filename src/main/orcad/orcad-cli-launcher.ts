@@ -31,14 +31,17 @@ export async function prepareOrcadCliLauncher(): Promise<void> {
     return
   }
   const userDataPath = resolveUserDataPath()
-  const binDir = join(userDataPath, 'cli', `${branding.cliCommand}-bin`)
+  const binDir = join(userDataPath, 'cli', branding.cliBinDirectoryName)
   if (process.platform === 'win32') {
     launcherPath = await prepareWindowsLauncher(installRoot, entry, userDataPath, binDir)
     return
   }
   const script = buildUnixCliLauncher(process.execPath, entry, userDataPath, 'node')
   await mkdir(binDir, { recursive: true })
-  const names = [branding.cliCommand]
+  const names =
+    process.platform === 'linux'
+      ? [...new Set([branding.cliCommand, branding.linuxCliCommand])]
+      : [branding.cliCommand]
   for (const name of names) {
     const path = join(binDir, name)
     const current = await readFile(path, 'utf8').catch(() => null)

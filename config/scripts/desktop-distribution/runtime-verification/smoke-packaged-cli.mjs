@@ -30,7 +30,7 @@ function getPackagedCliPath(appDir) {
   if (process.platform === 'win32') {
     return join(appDir, 'resources', 'bin', `${branding.cliCommand}.exe`)
   }
-  return join(appDir, 'resources', 'bin', branding.cliCommand)
+  return join(appDir, 'resources', 'bin', branding.linuxCliCommand)
 }
 
 const appDir = resolve(readAppDirArg(process.argv.slice(2)))

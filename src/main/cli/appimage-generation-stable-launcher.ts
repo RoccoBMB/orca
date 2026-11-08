@@ -9,7 +9,7 @@ import {
 // Generation services lack $APPIMAGE; register the stable launcher so later pruning cannot break it.
 export function resolveGenerationStableLauncherPath(resourcesPath: string): string | null {
   const generation = resolveAppImageGenerationOfExecutable(
-    join(dirname(resourcesPath), branding.cliCommand)
+    join(dirname(resourcesPath), branding.linuxCliCommand)
   )
   if (!generation || !isAppImageStableLauncherReady(generation.cacheRootPath)) {
     return null
