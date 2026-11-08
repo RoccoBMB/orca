@@ -100,23 +100,26 @@ export function MaestroTerminalDock() {
           <ChevronDown className="size-3.5" />
         </Button>
         {(['setup', 'run', 'terminal'] as const).map((id) => (
-          <Button
+          <span
             key={id}
-            size="sm"
-            variant="ghost"
-            aria-pressed={tab === id}
             className={tab === id ? 'maestro-dock-tab-active' : 'text-muted-foreground'}
-            onClick={() => {
-              setTab(id)
-              setCollapsed(false)
-            }}
           >
-            {id === 'setup'
-              ? translate('auto.components.maestro.MaestroTerminalDock.ec91b24737', 'Setup')
-              : id === 'run'
-                ? translate('auto.components.maestro.MaestroTerminalDock.8e1855145e', 'Run')
-                : translate('auto.components.maestro.MaestroTerminalDock.6fb93576c5', 'Terminal')}
-          </Button>
+            <Button
+              size="sm"
+              variant="ghost"
+              aria-pressed={tab === id}
+              onClick={() => {
+                setTab(id)
+                setCollapsed(false)
+              }}
+            >
+              {id === 'setup'
+                ? translate('auto.components.maestro.MaestroTerminalDock.ec91b24737', 'Setup')
+                : id === 'run'
+                  ? translate('auto.components.maestro.MaestroTerminalDock.8e1855145e', 'Run')
+                  : translate('auto.components.maestro.MaestroTerminalDock.6fb93576c5', 'Terminal')}
+            </Button>
+          </span>
         ))}
         <Button
           variant="ghost"

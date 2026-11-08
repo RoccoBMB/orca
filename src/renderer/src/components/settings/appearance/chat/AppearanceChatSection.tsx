@@ -1,4 +1,5 @@
 import {
+  DEFAULT_NATIVE_CHAT_FONT_SIZE,
   normalizeNativeChatAppearanceSettings,
   resetNativeChatAppearanceSettings,
   resolveNativeChatAppearanceSettings,
@@ -75,7 +76,7 @@ export function AppearanceChatSection({
           label={entries.textSize.title}
           description={matching ? chatTerminalControlledHint() : entries.textSize.description}
           value={appearance.fontSize}
-          defaultValue={matching ? undefined : 14}
+          defaultValue={matching ? undefined : DEFAULT_NATIVE_CHAT_FONT_SIZE}
           disabled={matching}
           disabledReason={chatTerminalControlledTooltip()}
           min={12}

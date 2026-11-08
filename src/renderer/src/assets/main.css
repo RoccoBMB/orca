@@ -3842,8 +3842,12 @@ body:has([data-contextual-tour-target='tab-create-menu'][data-state='open'])
 
 /* Maestro's optional Conductor presentation uses the same semantic roles as Orca. */
 :root[data-maestro-appearance] {
-  --maestro-warm-surface: oklch(0.985 0.003 75);
-  --maestro-user-surface: oklch(0.971 0.008 75);
+  --maestro-warm-surface-light: oklch(0.985 0.003 75);
+  --maestro-user-surface-light: oklch(0.971 0.008 75);
+  --maestro-warm-surface-dark: oklch(0.205 0.005 75);
+  --maestro-user-surface-dark: oklch(0.27 0.012 75);
+  --maestro-warm-surface: var(--maestro-warm-surface-light);
+  --maestro-user-surface: var(--maestro-user-surface-light);
   --maestro-status-done: oklch(0.7 0.06 50);
   --maestro-status-review: var(--status-success);
   --maestro-status-progress: var(--status-warning);
@@ -3860,8 +3864,8 @@ body:has([data-contextual-tour-target='tab-create-menu'][data-state='open'])
   --chat-content-max-width: 65rem;
 }
 :root.dark[data-maestro-appearance] {
-  --maestro-warm-surface: oklch(0.205 0.005 75);
-  --maestro-user-surface: oklch(0.27 0.012 75);
+  --maestro-warm-surface: var(--maestro-warm-surface-dark);
+  --maestro-user-surface: var(--maestro-user-surface-dark);
   --maestro-status-done: oklch(0.75 0.06 50);
   --primary: oklch(0.92 0.008 75);
   --primary-foreground: oklch(0.19 0.004 75);
@@ -3873,6 +3877,14 @@ body:has([data-contextual-tour-target='tab-create-menu'][data-state='open'])
   --chat-user-surface: var(--maestro-user-surface);
   --chat-user-border: transparent;
   --chat-composer-surface: var(--maestro-warm-surface);
+}
+:root[data-maestro-appearance] .native-chat-appearance[data-native-chat-scheme='light'] {
+  --maestro-warm-surface: var(--maestro-warm-surface-light);
+  --maestro-user-surface: var(--maestro-user-surface-light);
+}
+:root[data-maestro-appearance] .native-chat-appearance[data-native-chat-scheme='dark'] {
+  --maestro-warm-surface: var(--maestro-warm-surface-dark);
+  --maestro-user-surface: var(--maestro-user-surface-dark);
 }
 :root[data-maestro-appearance]
   [data-contextual-tour-target='sidebar-navigation']

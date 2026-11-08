@@ -1,13 +1,14 @@
+import { branding } from '../branding'
 import type { NativeChatProviderChoices } from './native-chat-providers'
 
 export type NativeChatAppearanceSettings = {
   /** Absent follows the IDE font. */
   fontFamily?: string
-  /** Chat text size in px, 12–20; absent = 14. */
+  /** Chat text size in px, 12–20; absent = the product default. */
   fontSize?: number
   /** Code text size in px, 10–18; absent = 12. */
   codeFontSize?: number
-  /** Transcript and composer width; absent = comfortable (46rem). */
+  /** Transcript and composer width; absent = the product default. */
   width?: 'comfortable' | 'wide' | 'full'
   /** Chat contrast, 50–150; absent = 100. */
   contrast?: number
@@ -45,7 +46,8 @@ export function nativeChatShowsTurnDiffSummary(
   return settings?.nativeChatTurnDiffSummary !== false
 }
 
-export const DEFAULT_NATIVE_CHAT_FONT_SIZE = 14
+export const DEFAULT_NATIVE_CHAT_FONT_SIZE = branding.conductorLayoutDefault ? 16 : 14
+export const DEFAULT_NATIVE_CHAT_WIDTH = branding.conductorLayoutDefault ? 'full' : 'comfortable'
 export const DEFAULT_NATIVE_CHAT_CODE_FONT_SIZE = 12
 export const DEFAULT_NATIVE_CHAT_CONTRAST = 100
 
@@ -63,7 +65,12 @@ export function normalizeNativeChatAppearanceSettings(
   }
   const fontFamily =
     'fontFamily' in value && typeof value.fontFamily === 'string' ? value.fontFamily.trim() : ''
-  const fontSize = normalizeSize('fontSize' in value ? value.fontSize : undefined, 12, 20, 14)
+  const fontSize = normalizeSize(
+    'fontSize' in value ? value.fontSize : undefined,
+    12,
+    20,
+    DEFAULT_NATIVE_CHAT_FONT_SIZE
+  )
   const codeFontSize = normalizeSize(
     'codeFontSize' in value ? value.codeFontSize : undefined,
     10,
@@ -74,7 +81,11 @@ export function normalizeNativeChatAppearanceSettings(
   const matchTerminalInterface =
     'matchTerminalInterface' in value && value.matchTerminalInterface === true
   const width =
-    'width' in value && (value.width === 'wide' || value.width === 'full') ? value.width : undefined
+    'width' in value &&
+    (value.width === 'comfortable' || value.width === 'wide' || value.width === 'full') &&
+    value.width !== DEFAULT_NATIVE_CHAT_WIDTH
+      ? value.width
+      : undefined
   const normalized: NativeChatAppearanceSettings = {
     ...Object.fromEntries(
       Object.entries(value).filter(
@@ -107,7 +118,7 @@ export function resolveNativeChatAppearanceSettings(
     fontFamily: normalized?.fontFamily ?? '',
     fontSize: normalized?.fontSize ?? DEFAULT_NATIVE_CHAT_FONT_SIZE,
     codeFontSize: normalized?.codeFontSize ?? DEFAULT_NATIVE_CHAT_CODE_FONT_SIZE,
-    width: normalized?.width ?? 'comfortable',
+    width: normalized?.width ?? DEFAULT_NATIVE_CHAT_WIDTH,
     contrast: normalized?.contrast ?? DEFAULT_NATIVE_CHAT_CONTRAST,
     matchTerminalInterface: normalized?.matchTerminalInterface ?? false
   }
