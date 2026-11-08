@@ -1,3 +1,4 @@
+import { maestroFeatureVisible } from '../../../shared/maestro-settings'
 import { useTranslation } from 'react-i18next'
 import { ModalBoundary, OverlayBoundary } from './app-root-surface-boundaries'
 import { OnboardingLanguageLoading } from '../components/onboarding/OnboardingLanguageLoading'
@@ -131,7 +132,9 @@ export const AppRootSurfaces = memo(function AppRootSurfaces(props: {
   const voiceEnabled = useAppStore(selectAppRootSurfaceVoiceEnabled)
   const petEnabled = useAppStore(selectAppRootSurfacePetEnabled)
   const telemetryOptedIn = useAppStore(selectAppRootSurfaceTelemetryOptedIn)
-  const statusBarVisible = useAppStore((s) => s.statusBarVisible)
+  const statusBarVisible = useAppStore(
+    (s) => s.statusBarVisible && maestroFeatureVisible(s.settings, 'showStatusBar')
+  )
   const persistedUIReady = useAppStore((s) => s.persistedUIReady)
   const petVisible = useAppStore((s) => s.petVisible)
   const dictationState = useAppStore((s) => s.dictationState)

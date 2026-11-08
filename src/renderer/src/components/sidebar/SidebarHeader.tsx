@@ -50,8 +50,9 @@ const SidebarHeader = React.memo(function SidebarHeader({
   const acknowledgeIntro = React.useCallback(() => {
     void updateSettings?.({ agentsSidebarIntroShown: true })
   }, [updateSettings])
-  const sidebarTitle =
-    groupBy === 'repo' && !conductorSidebar
+  const sidebarTitle = conductorSidebar
+    ? translate('components.maestro.myWorkspaces', 'My workspaces')
+    : groupBy === 'repo' && !conductorSidebar
       ? translate('dashboard.sidebar.projects', 'Projects')
       : translate('dashboard.sidebar.workspaces', 'Workspaces')
   const activityLabel = translate(
@@ -80,7 +81,12 @@ const SidebarHeader = React.memo(function SidebarHeader({
         {/* WorktreeList portals the collapse-all toggle here; it owns the rendered project rows. */}
         <div ref={projectsCollapseTarget} className="flex shrink-0 items-center empty:hidden" />
       </div>
-      <div className="flex shrink-0 items-center gap-1">
+      <div
+        className={cn(
+          'flex shrink-0 items-center gap-1',
+          conductorSidebar && 'maestro-sidebar-header-actions'
+        )}
+      >
         <Popover
           open={introOpen}
           onOpenChange={(open) => {

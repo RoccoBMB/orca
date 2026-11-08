@@ -44,9 +44,18 @@ export function MaestroOpenIn({ worktree, repo }: { worktree: Worktree; repo: Re
     )
   )
   const { maestro, updateMaestro } = useMaestroSettings()
+  const [icons, setIcons] = useState<Record<string, string>>({})
   const [installed, setInstalled] = useState<OpenInApplication[]>([])
   useEffect(() => {
     let live = true
+    void window.api.shell
+      .listOpenInApplicationIcons?.()
+      .then((icons) => {
+        if (live) {
+          setIcons(icons)
+        }
+      })
+      .catch(() => {})
     void window.api.shell
       .listInstalledOpenInApplications?.()
       .then((apps) => {
@@ -113,7 +122,9 @@ export function MaestroOpenIn({ worktree, repo }: { worktree: Worktree; repo: Re
     }
   }
   const icon = (entry: (typeof entries)[number]) =>
-    entry.id === 'terminal' ? (
+    icons[entry.id] ? (
+      <img src={icons[entry.id]} alt="" className="size-4 object-contain" />
+    ) : entry.id === 'terminal' ? (
       <Terminal className="size-4" />
     ) : entry.target === 'file-manager' ? (
       <FolderOpen className="size-4" />

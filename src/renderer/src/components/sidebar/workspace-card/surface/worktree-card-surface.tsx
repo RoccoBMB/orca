@@ -8,7 +8,10 @@ import { useIsSleepingWorktree } from '../../workspace-actions/sleep/use-worktre
 import { getWorktreeCardFrameGeometry } from './worktree-card-frame-geometry'
 import type { WorktreeCardController } from '../controller/use-worktree-card-controller'
 import { DEFAULT_WORKSPACE_CARD_TEMPLATE } from '../template/default-workspace-card'
-import { COMPACT_WORKSPACE_CARD_TEMPLATE } from '../template/compact-workspace-card'
+import {
+  MAESTRO_WORKSPACE_CARD_TEMPLATE,
+  COMPACT_WORKSPACE_CARD_TEMPLATE
+} from '../template/compact-workspace-card'
 import { renderWorkspaceCardTemplate } from '../template/render-workspace-card-template'
 
 export function WorktreeCardSurface({ card }: { card: WorktreeCardController }): React.JSX.Element {
@@ -50,7 +53,11 @@ export function WorktreeCardSurface({ card }: { card: WorktreeCardController }):
     getWorktreeCardFrameGeometry({ flushSurface, contentIndent, statusLane })
   const { content: parentCardContent, frame } = renderWorkspaceCardTemplate(
     card,
-    card.compactRow ? COMPACT_WORKSPACE_CARD_TEMPLATE : DEFAULT_WORKSPACE_CARD_TEMPLATE,
+    card.leadingContent
+      ? MAESTRO_WORKSPACE_CARD_TEMPLATE
+      : card.compactRow
+        ? COMPACT_WORKSPACE_CARD_TEMPLATE
+        : DEFAULT_WORKSPACE_CARD_TEMPLATE,
     (templateFrame) => {
       const { parentContentMarginLeft } = geometryFor(templateFrame.statusLane)
       return parentContentMarginLeft < 0
@@ -89,6 +96,7 @@ export function WorktreeCardSurface({ card }: { card: WorktreeCardController }):
         isRuntimeDisconnected && !isDeleting && 'opacity-60'
       )}
       data-worktree-card-surface="true"
+      data-maestro-compact={card.compactRow || undefined}
       data-current={isActiveSurface || undefined}
       data-worktree-card-active={
         isActiveSurface && !isLineageDropTarget ? activeSurfaceVariant : undefined
@@ -108,6 +116,11 @@ export function WorktreeCardSurface({ card }: { card: WorktreeCardController }):
       aria-busy={isDeleting}
       style={cardStyle}
     >
+      {card.leadingContent && (
+        <span className="maestro-workspace-identity flex shrink-0 items-center gap-2 pl-3">
+          {card.leadingContent}
+        </span>
+      )}
       {isDeleting && (
         <div className="absolute inset-0 z-10 flex items-center justify-center rounded-lg bg-background/50 backdrop-blur-[1px]">
           <div className="inline-flex items-center gap-1.5 rounded-full bg-background px-3 py-1 text-[11px] font-medium text-foreground shadow-sm border border-border/50">

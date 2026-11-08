@@ -1,3 +1,5 @@
+import { listOpenInApplicationIcons } from './open-in-application-icons'
+import { ipcMain } from 'electron'
 import { access } from 'node:fs/promises'
 import { join } from 'node:path'
 import { homedir } from 'node:os'
@@ -58,4 +60,9 @@ export async function listInstalledOpenInApplications(): Promise<OpenInApplicati
     }
   }
   return applications
+}
+
+export function registerOpenInApplicationHandlers(): void {
+  ipcMain.handle('shell:listInstalledOpenInApplications', () => listInstalledOpenInApplications())
+  ipcMain.handle('shell:listOpenInApplicationIcons', () => listOpenInApplicationIcons(MAC_EDITORS))
 }

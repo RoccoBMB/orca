@@ -50,8 +50,10 @@ export function NativeChatWorkingStatus({
   workedSeconds,
   verdict,
   expanded = false,
-  onToggleExpanded
+  onToggleExpanded,
+  summary
 }: {
+  summary?: { tools: number; messages: number }
   startedAt: number | null
   workedSeconds?: number | null
   verdict?: AgentTurnOutcome
@@ -65,7 +67,15 @@ export function NativeChatWorkingStatus({
     elapsedSeconds,
     verdict
   })
-  const label = turnStatusLabel(key, duration)
+  const summaryLabel =
+    summary && workedSeconds != null
+      ? `${translate('components.native-chat.tool.callCount', '{{count}} tool calls', { count: summary.tools, defaultValue_one: '{{count}} tool call' })}, ${translate('components.maestro.chat.messageCount', '{{count}} messages', { count: summary.messages, defaultValue_one: '{{count}} message' })}`
+      : null
+  const label = summaryLabel
+    ? key === 'workedFor'
+      ? summaryLabel
+      : `${summaryLabel} · ${turnStatusLabel(key, duration)}`
+    : turnStatusLabel(key, duration)
   // `tabular-nums`: the live clock reflows its own label every second otherwise.
   const className =
     'flex min-h-8 items-center gap-1 border-b border-border text-sm text-chat-foreground-faint tabular-nums'
@@ -84,6 +94,7 @@ export function NativeChatWorkingStatus({
       <button
         type="button"
         data-native-chat-turn-status="settled"
+        data-maestro-turn-summary={summaryLabel ? true : undefined}
         className={cn(
           className,
           'w-full text-left hover:text-chat-foreground-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring'
@@ -95,8 +106,9 @@ export function NativeChatWorkingStatus({
         aria-expanded={expanded}
         onClick={onToggleExpanded}
       >
+        {summaryLabel ? caret : null}
         <span>{label}</span>
-        {caret}
+        {summaryLabel ? null : caret}
       </button>
     )
   }

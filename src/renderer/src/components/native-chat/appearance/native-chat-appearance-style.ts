@@ -1,3 +1,4 @@
+import { conductorAppearanceEnabled } from '../../../../../shared/maestro-settings'
 import './native-chat-appearance.css'
 import { useMemo, type CSSProperties } from 'react'
 import { useShallow } from 'zustand/react/shallow'
@@ -44,6 +45,7 @@ export function selectNativeChatAppearanceSettings(
   settings: Partial<GlobalSettings> | null | undefined
 ) {
   return {
+    maestro: settings?.maestro,
     theme: settings?.theme,
     terminalThemeDark: settings?.terminalThemeDark,
     terminalThemeLight: settings?.terminalThemeLight,
@@ -151,7 +153,11 @@ export function nativeChatAppearanceStyle(
   measuredColumnWidthPx?: number | null,
   systemPrefersDark = getSystemPrefersDark()
 ): NativeChatAppearanceStyle {
-  const appearance = resolveNativeChatAppearanceSettings(settings?.nativeChatAppearance)
+  const appearance = resolveNativeChatAppearanceSettings(
+    conductorAppearanceEnabled(settings)
+      ? { fontSize: 16, width: 'full', ...settings?.nativeChatAppearance }
+      : settings?.nativeChatAppearance
+  )
   const { width } = appearance
   const matching = appearance.matchTerminalInterface
   const terminalFontSize = settings?.terminalFontSize ?? 14

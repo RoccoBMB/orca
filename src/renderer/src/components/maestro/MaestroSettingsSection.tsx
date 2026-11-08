@@ -14,7 +14,10 @@ import {
   DialogHeader,
   DialogTitle
 } from '@/components/ui/dialog'
-import { conductorSidebarEnabled } from '../../../../shared/maestro-settings'
+import {
+  conductorAppearanceEnabled,
+  conductorSidebarEnabled
+} from '../../../../shared/maestro-settings'
 import { branding } from '../../../../shared/branding'
 import license from '../../../../../LICENSE?raw'
 import { useMaestroSettings } from './use-maestro-settings'
@@ -23,7 +26,8 @@ import { translate } from '@/i18n/i18n'
 export function MaestroSettingsSection() {
   useUiLanguageRevision()
   const enabled = useAppStore((s) => conductorSidebarEnabled(s.settings))
-  const { updateMaestro } = useMaestroSettings()
+  const appearance = useAppStore((s) => conductorAppearanceEnabled(s.settings))
+  const { maestro, updateMaestro } = useMaestroSettings()
   const [aboutOpen, setAboutOpen] = useState(false)
   const upstreamName = translate('auto.App.5096cbbc86', 'Orca')
   return (
@@ -43,6 +47,70 @@ export function MaestroSettingsSection() {
         checked={enabled}
         onChange={() => updateMaestro({ conductorSidebar: !enabled })}
       />
+      <SettingsSwitchRow
+        label={translate(
+          'auto.components.maestro.MaestroSettingsSection.2559dc422e',
+          'Conductor appearance'
+        )}
+        description={translate(
+          'auto.components.maestro.MaestroSettingsSection.9ff963bc93',
+          'Warm surfaces, spacious chat and underline tabs.'
+        )}
+        checked={appearance}
+        onChange={() => updateMaestro({ conductorAppearance: !appearance })}
+      />
+      {(
+        [
+          [
+            'showOnboarding',
+            translate('components.maestro.settings.onboarding', 'Onboarding checklist')
+          ],
+          ['showTasks', translate('components.maestro.settings.tasks', 'Tasks')],
+          ['showAutomations', translate('components.maestro.settings.automations', 'Automations')],
+          ['showMobile', translate('components.maestro.settings.mobile', 'Orca Mobile')],
+          [
+            'showStatusBar',
+            translate('components.maestro.settings.statusBar', 'Bottom status bar and usage meters')
+          ]
+        ] as const
+      ).map(([key, label]) => (
+        <SettingsSwitchRow
+          key={key}
+          label={label}
+          checked={maestro?.[key] === true}
+          onChange={async () => {
+            const show = maestro?.[key] !== true
+            if (show) {
+              const state = useAppStore.getState()
+              if (key === 'showStatusBar') {
+                state.setStatusBarVisible(true)
+              }
+              if (key === 'showTasks') {
+                await state.updateSettingsOrThrow({ showTasksButton: true })
+              }
+              if (key === 'showAutomations') {
+                await state.updateSettingsOrThrow({ showAutomationsButton: true })
+              }
+              if (key === 'showMobile') {
+                await state.updateSettingsOrThrow({ showMobileButton: true })
+              }
+            }
+            await updateMaestro({ [key]: show })
+          }}
+        />
+      ))}
+      <Button
+        variant="outline"
+        size="sm"
+        onClick={() =>
+          useAppStore.getState().openSettingsTarget({ pane: 'accounts', repoId: null })
+        }
+      >
+        {translate(
+          'auto.components.maestro.MaestroSettingsSection.9eabd40bea',
+          'Accounts and usage'
+        )}
+      </Button>
       <p className="text-xs text-muted-foreground">
         {translate(
           'auto.components.maestro.MaestroSettingsSection.d038b03b29',

@@ -14662,7 +14662,12 @@
             "aiVaultSessionHistory": "Agents",
             "folderWorkspaces": "Attached worktrees",
             "parentPrChecks": "PR Checks",
-            "creatingWorkspace": "Available when the workspace is ready"
+            "creatingWorkspace": "Available when the workspace is ready",
+            "75388875cd": "Search files",
+            "24c1aedbfe": "Review",
+            "ea02fbd57a": "Changes",
+            "822f19d33b": "All files",
+            "956ec81713": "Workspace panel"
           },
           "right": {
             "panel": {
@@ -14924,6 +14929,18 @@
                   "1ea9ba37aa": "Pick an agent in Settings -> Git -> Source Control AI."
                 },
                 "completeMergeFailed": "Complete merge failed"
+              },
+              "panel": {
+                "panel": {
+                  "ready": {
+                    "62f394a6de": "files changed",
+                    "ef65708faf": "uncommitted files",
+                    "58f2a1fefc": "Git actions"
+                  },
+                  "content": {
+                    "4863764072": "Commit and sync"
+                  }
+                }
               }
             }
           },
@@ -15353,6 +15370,15 @@
             "createInProgress": "Create PR in progress...",
             "workspaceHostUnresolved": "The workspace host is unresolved. Refresh the workspace and retry.",
             "branchDiscoveryFailed": "Branch discovery failed."
+          },
+          "file": {
+            "explorer": {
+              "panel": {
+                "FileExplorer": {
+                  "9986269605": "Show home directory files"
+                }
+              }
+            }
           }
         }
       },
@@ -19111,6 +19137,14 @@
             "failed": "Chat could not be started.",
             "unknown": "Chat connection could not be confirmed.",
             "retry": "Retry"
+          },
+          "messages": {
+            "actions": {
+              "NativeChatAgentControls": {
+                "6bf7eca4bc": "Scroll to message",
+                "5ebbb244d7": "Message actions"
+              }
+            }
           }
         }
       },
@@ -19484,7 +19518,10 @@
           "d038b03b29": "Automatic updates are disabled. Build a new version locally to update Maestro.",
           "a0ee737c8e": "Group by status and your own sections. Turn off to use Orca’s project grouping.",
           "0dd0342921": "Conductor sidebar sections",
-          "7898f12dee": "Maestro"
+          "7898f12dee": "Maestro",
+          "9eabd40bea": "Accounts and usage",
+          "9ff963bc93": "Warm surfaces, spacious chat and underline tabs.",
+          "2559dc422e": "Conductor appearance"
         },
         "MaestroSidebar": {
           "a901fe5d72": "New section",
@@ -19503,7 +19540,8 @@
           "389c865f13": "Create draft PR",
           "b62de08085": "Create PR",
           "aa0be0be48": "Pull request actions",
-          "ecf59f211c": "Workspace actions"
+          "ecf59f211c": "Workspace actions",
+          "40be3690f7": "Toggle right panel"
         },
         "MaestroWorkspaceMenu": {
           "f42c375ec7": "Automatic",
@@ -19528,6 +19566,22 @@
               "c304e6ce1e": "Could not save Maestro settings"
             }
           }
+        },
+        "MaestroTerminalDock": {
+          "6c02bea157": "Configure setup",
+          "350af2f832": "No setup command configured.",
+          "5c070eb920": "Workspace setup",
+          "c29ab57329": "Open terminal",
+          "17c55827b2": "Open another terminal",
+          "ca8f1e43d6": "Open workspace terminal",
+          "6fb93576c5": "Terminal",
+          "8e1855145e": "Run",
+          "ec91b24737": "Setup",
+          "19f8d1bbfb": "Collapse terminal panel",
+          "1245c75489": "Expand terminal panel"
+        },
+        "MaestroTabRenameButton": {
+          "ab7dda92d1": "Rename tab"
         }
       }
     },
@@ -21541,6 +21595,21 @@
           "action": "Got it"
         }
       }
+    },
+    "maestro": {
+      "chat": {
+        "messageCount_one": "{{count}} message",
+        "messageCount_other": "{{count}} messages"
+      },
+      "settings": {
+        "onboarding": "Onboarding checklist",
+        "tasks": "Tasks",
+        "automations": "Automations",
+        "mobile": "Orca Mobile",
+        "statusBar": "Bottom status bar and usage meters"
+      },
+      "nextUnread": "Next unread",
+      "myWorkspaces": "My workspaces"
     }
   },
   "dashboardPopout": {

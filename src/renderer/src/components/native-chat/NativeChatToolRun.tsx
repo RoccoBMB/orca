@@ -1,8 +1,10 @@
+import { useAppStore } from '@/store'
+import { conductorAppearanceEnabled } from '../../../../shared/maestro-settings'
 import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { NativeChatExpandable } from './NativeChatExpandable'
 import { useNativeChatDisclosure } from './native-chat-disclosure-store'
-import { Check } from 'lucide-react'
+import { Check, ChevronRight } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { translate } from '@/i18n/i18n'
 import {
@@ -87,6 +89,7 @@ export function NativeChatToolRun({
   asides?: NativeChatToolRunAsides
   runtimeContext?: RuntimeFileOperationArgs | null
 }): React.JSX.Element | null {
+  const conductor = useAppStore((s) => conductorAppearanceEnabled(s.settings))
   // This row owns the language subscription for its tool, diff, and task labels.
   useTranslation()
   const spacing = followsProse ? 'mt-2' : undefined
@@ -149,7 +152,9 @@ export function NativeChatToolRun({
   const askSubject = hasAskCall ? nativeChatAskRunSubject(asks) : null
   const showsHeader = !hasAskCall || callCount > 0
   // A single command is more recognizable than its category summary.
-  const runSentence = nativeChatToolRunSentence(headerBlocks, { live })
+  const runSentence = conductor
+    ? `${translate('components.native-chat.tool.callCount', '{{count}} tool calls', { count: callCount, defaultValue_one: '{{count}} tool call' })}, ${translate('components.maestro.chat.messageCount', '{{count}} messages', { count: asideCount, defaultValue_one: '{{count}} message' })}`
+    : nativeChatToolRunSentence(headerBlocks, { live })
   // The card sits inside the run's own scroll box, so that box has to move too.
   const revealDiff = useMemo(
     () =>
@@ -194,7 +199,14 @@ export function NativeChatToolRun({
             aria-live="polite"
             data-native-chat-tool-run-state={live ? 'live' : 'settled'}
           >
-            {settledHeaderIcon ? (
+            {conductor ? (
+              <ChevronRight
+                className={cn(
+                  'mt-1 size-3.5 shrink-0 text-chat-foreground-faint transition-transform duration-200 ease-out',
+                  open && 'rotate-90'
+                )}
+              />
+            ) : settledHeaderIcon ? (
               <span className="flex h-[1lh] shrink-0 items-center">
                 <NativeChatToolRunIcon
                   iconName={settledHeaderIcon}

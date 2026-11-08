@@ -1,3 +1,5 @@
+import { useAppStore } from '@/store'
+import { conductorAppearanceEnabled } from '../../../../shared/maestro-settings'
 import { NativeChatComposerDraftNotSavedIcon } from './NativeChatComposerDraftNotSavedIcon'
 import { memo } from 'react'
 import { ArrowUp, CornerDownRight, ListEnd, Mic, Plus, Save, Square } from 'lucide-react'
@@ -97,6 +99,7 @@ export const NativeChatComposerActions = memo(function NativeChatComposerActions
   launchPrompt = false
 }: NativeChatComposerActionsProps): React.JSX.Element {
   useUiLanguageRevision()
+  const conductor = useAppStore((s) => conductorAppearanceEnabled(s.settings))
   const mode = useNativeChatPlanMode({
     surface: sessionOptionsSurface,
     snapshot: sessionOptionsSnapshot,
@@ -332,9 +335,23 @@ export const NativeChatComposerActions = memo(function NativeChatComposerActions
   ]
   return (
     <NativeChatComposerToolbar
-      left={left}
+      left={
+        conductor
+          ? [
+              ...right.filter((item) => item.id === 'model'),
+              ...left.filter((item) => item.id !== 'attach')
+            ]
+          : left
+      }
       focusComposer={focusComposer}
-      right={right}
+      right={
+        conductor
+          ? [
+              ...right.filter((item) => item.id !== 'model'),
+              ...left.filter((item) => item.id === 'attach')
+            ]
+          : right
+      }
       primary={
         steerPreview && !editSession && (steerPreview === 'steer-queued' || !sendDisabled) ? (
           <Button

@@ -11,6 +11,7 @@ import type { ShellPathExistence } from '../../shared/path-existence-batch'
 import type { PreloadApi } from '../api-types'
 
 export const shellApi = {
+  listOpenInApplicationIcons: () => ipcRenderer.invoke('shell:listOpenInApplicationIcons'),
   listInstalledOpenInApplications: () =>
     ipcRenderer.invoke('shell:listInstalledOpenInApplications'),
   isHomeDirectory: (path: string, ownerHostId: ExecutionHostId): Promise<boolean> =>

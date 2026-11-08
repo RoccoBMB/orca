@@ -164,3 +164,6 @@ ci-shards/
 /.local/maestro-qa/
 /.local/test-parity/
 /NOTES-test-regressions.md
+
+/.local/look/
+/NOTES-look.md

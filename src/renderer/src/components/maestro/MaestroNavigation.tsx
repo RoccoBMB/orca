@@ -1,7 +1,8 @@
 import { useUiLanguageRevision } from '@/i18n/use-ui-language-revision'
-import { Home, LayoutDashboard, Plus } from 'lucide-react'
+import { Home, LayoutDashboard, Plus, CircleUserRound } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { HostCombobox } from '@/components/host-picker/HostCombobox'
+import { conductorAppearanceEnabled } from '../../../../shared/maestro-settings'
 import { useMemo } from 'react'
 import { expandEquivalentExecutionHostIds } from '../../../../shared/managed-orcad-execution-host'
 import { getHostDisplayLabelOverrides } from '../../../../shared/host-setting-overrides'
@@ -13,6 +14,7 @@ import { translate } from '@/i18n/i18n'
 
 export function MaestroNavigation() {
   useUiLanguageRevision()
+  const appearance = useAppStore((s) => conductorAppearanceEnabled(s.settings))
   const repos = useAppStore((s) => s.repos)
   const sshTargetLabels = useAppStore((s) => s.sshTargetLabels)
   const sshConnectionStates = useAppStore((s) => s.sshConnectionStates)
@@ -48,8 +50,17 @@ export function MaestroNavigation() {
   return (
     <>
       <HostCombobox
+        leading={appearance ? <CircleUserRound className="size-4 shrink-0" /> : undefined}
         value={scope}
-        options={hostScopeOptions}
+        options={
+          appearance && hostScopeOptions.length === 2
+            ? hostScopeOptions.map((host) =>
+                host.id === 'all'
+                  ? { ...host, label: hostScopeOptions.find((entry) => entry.id !== 'all')!.label }
+                  : host
+              )
+            : hostScopeOptions
+        }
         size="sidebar"
         variant="sidebar"
         placeholder={translate('auto.components.maestro.MaestroNavigation.0fd2c6b21f', 'All hosts')}

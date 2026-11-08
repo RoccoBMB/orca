@@ -10,6 +10,12 @@ export const MAESTRO_STATUSES = [
 ] as const
 
 export const MaestroSettingsSchema = z.object({
+  conductorAppearance: z.boolean().optional(),
+  showOnboarding: z.boolean().optional(),
+  showTasks: z.boolean().optional(),
+  showAutomations: z.boolean().optional(),
+  showMobile: z.boolean().optional(),
+  showStatusBar: z.boolean().optional(),
   conductorSidebar: z.boolean().optional(),
   sections: z
     .array(
@@ -37,4 +43,17 @@ export function conductorSidebarEnabled(
   settings: { maestro?: MaestroSettings } | null | undefined
 ): boolean {
   return settings?.maestro?.conductorSidebar ?? branding.conductorLayoutDefault
+}
+
+export function conductorAppearanceEnabled(
+  settings: { maestro?: MaestroSettings } | null | undefined
+): boolean {
+  return settings?.maestro?.conductorAppearance ?? branding.conductorLayoutDefault
+}
+
+export function maestroFeatureVisible(
+  settings: { maestro?: MaestroSettings } | null | undefined,
+  feature: 'showOnboarding' | 'showTasks' | 'showAutomations' | 'showMobile' | 'showStatusBar'
+): boolean {
+  return !conductorAppearanceEnabled(settings) || settings?.maestro?.[feature] === true
 }

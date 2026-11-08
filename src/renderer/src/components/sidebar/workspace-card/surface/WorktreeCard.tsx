@@ -43,6 +43,7 @@ const WorktreeCard = React.memo(function WorktreeCard({
   affiliateListMode = false,
   statusPrDisplay = null,
   compactRow = false,
+  leadingContent,
   trailingContent
 }: WorktreeCardProps): React.JSX.Element {
   const card = useWorktreeCardController({
@@ -82,6 +83,7 @@ const WorktreeCard = React.memo(function WorktreeCard({
     affiliateListMode,
     statusPrDisplay,
     compactRow,
+    leadingContent,
     trailingContent
   })
 

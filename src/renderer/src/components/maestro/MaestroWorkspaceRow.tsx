@@ -1,3 +1,7 @@
+import { basename } from '@/lib/path'
+import { conductorAppearanceEnabled } from '../../../../shared/maestro-settings'
+import { GitBranch } from 'lucide-react'
+import { RepoIconGlyph } from '@/components/repo/repo-icon'
 import { useUiLanguageRevision } from '@/i18n/use-ui-language-revision'
 import { useShallow } from 'zustand/react/shallow'
 import { useAppStore } from '@/store'
@@ -32,6 +36,9 @@ export function MaestroWorkspaceRow({
   revealHighlight?: boolean
 }) {
   useUiLanguageRevision()
+  const appearance = useAppStore((s) => conductorAppearanceEnabled(s.settings))
+  const label =
+    appearance && worktree.displayName === '~' ? basename(worktree.path) : worktree.displayName
   const now = useNow(60_000)
   const active = useAppStore((s) =>
     isActiveSidebarWorkspace(worktree, {
@@ -92,7 +99,15 @@ export function MaestroWorkspaceRow({
       }}
     >
       <WorktreeCard
-        worktree={worktree}
+        worktree={label === worktree.displayName ? worktree : { ...worktree, displayName: label }}
+        leadingContent={
+          appearance ? (
+            <>
+              <RepoIconGlyph repoIcon={repo?.repoIcon} className="size-4 shrink-0" />
+              <GitBranch className="size-3.5 shrink-0 text-muted-foreground" />
+            </>
+          ) : undefined
+        }
         repo={repo}
         isActive={active}
         isActiveSurface={isPreviewActive ?? active}
@@ -105,7 +120,7 @@ export function MaestroWorkspaceRow({
           <div className="ml-auto flex shrink-0 items-center gap-2 pr-2 text-2xs text-muted-foreground">
             {stats && (stats.added > 0 || stats.removed > 0) ? (
               <span
-                className="flex gap-1.5 tabular-nums"
+                className="flex gap-1.5 font-mono tabular-nums"
                 aria-label={translate(
                   'auto.components.maestro.MaestroWorkspaceRow.ef5798569a',
                   '{{value0}} lines added, {{value1}} lines removed',
@@ -116,23 +131,25 @@ export function MaestroWorkspaceRow({
                 <span className="text-[color:var(--git-decoration-deleted)]">−{stats.removed}</span>
               </span>
             ) : null}
-            <time
-              className="ml-auto tabular-nums"
-              dateTime={new Date(timestamp).toISOString()}
-              aria-label={
-                worktree.createdAt
-                  ? translate(
-                      'auto.components.maestro.MaestroWorkspaceRow.c1aa534eeb',
-                      'Workspace age'
-                    )
-                  : translate(
-                      'auto.components.maestro.MaestroWorkspaceRow.c463faa545',
-                      'Last activity'
-                    )
-              }
-            >
-              {formatShortTimeAgo(timestamp, now)}
-            </time>
+            {(!stats || (stats.added === 0 && stats.removed === 0)) && (
+              <time
+                className="ml-auto tabular-nums"
+                dateTime={new Date(timestamp).toISOString()}
+                aria-label={
+                  worktree.createdAt
+                    ? translate(
+                        'auto.components.maestro.MaestroWorkspaceRow.c1aa534eeb',
+                        'Workspace age'
+                      )
+                    : translate(
+                        'auto.components.maestro.MaestroWorkspaceRow.c463faa545',
+                        'Last activity'
+                      )
+                }
+              >
+                {formatShortTimeAgo(timestamp, now)}
+              </time>
+            )}
           </div>
         }
       />

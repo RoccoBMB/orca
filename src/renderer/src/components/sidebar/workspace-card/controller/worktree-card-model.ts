@@ -59,6 +59,7 @@ export type WorktreeCardProps = {
   affiliateListMode?: boolean
   statusPrDisplay?: WorktreeCardPrDisplay | null
   compactRow?: boolean
+  leadingContent?: React.ReactNode
   trailingContent?: React.ReactNode
 }
 

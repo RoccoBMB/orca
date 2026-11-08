@@ -1,6 +1,8 @@
 import { MaestroFolderNotice } from '@/components/maestro/MaestroFolderNotice'
 import { branding } from '../../../../../../shared/branding'
-import React, { useCallback, useMemo } from 'react'
+import { conductorAppearanceEnabled } from '../../../../../../shared/maestro-settings'
+import { Button } from '@/components/ui/button'
+import React, { useCallback, useMemo, useState } from 'react'
 import { useAppStore } from '@/store/index'
 import { runtimeEnvironmentIdOrLocalUnlessTwin } from '@/lib/workspace/ownership/worktree-runtime-owner'
 import { getWorkspaceFileRevealOwner } from '@/lib/reveal-in-file-manager'
@@ -50,6 +52,9 @@ import { useUiLanguageRevision } from '@/i18n/use-ui-language-revision'
 /** Coordinates scoped navigation while retaining the actual worktree root for file operations and runtime routing. */
 function FileExplorerFiles(): React.JSX.Element {
   useUiLanguageRevision()
+  const conductor = useAppStore((s) => conductorAppearanceEnabled(s.settings))
+  const [homePath, setHomePath] = useState<string | null>(null)
+  const [shownHomePath, setShownHomePath] = useState<string | null>(null)
   const explorerView = useAppStore((s) => s.rightSidebarExplorerView)
   const setRightSidebarExplorerView = useAppStore((s) => s.setRightSidebarExplorerView)
   const searchPanel = useFileSearchPanel(explorerView)
@@ -272,6 +277,7 @@ function FileExplorerFiles(): React.JSX.Element {
           onToggleDotfiles={handleToggleDotfiles}
         />
         <MaestroFolderNotice
+          onHomeDirectory={setHomePath}
           path={worktreePath}
           owner={openInOwner}
           supportsGit={activeRepoSupportsGit}
@@ -322,28 +328,44 @@ function FileExplorerFiles(): React.JSX.Element {
         </FileExplorerQueryStrip>
         {/* Layer Files/Contents in one body slot to retain heavy virtualized panes at full height. */}
         <div className="relative min-h-0 flex-1 overflow-hidden">
-          <FileExplorerFilesTreePane
-            displayRootPath={displayRootPath}
-            activeRepo={activeRepo}
-            worktreePath={worktreePath}
-            explorerView={explorerView}
-            activeFileId={activeFileId}
-            hasNameFilter={hasNameFilter}
-            nameFilterSource={nameFilterSource}
-            nameFilterFiles={nameFilterFiles}
-            handleExpandNameFilterDir={handleExpandNameFilterDir}
-            tree={tree}
-            selection={selection}
-            paneState={paneState}
-            rowProjection={rowProjection}
-            ignoredByRelativePath={ignoredByRelativePath}
-            rowExpandedPaths={rowExpandedPaths}
-            visibleRowCount={visibleRowCount}
-            handleExplorerBackgroundContextMenuCapture={handleExplorerBackgroundContextMenuCapture}
-            handleExplorerBackgroundDoubleClick={handleExplorerBackgroundDoubleClick}
-            wslHostUnavailable={wslHostUnavailable}
-            stoppedWslHost={stoppedWslHost}
-          />
+          {conductor && homePath === worktreePath && shownHomePath !== worktreePath ? (
+            <Button
+              variant="ghost"
+              size="sm"
+              className="m-3"
+              onClick={() => setShownHomePath(worktreePath)}
+            >
+              {translate(
+                'auto.components.right.sidebar.file.explorer.panel.FileExplorer.9986269605',
+                'Show home directory files'
+              )}
+            </Button>
+          ) : (
+            <FileExplorerFilesTreePane
+              displayRootPath={displayRootPath}
+              activeRepo={activeRepo}
+              worktreePath={worktreePath}
+              explorerView={explorerView}
+              activeFileId={activeFileId}
+              hasNameFilter={hasNameFilter}
+              nameFilterSource={nameFilterSource}
+              nameFilterFiles={nameFilterFiles}
+              handleExpandNameFilterDir={handleExpandNameFilterDir}
+              tree={tree}
+              selection={selection}
+              paneState={paneState}
+              rowProjection={rowProjection}
+              ignoredByRelativePath={ignoredByRelativePath}
+              rowExpandedPaths={rowExpandedPaths}
+              visibleRowCount={visibleRowCount}
+              handleExplorerBackgroundContextMenuCapture={
+                handleExplorerBackgroundContextMenuCapture
+              }
+              handleExplorerBackgroundDoubleClick={handleExplorerBackgroundDoubleClick}
+              wslHostUnavailable={wslHostUnavailable}
+              stoppedWslHost={stoppedWslHost}
+            />
+          )}
           <div
             className={cn(
               'absolute inset-0 flex min-h-0 flex-col',

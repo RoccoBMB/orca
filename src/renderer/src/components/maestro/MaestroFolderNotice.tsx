@@ -9,8 +9,10 @@ export function MaestroFolderNotice({
   path,
   owner,
   supportsGit,
-  entryCount
+  entryCount,
+  onHomeDirectory
 }: {
+  onHomeDirectory?: (path: string | null) => void
   path: string | null
   owner: ExecutionHostId | 'unresolved'
   supportsGit: boolean
@@ -27,6 +29,7 @@ export function MaestroFolderNotice({
         .then((isHome) => {
           if (live) {
             setHomePath(isHome ? path : null)
+            onHomeDirectory?.(isHome ? path : null)
           }
         })
         .catch(() => {})
@@ -34,7 +37,7 @@ export function MaestroFolderNotice({
     return () => {
       live = false
     }
-  }, [owner, path])
+  }, [owner, path, onHomeDirectory])
   if (!path || (homePath !== path && (supportsGit || entryCount <= 200))) {
     return null
   }

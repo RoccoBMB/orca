@@ -1,3 +1,4 @@
+import { conductorAppearanceEnabled } from '../../../shared/maestro-settings'
 import { useEffect, useMemo, useRef } from 'react'
 import { useShallow } from 'zustand/react/shallow'
 import { buildAppFontFamily } from '@/lib/app-font-family'
@@ -68,6 +69,11 @@ function useTerminalAppTheme(selected: boolean): TerminalAppTheme | null {
 }
 
 export function useDocumentAppearance(): void {
+  const conductor = useAppStore((s) => conductorAppearanceEnabled(s.settings))
+  useEffect(() => {
+    document.documentElement.toggleAttribute('data-maestro-appearance', conductor)
+    return () => document.documentElement.removeAttribute('data-maestro-appearance')
+  }, [conductor])
   const theme = useAppStore((s) => s.settings?.theme)
   const requestedDark = useSettingsDarkTheme()
   const dark = useDocumentDarkTheme()

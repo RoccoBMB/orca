@@ -1,3 +1,4 @@
+import { maestroFeatureVisible } from '../../../shared/maestro-settings'
 import {
   useCallback,
   useEffect,
@@ -33,7 +34,9 @@ export function useFloatingWorkspacePanel() {
   const triggerLocation = useAppStore(
     (s) => s.settings?.floatingTerminalTriggerLocation ?? 'floating-button'
   )
-  const statusBarVisible = useAppStore((s) => s.statusBarVisible)
+  const statusBarVisible = useAppStore(
+    (s) => s.statusBarVisible && maestroFeatureVisible(s.settings, 'showStatusBar')
+  )
   const visibleTabCount = useAppStore(selectFloatingVisibleTabCount)
 
   // Return focus to the prior surface when hotkey-minimizing the overlay.

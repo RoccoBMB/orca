@@ -16,6 +16,7 @@ import {
 import {
   MAESTRO_STATUSES,
   conductorSidebarEnabled,
+  conductorAppearanceEnabled,
   type MaestroSection
 } from '../../../../shared/maestro-settings'
 import { getWorktreeHostIdentity } from '../../../../shared/worktree/host-qualified-identity'
@@ -48,6 +49,7 @@ export function MaestroSidebar({ worktrees, folders, repos, onWorktreeCardClick 
   useUiLanguageRevision()
   const { maestro, updateMaestro } = useMaestroSettings()
   const settings = useAppStore((s) => s.settings)
+  const appearance = conductorAppearanceEnabled(settings)
   const scrollRef = useRef<HTMLDivElement | null>(null)
   const [scrollElement, setScrollElement] = useState<HTMLDivElement | null>(null)
   const attachScroller = useCallback((element: HTMLDivElement | null) => {
@@ -212,7 +214,7 @@ export function MaestroSidebar({ worktrees, folders, repos, onWorktreeCardClick 
           rows={virtualRows}
           getRowKey={(row) => row.key}
           scrollElement={scrollElement}
-          estimateRowHeightPx={(row) => (row.worktree ? 32 : 28)}
+          estimateRowHeightPx={(row) => (appearance ? 38 : row.worktree ? 32 : 28)}
           activeRowKey={activeRowKey}
           revealRow={revealRow}
           minimumRows={0}

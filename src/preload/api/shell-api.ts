@@ -10,6 +10,7 @@ import type {
 } from '../../shared/shell/opening/shell-open-types'
 
 export type ShellApi = {
+  listOpenInApplicationIcons?: () => Promise<Record<string, string>>
   listInstalledOpenInApplications?: () => Promise<OpenInApplication[]>
   isHomeDirectory?: (path: string, ownerHostId: ExecutionHostId) => Promise<boolean>
   /** Every OS open names the path's owner; main refuses anything not owned by this computer. */

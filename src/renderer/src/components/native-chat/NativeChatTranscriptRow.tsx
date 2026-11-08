@@ -86,6 +86,7 @@ export const NativeChatTranscriptRow = memo(function NativeChatTranscriptRow({
   const expanded = turnKey ? context.expandedTurnIds.has(turnKey) : undefined
   const statusRow = status ? (
     <NativeChatWorkingStatus
+      summary={slot.maestroSummary}
       startedAt={status.startedAt}
       workedSeconds={status.workedSeconds}
       verdict={status.verdict}
@@ -118,6 +119,7 @@ export const NativeChatTranscriptRow = memo(function NativeChatTranscriptRow({
         />
       ) : (
         <MessageRow
+          maestroDuration={slot.maestroDuration}
           message={message}
           agentName={context.agentName}
           previousTodoWrite={predecessors?.todowrite}

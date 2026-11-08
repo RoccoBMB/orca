@@ -1,5 +1,5 @@
 import { MaestroNavigation } from '@/components/maestro/MaestroNavigation'
-import { conductorSidebarEnabled } from '../../../../shared/maestro-settings'
+import { maestroFeatureVisible, conductorSidebarEnabled } from '../../../../shared/maestro-settings'
 import React from 'react'
 import { BookOpen, CalendarClock, EyeOff, Files, Search, Smartphone } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
@@ -67,6 +67,12 @@ const SidebarNav = React.memo(function SidebarNav() {
   const showMobileButton = useAppStore((s) => shouldShowMobileButton(s.settings))
   const showArtifactsButton = useAppStore((s) => shouldShowArtifactsButton(s.settings))
   const showSkillsButton = useAppStore((s) => shouldShowSkillsButton(s.settings))
+  const showOnboarding = useAppStore((s) => maestroFeatureVisible(s.settings, 'showOnboarding'))
+  const showTasks = useAppStore((s) => maestroFeatureVisible(s.settings, 'showTasks'))
+  const maestroAutomations = useAppStore((s) =>
+    maestroFeatureVisible(s.settings, 'showAutomations')
+  )
+  const maestroMobile = useAppStore((s) => maestroFeatureVisible(s.settings, 'showMobile'))
   const automationsActive = activeView === 'automations'
   const mobileActive = activeView === 'mobile'
   const artifactsActive = activeView === 'artifacts'
@@ -125,8 +131,8 @@ const SidebarNav = React.memo(function SidebarNav() {
           ))}
         </span>
       </button>
-      <SetupGuideSidebarEntry />
-      <SidebarTaskNavButton />
+      {showOnboarding && <SetupGuideSidebarEntry />}
+      {showTasks && <SidebarTaskNavButton />}
       {showArtifactsButton ? (
         <ContextMenu>
           <ContextMenuTrigger asChild>
@@ -185,7 +191,7 @@ const SidebarNav = React.memo(function SidebarNav() {
           <HideSidebarMenu onHide={hideSkillsButton} />
         </ContextMenu>
       ) : null}
-      {showAutomationsButton ? (
+      {showAutomationsButton && maestroAutomations ? (
         <ContextMenu>
           <ContextMenuTrigger asChild>
             <button
@@ -219,7 +225,7 @@ const SidebarNav = React.memo(function SidebarNav() {
           <AgentDashboardSidebarEntry />
         </React.Suspense>
       ) : null}
-      {showMobileButton ? (
+      {showMobileButton && maestroMobile ? (
         <ContextMenu>
           <ContextMenuTrigger asChild>
             <div

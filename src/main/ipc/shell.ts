@@ -1,4 +1,4 @@
-import { listInstalledOpenInApplications } from '../external-editors/installed-open-in-applications'
+import { registerOpenInApplicationHandlers } from '../external-editors/installed-open-in-applications'
 import { homedir } from 'node:os'
 import { normalizeRuntimePathForComparison } from '../../shared/cross-platform-path'
 import { translateMain } from '../i18n/main-i18n'
@@ -154,7 +154,7 @@ export function registerShellHandlers(
   store: ShellHandlerStore,
   listRuntimeEnvironments: ListRuntimeEnvironments = listAppRuntimeEnvironments
 ): void {
-  ipcMain.handle('shell:listInstalledOpenInApplications', () => listInstalledOpenInApplications())
+  registerOpenInApplicationHandlers()
   ipcMain.handle('shell:isHomeDirectory', async (_event, path: string, ownerHostId: unknown) => {
     const target = await resolveOwnedPathTarget(path, ownerHostId)
     return (

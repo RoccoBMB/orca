@@ -76,6 +76,8 @@ export type NativeChatMessageSlot = {
   depth: number
   estimatedHeight: number
   /** Members of an unbroken work run, with message as its head. */
+  maestroSummary?: { tools: number; messages: number }
+  maestroDuration?: string
   workRun?: readonly NativeChatMessage[]
 }
 

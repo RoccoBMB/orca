@@ -1,3 +1,6 @@
+import { conductorAppearanceEnabled } from '../../../shared/maestro-settings'
+import { useAppStore } from '@/store'
+import { useMaestroTerminalDock } from './maestro/maestro-terminal-dock'
 import type { ActivityTerminalPortalTarget } from './activity/activity-terminal-portal'
 import TerminalPaneOverlayLayer from './terminal-pane/mounting/TerminalPaneOverlayLayer'
 import { RetainedBrowserPaneOverlayLayer } from './browser-pane/assemble-chrome/BrowserPaneOverlayLayer'
@@ -37,6 +40,13 @@ export function WorkspacePaneOverlayLayers({
   /** Floating overlays leave the toggle chord to the active workspace; duplicate listeners would both toggle. */
   ownsNativeChatToggleShortcut?: boolean
 }): React.JSX.Element {
+  const conductor = useAppStore((s) => conductorAppearanceEnabled(s.settings))
+  const activeHost = useAppStore((s) => s.activeWorkspaceExecutionHostId ?? 'local')
+  const dock = useMaestroTerminalDock((s) => s.target)
+  const portals =
+    conductor && isVisible && dock?.worktreeId === worktreeId && dock.hostId === activeHost
+      ? [...activityTerminalPortals, dock]
+      : activityTerminalPortals
   return (
     <>
       <TerminalPaneOverlayLayer
@@ -47,7 +57,7 @@ export function WorkspacePaneOverlayLayers({
         isForceParked={isForceParked}
         shouldMeasureHiddenWorktree={shouldMeasureHiddenWorktree}
         hiddenTerminalPrewarm={hiddenTerminalPrewarm}
-        activityTerminalPortals={activityTerminalPortals}
+        activityTerminalPortals={portals}
         backgroundMountTabIds={backgroundMountTabIds}
         activationDeferredMountTabIds={activationDeferredMountTabIds}
         ownsNativeChatToggleShortcut={ownsNativeChatToggleShortcut}

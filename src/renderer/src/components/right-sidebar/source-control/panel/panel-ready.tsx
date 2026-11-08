@@ -1,9 +1,13 @@
+import { useAppStore } from '@/store'
+import { conductorAppearanceEnabled } from '../../../../../../shared/maestro-settings'
+import { DiffLineCounts } from '../listing/diff-line-counts'
 import { BulkActionBar } from '../commit/bulk-action-bar'
 import { SourceControlHeaderToolbar } from './header-toolbar'
 import { SourceControlNotesShelf } from '../notes/notes-shelf'
 import { SourceControlPanelContent } from './panel-content'
 import { SourceControlPanelDialogs } from './panel-dialogs'
 import type { SourceControlPanelReadyProps } from './panel-props'
+import { translate } from '@/i18n/i18n'
 
 export function SourceControlPanelReady(props: SourceControlPanelReadyProps) {
   const { model, worktreePath } = props
@@ -54,6 +58,47 @@ export function SourceControlPanelReady(props: SourceControlPanelReadyProps) {
     visibleCreatePrHeaderAction
   } = model
 
+  const conductor = useAppStore((s) => conductorAppearanceEnabled(s.settings))
+  const summaryEntries = model.entries.length ? model.entries : model.branchEntries
+  const changedPaths = new Set(summaryEntries.map((entry) => entry.path))
+  const totals = summaryEntries.reduce(
+    (sum, entry) => ({
+      added: sum.added + (entry.added ?? 0),
+      removed: sum.removed + (entry.removed ?? 0)
+    }),
+    { added: 0, removed: 0 }
+  )
+  const headerToolbar = (
+    <SourceControlHeaderToolbar
+      filterQuery={filterQuery}
+      filterExpanded={filterExpanded}
+      onFilterQueryChange={setFilterQuery}
+      onFilterExpandedChange={setFilterExpanded}
+      visibleCreatePrHeaderAction={visibleCreatePrHeaderAction}
+      hostedReview={hostedReview}
+      isCreatePrIntentInFlight={isCreatePrIntentInFlight}
+      isCreatingPr={isCreatingPr || prGenerating}
+      onCreatePrHeaderClick={handleCreatePrHeaderClick}
+      onOpenHostedReviewInChecks={openHostedReviewInChecks}
+      suppressedGitHubPRNumber={
+        suppressedGitHubPRState?.status === 'matched' ? suppressedGitHubPRState.number : null
+      }
+      onRelinkSuppressedGitHubPR={handleRelinkSuppressedGitHubPR}
+      sourceControlViewMode={sourceControlViewMode}
+      viewModeToggleDisabled={settings === null}
+      onToggleViewMode={handleToggleSourceControlViewMode}
+      onChangeBaseRef={() => setBaseRefDialogOpen(true)}
+      onRefreshBranchCompare={() => void refreshBranchCompare()}
+      branchCompareRefreshDisabled={!branchSummary || branchSummary.status === 'loading'}
+      diffCommentCount={diffCommentCount}
+      onExpandNotes={() => setDiffCommentsExpanded(true)}
+      branchSummary={branchSummary}
+      branchLineTotal={branchLineTotal}
+      compareBaseRef={compareBaseRef}
+      headDisplay={gitIdentityDisplay}
+      manualReviewUrl={manualReviewUrl}
+    />
+  )
   return (
     <>
       <div
@@ -65,35 +110,36 @@ export function SourceControlPanelReady(props: SourceControlPanelReadyProps) {
         }
         onKeyDown={handleSourceControlKeyDown}
       >
-        <SourceControlHeaderToolbar
-          filterQuery={filterQuery}
-          filterExpanded={filterExpanded}
-          onFilterQueryChange={setFilterQuery}
-          onFilterExpandedChange={setFilterExpanded}
-          visibleCreatePrHeaderAction={visibleCreatePrHeaderAction}
-          hostedReview={hostedReview}
-          isCreatePrIntentInFlight={isCreatePrIntentInFlight}
-          isCreatingPr={isCreatingPr || prGenerating}
-          onCreatePrHeaderClick={handleCreatePrHeaderClick}
-          onOpenHostedReviewInChecks={openHostedReviewInChecks}
-          suppressedGitHubPRNumber={
-            suppressedGitHubPRState?.status === 'matched' ? suppressedGitHubPRState.number : null
-          }
-          onRelinkSuppressedGitHubPR={handleRelinkSuppressedGitHubPR}
-          sourceControlViewMode={sourceControlViewMode}
-          viewModeToggleDisabled={settings === null}
-          onToggleViewMode={handleToggleSourceControlViewMode}
-          onChangeBaseRef={() => setBaseRefDialogOpen(true)}
-          onRefreshBranchCompare={() => void refreshBranchCompare()}
-          branchCompareRefreshDisabled={!branchSummary || branchSummary.status === 'loading'}
-          diffCommentCount={diffCommentCount}
-          onExpandNotes={() => setDiffCommentsExpanded(true)}
-          branchSummary={branchSummary}
-          branchLineTotal={branchLineTotal}
-          compareBaseRef={compareBaseRef}
-          headDisplay={gitIdentityDisplay}
-          manualReviewUrl={manualReviewUrl}
-        />
+        {conductor && (
+          <div className="flex items-center justify-between border-b border-border px-4 py-3 text-sm text-muted-foreground">
+            <span>
+              {changedPaths.size}{' '}
+              {model.entries.length
+                ? translate(
+                    'auto.components.right.sidebar.source.control.panel.panel.ready.ef65708faf',
+                    'uncommitted files'
+                  )
+                : translate(
+                    'auto.components.right.sidebar.source.control.panel.panel.ready.62f394a6de',
+                    'files changed'
+                  )}
+            </span>
+            <DiffLineCounts added={totals.added} removed={totals.removed} size="sm" />
+          </div>
+        )}
+        {conductor ? (
+          <details className="maestro-git-actions">
+            <summary className="px-4 py-2 text-xs text-muted-foreground">
+              {translate(
+                'auto.components.right.sidebar.source.control.panel.panel.ready.58f2a1fefc',
+                'Git actions'
+              )}
+            </summary>
+            {headerToolbar}
+          </details>
+        ) : (
+          headerToolbar
+        )}
 
         {activeWorktreeId && worktreePath && diffCommentCount > 0 && (
           <SourceControlNotesShelf

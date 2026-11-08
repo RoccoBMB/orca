@@ -39,6 +39,7 @@ export function MaestroSidebarSection({
   return (
     <div
       className="group/section flex h-7 items-center gap-1 px-2 text-muted-foreground"
+      data-maestro-section-heading={group.key}
       draggable={!!custom}
       onDragStart={
         custom
@@ -56,9 +57,10 @@ export function MaestroSidebarSection({
         aria-expanded={!group.collapsed}
         onClick={onToggle}
       >
+        {!custom && <span className="maestro-status-glyph" data-status={group.key} aria-hidden />}
         {custom?.emoji && <span className="shrink-0">{custom.emoji}</span>}
         <span className="truncate">{group.label}</span>
-        <span className="ml-auto text-2xs tabular-nums opacity-0 group-hover/section:opacity-100 group-focus-within/section:opacity-100">
+        <span className="maestro-section-count ml-auto text-2xs tabular-nums opacity-0 group-hover/section:opacity-100 group-focus-within/section:opacity-100">
           {group.items.length}
         </span>
         {group.collapsed && <ChevronRight className="size-3.5 shrink-0" />}

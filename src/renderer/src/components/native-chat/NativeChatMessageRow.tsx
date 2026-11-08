@@ -46,6 +46,7 @@ export type NativeChatDeliveryNotice =
 
 export type MessageRowProps = {
   message: NativeChatMessage
+  maestroDuration?: string
   agentName?: string
   previousTodoWrite?: NativeChatToolCallBlock
   previousUpdatePlan?: NativeChatToolCallBlock

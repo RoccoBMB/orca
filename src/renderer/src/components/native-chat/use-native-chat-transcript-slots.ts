@@ -1,3 +1,6 @@
+import { useAppStore } from '@/store'
+import { conductorAppearanceEnabled } from '../../../../shared/maestro-settings'
+import { formatNativeChatDuration } from './NativeChatWorkingStatus'
 import { useMemo } from 'react'
 import {
   nativeChatLiveLine,
@@ -17,6 +20,7 @@ export function useNativeChatTranscriptSlots({
 }: Omit<NativeChatTranscriptSlotsInput, 'liveReasoningId'> & {
   line: { draws: boolean; thinking: boolean; stopping?: boolean; activityText?: string | null }
 }): { slots: NativeChatTranscriptSlot[]; liveLine: NativeChatLiveLine | null } {
+  const conductor = useAppStore((s) => conductorAppearanceEnabled(s.settings))
   const {
     messages,
     unresolvedRowIds,
@@ -101,5 +105,38 @@ export function useNativeChatTranscriptSlots({
       unresolvedRowIds
     ]
   )
-  return { slots, liveLine }
+  const presentedSlots = useMemo(() => {
+    if (!conductor) {
+      return slots
+    }
+    const summaries = new Map<string, { tools: number; messages: number }>()
+    messages.forEach((message, index) => {
+      const key = turnKeys[index]
+      if (!key) {
+        return
+      }
+      const summary = summaries.get(key) ?? { tools: 0, messages: 0 }
+      summary.tools += message.blocks.filter((block) => block.type === 'tool-call').length
+      if (
+        message.role === 'assistant' &&
+        message.blocks.some((block) => block.type === 'text' && block.text.trim())
+      ) {
+        summary.messages++
+      }
+      summaries.set(key, summary)
+    })
+    return slots.map((slot) => {
+      if (slot.kind !== 'message' || !slot.turnKey) {
+        return slot
+      }
+      const seconds = turnStatuses.completedByTurn[slot.turnKey]?.workedSeconds
+      return {
+        ...slot,
+        maestroSummary: slot.status ? summaries.get(slot.turnKey) : undefined,
+        maestroDuration:
+          slot.endsResponse && seconds != null ? formatNativeChatDuration(seconds) : undefined
+      }
+    })
+  }, [conductor, slots, messages, turnKeys, turnStatuses])
+  return { slots: presentedSlots, liveLine }
 }

@@ -1,3 +1,5 @@
+import { useAppStore } from '@/store'
+import { conductorAppearanceEnabled } from '../../../../../../shared/maestro-settings'
 import { GitHistoryPanel } from '../sync/git-history-panel'
 import { shouldShowSourceControlCompareUnavailableCard } from './header-toolbar'
 import { shouldRenderCommitArea } from '../commit/component-gates'
@@ -8,6 +10,7 @@ import { CompareUnavailable } from '../sync/compare-summary'
 import { SourceControlCommitSurface } from './commit-surface'
 import { SourceControlForkPushNotice } from './fork-push-notice'
 import type { SourceControlPanelReadyProps } from './panel-props'
+import { translate } from '@/i18n/i18n'
 
 export function SourceControlPanelContent(props: SourceControlPanelReadyProps) {
   const { activeWorktree, currentWorktreeId, model, worktreePath } = props
@@ -80,6 +83,7 @@ export function SourceControlPanelContent(props: SourceControlPanelReadyProps) {
     visibleTreeRowsBySection
   } = model
 
+  const conductor = useAppStore((s) => conductorAppearanceEnabled(s.settings))
   const hasFilteredUncommittedEntries = displaySections.length > 0
   const hasFilteredBranchEntries = filteredBranchEntries.length > 0
   const showGenericEmptyState =
@@ -126,9 +130,10 @@ export function SourceControlPanelContent(props: SourceControlPanelReadyProps) {
       {/* Keep CommitArea through clean/mid-commit states (#1448); only active conflict operations replace the action surface. */}
       <SourceControlForkPushNotice pushTarget={activeWorktree.pushTarget ?? null} />
 
-      {shouldRenderCommitArea(unresolvedConflicts.length, conflictOperation) && (
-        <SourceControlCommitSurface {...props} showGenericEmptyState={showGenericEmptyState} />
-      )}
+      {(!conductor || model.directCreatePrAction) &&
+        shouldRenderCommitArea(unresolvedConflicts.length, conflictOperation) && (
+          <SourceControlCommitSurface {...props} showGenericEmptyState={showGenericEmptyState} />
+        )}
 
       {hasFilteredUncommittedEntries && (
         <SourceControlUncommittedSections
@@ -222,7 +227,20 @@ export function SourceControlPanelContent(props: SourceControlPanelReadyProps) {
         />
       )}
 
-      {isGitHistoryVisible && (
+      {conductor &&
+        !model.directCreatePrAction &&
+        shouldRenderCommitArea(unresolvedConflicts.length, conflictOperation) && (
+          <details className="mt-auto border-t border-border">
+            <summary className="px-4 py-2 text-xs text-muted-foreground">
+              {translate(
+                'auto.components.right.sidebar.source.control.panel.panel.content.4863764072',
+                'Commit and sync'
+              )}
+            </summary>
+            <SourceControlCommitSurface {...props} showGenericEmptyState={showGenericEmptyState} />
+          </details>
+        )}
+      {isGitHistoryVisible && !conductor && (
         // Dock history as reference context while the rest of the pane scrolls.
         <div className="sticky bottom-0 z-10 mt-auto shrink-0 border-t border-border bg-sidebar/95 backdrop-blur-sm">
           <GitHistoryPanel

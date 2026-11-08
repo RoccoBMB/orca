@@ -26,3 +26,11 @@ export const COMPACT_WORKSPACE_CARD_TEMPLATE: CardTemplate = {
     ]
   }
 }
+
+export const MAESTRO_WORKSPACE_CARD_TEMPLATE: CardTemplate = {
+  ...COMPACT_WORKSPACE_CARD_TEMPLATE,
+  root: {
+    ...COMPACT_WORKSPACE_CARD_TEMPLATE.root,
+    children: COMPACT_WORKSPACE_CARD_TEMPLATE.root.children!.slice(1)
+  }
+}

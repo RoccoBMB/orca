@@ -1,5 +1,11 @@
+import { ResizeHandle } from '../tab-group/TabGroupSplitNodeTree'
+import { conductorAppearanceEnabled } from '../../../../shared/maestro-settings'
+import { MaestroTerminalDock } from '@/components/maestro/MaestroTerminalDock'
+import { MaestroReviewButton } from '@/components/maestro/MaestroTopBar'
+import { Button } from '@/components/ui/button'
+import { TopActivityOverflowMenu } from './activity-bar-buttons'
 import React, { useMemo, useState } from 'react'
-import { PanelRight } from 'lucide-react'
+import { PanelRight, Search } from 'lucide-react'
 import { useAppStore } from '@/store'
 import { cn } from '@/lib/utils'
 import { useSidebarResize } from '@/hooks/useSidebarResize'
@@ -38,6 +44,8 @@ function RightSidebarInner(): React.JSX.Element {
     platform: getRendererAppPlatform(),
     isWebClient: isPairedWebClientWindow()
   })
+  const conductor = useAppStore((s) => conductorAppearanceEnabled(s.settings))
+  const setExplorerView = useAppStore((s) => s.setRightSidebarExplorerView)
   const rightSidebarShortcut = useShortcutLabel('sidebar.right.toggle')
   const rightSidebarOpen = useAppStore((s) => s.rightSidebarOpen)
   const userRightSidebarWidth = useAppStore((s) => s.rightSidebarWidth)
@@ -51,8 +59,10 @@ function RightSidebarInner(): React.JSX.Element {
   const checksStatus = useAppStore((s) =>
     s.rightSidebarOpen && !creatingWorktree ? getActiveChecksStatus(s) : null
   )
-  const activityBarPosition = useAppStore((s) => s.activityBarPosition)
+  const savedActivityBarPosition = useAppStore((s) => s.activityBarPosition)
+  const activityBarPosition = conductor ? 'top' : savedActivityBarPosition
   const setActivityBarPosition = useAppStore((s) => s.setActivityBarPosition)
+  const [dockRatio, setDockRatio] = useState(0.66)
   const [topActivityStripWidth, setTopActivityStripWidth] = useState<number | null>(null)
   const {
     visibleItems,
@@ -89,7 +99,10 @@ function RightSidebarInner(): React.JSX.Element {
   const topActivityStripRef = useMeasuredWidth(setTopActivityStripWidth)
 
   const panelContent = rightSidebarOpen ? (
-    <div className="flex flex-col flex-1 min-h-0 overflow-hidden scrollbar-sleek-parent">
+    <div
+      className="flex flex-col flex-1 min-h-0 overflow-hidden scrollbar-sleek-parent"
+      style={conductor ? { flex: `${dockRatio} 1 0%` } : undefined}
+    >
       {creatingWorktree ? (
         <div className="flex flex-1 items-center justify-center px-4 text-center text-[11px] text-muted-foreground">
           {translate(
@@ -160,7 +173,62 @@ function RightSidebarInner(): React.JSX.Element {
           borderLeft: rightSidebarOpen ? '1px solid var(--sidebar-border)' : 'none'
         }}
       >
-        {activityBarPosition === 'top' ? (
+        {conductor ? (
+          <>
+            <div className="maestro-panel-titlebar right-sidebar-header-inset right-sidebar-header-drag flex h-10 shrink-0 items-center justify-end border-b border-border px-2">
+              <div className="right-sidebar-header-no-drag">
+                <MaestroReviewButton />
+              </div>
+            </div>
+            <div
+              className="flex h-10 shrink-0 items-center gap-1 border-b border-border px-2"
+              role="tablist"
+              aria-label={translate(
+                'auto.components.right.sidebar.index.956ec81713',
+                'Workspace panel'
+              )}
+            >
+              {(['explorer', 'source-control', 'checks'] as const)
+                .filter((id) => visibleItems.some((item) => item.id === id))
+                .map((id) => (
+                  <Button
+                    key={id}
+                    role="tab"
+                    aria-selected={effectiveTab === id}
+                    variant={effectiveTab === id ? 'secondary' : 'ghost'}
+                    size="sm"
+                    onClick={() => selectActivityTab(id)}
+                  >
+                    {id === 'explorer'
+                      ? translate('auto.components.right.sidebar.index.822f19d33b', 'All files')
+                      : id === 'source-control'
+                        ? translate('auto.components.right.sidebar.index.ea02fbd57a', 'Changes')
+                        : translate('auto.components.right.sidebar.index.24c1aedbfe', 'Review')}
+                  </Button>
+                ))}
+              <Button
+                variant="ghost"
+                size="icon-xs"
+                aria-label={translate(
+                  'auto.components.right.sidebar.index.75388875cd',
+                  'Search files'
+                )}
+                onClick={() => {
+                  setExplorerView('search')
+                  selectActivityTab('explorer')
+                }}
+              >
+                <Search className="size-3.5" />
+              </Button>
+              <TopActivityOverflowMenu
+                items={visibleItems}
+                activeTab={effectiveTab}
+                onSelect={selectActivityTab}
+                checksStatus={checksStatus}
+              />
+            </div>
+          </>
+        ) : activityBarPosition === 'top' ? (
           <RightSidebarTopActivityBar
             hasDesktopWindowChrome={hasDesktopWindowChrome}
             topActivityStripRef={topActivityStripRef}
@@ -185,6 +253,21 @@ function RightSidebarInner(): React.JSX.Element {
         )}
 
         {panelContent}
+        {conductor && rightSidebarOpen && !creatingWorktree && (
+          <>
+            <ResizeHandle
+              direction="vertical"
+              onResizeStart={() => undefined}
+              onRatioChange={setDockRatio}
+            />
+            <div
+              className="maestro-dock-split flex min-h-0 flex-col"
+              style={{ flex: `${1 - dockRatio} 1 0%` }}
+            >
+              <MaestroTerminalDock />
+            </div>
+          </>
+        )}
 
         <div
           className="absolute top-0 left-0 w-1 h-full cursor-col-resize hover:bg-ring/20 active:bg-ring/30 transition-colors z-10"

@@ -52,8 +52,10 @@ export function HostCombobox({
   variant = 'outline',
   notifyOnReselect = false,
   className,
-  disabled
+  disabled,
+  leading
 }: {
+  leading?: React.ReactNode
   id?: string
   value: string
   onChange: (id: string) => void
@@ -96,7 +98,8 @@ export function HostCombobox({
           disabled={disabled}
           className={cn('w-full justify-between', className)}
         >
-          <span className="min-w-0 truncate">
+          {leading}
+          <span className="min-w-0 flex-1 truncate text-left">
             {selected ? selected.label : (placeholder ?? '')}
           </span>
           <ChevronDown className="opacity-50" />

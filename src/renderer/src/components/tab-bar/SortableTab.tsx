@@ -1,3 +1,4 @@
+import { MaestroTabRenameButton } from '../maestro/MaestroTabRenameButton'
 import { ContextMenu, ContextMenuTrigger } from '@/components/ui/context-menu'
 import { useCallback, useEffect } from 'react'
 import { useSortable } from '@dnd-kit/sortable'
@@ -242,6 +243,7 @@ export default function SortableTab({
         }
       }}
     >
+      {isActive && <MaestroTabRenameButton onRename={handleRenameOpen} />}
       {isActive && <span className={ACTIVE_TAB_INDICATOR_CLASSES} aria-hidden />}
       {showUnreadActivity && (
         // Why: a real DOM child keeps both drop-indicator pseudo-elements free and pointer events reaching the tab.

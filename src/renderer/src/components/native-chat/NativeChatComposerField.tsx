@@ -427,7 +427,7 @@ export function NativeChatComposerField({
               />
             </div>
           </div>
-          {workspaceFooter}
+          <div data-maestro-workspace-footer>{workspaceFooter}</div>
         </div>
       </div>
     </div>
