@@ -1,0 +1,79 @@
+{
+  "root": "/var/folders/6k/401qrhtj2s5brq31dhcbg8qw0000gp/T/m-parity-Ox1Zby",
+  "home": "/var/folders/6k/401qrhtj2s5brq31dhcbg8qw0000gp/T/m-parity-Ox1Zby/home",
+  "userData": "/var/folders/6k/401qrhtj2s5brq31dhcbg8qw0000gp/T/m-parity-Ox1Zby/data",
+  "errors": [],
+  "updaterRequests": [],
+  "launch": {
+    "name": "Maestro",
+    "packaged": true,
+    "home": "/var/folders/6k/401qrhtj2s5brq31dhcbg8qw0000gp/T/m-parity-Ox1Zby/home",
+    "userData": "/var/folders/6k/401qrhtj2s5brq31dhcbg8qw0000gp/T/m-parity-Ox1Zby/data",
+    "windows": [
+      {
+        "visible": false,
+        "focused": false,
+        "title": "Orca"
+      }
+    ]
+  },
+  "packagedCli": {
+    "status": 1,
+    "stdout": "{\n  \"id\": \"local\",\n  \"ok\": false,\n  \"error\": {\n    \"code\": \"runtime_unavailable\",\n    \"message\": \"Could not read Orca runtime metadata at /var/folders/6k/401qrhtj2s5brq31dhcbg8qw0000gp/T/m-parity-Ox1Zby/home/Library/Application Support/Maestro/orca-runtime.json. Start the Orca app first.\"\n  },\n  \"_meta\": {\n    \"runtimeId\": null\n  }\n}\n",
+    "stderr": ""
+  },
+  "settings": {
+    "maestro": null,
+    "telemetry": {
+      "existedBeforeTelemetryRelease": true,
+      "optedIn": null,
+      "installId": "2fa3c863-1432-40d8-a749-4d11cb2c72c3"
+    }
+  },
+  "conductorDefaultVisible": true,
+  "updater": {
+    "before": {
+      "state": "idle"
+    },
+    "after": {
+      "state": "idle"
+    },
+    "builds": {
+      "ok": true,
+      "channel": "stable",
+      "builds": []
+    }
+  },
+  "about": "Maestro\n\nBuilt on Orca \u00b7 MIT License\n\nMaestro \u2014 built on Orca. Copyright (c) 2026 Lovecast Inc. Licensed under the MIT License.\n\nOrca source and attribution\nMIT License\n\nCopyright (c) 2026 Lovecast Inc.\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE.\n\nClose",
+  "finalWindows": [
+    {
+      "visible": false,
+      "focused": false
+    }
+  ],
+  "passed": true,
+  "build": {
+    "command": "pnpm build:maestro",
+    "exitCode": 0,
+    "implementationCommit": "b72f4292774891b15a16ee64ee2a2330a5b25749",
+    "signatureVerification": "codesign --verify --deep --strict: passed",
+    "bundleId": "dev.rocco.maestro",
+    "packagedCliBranding": {
+      "productName": "Maestro",
+      "appId": "dev.rocco.maestro",
+      "userDataName": "Maestro",
+      "protocol": "maestro",
+      "autoUpdate": false,
+      "telemetryDefault": false,
+      "conductorLayoutDefault": true,
+      "showDotfilesDefault": false,
+      "attribution": "Maestro \u2014 built on Orca. Copyright (c) 2026 Lovecast Inc. Licensed under the MIT License.",
+      "sourceUrl": "https://github.com/stablyai/orca",
+      "cliCommand": "maestro",
+      "homeDirectoryName": ".maestro",
+      "linuxCliCommand": "maestro",
+      "cliBinDirectoryName": "maestro-bin",
+      "hookFilePrefix": "maestro-"
+    }
+  }
+}

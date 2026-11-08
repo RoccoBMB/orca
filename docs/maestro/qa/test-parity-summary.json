@@ -1,0 +1,160 @@
+{
+  "inputs": {
+    "base-existing.txt": "c68958c8f7755fe353a2ba3f2b071a8782888044e08f566112c3e443cba1ff8d",
+    "base-tests.json": "48b3c9068f5955e4f64cc816c8d0614099c967e5617419c5929d6f4288bbff97",
+    "core-rerun.json": "69284317c8d6ebb8b1909ab9b9fa0ebcf6e61e5768a19281074cf216ee23bc4d"
+  },
+  "fullRuns": [
+    {
+      "baseline": {
+        "files": 148,
+        "passed": 1212,
+        "failed": 110,
+        "pending": 89,
+        "assertions": 1411
+      },
+      "current": {
+        "files": 148,
+        "passed": 1321,
+        "failed": 44,
+        "pending": 46,
+        "assertions": 1411
+      },
+      "regressions": []
+    },
+    {
+      "baseline": {
+        "files": 148,
+        "passed": 1212,
+        "failed": 110,
+        "pending": 89,
+        "assertions": 1411
+      },
+      "current": {
+        "files": 148,
+        "passed": 1321,
+        "failed": 44,
+        "pending": 46,
+        "assertions": 1411
+      },
+      "transitions": {
+        "failed->failed": 31,
+        "passed->passed": 1212,
+        "skipped->skipped": 46,
+        "failed->passed": 79,
+        "skipped->passed": 30,
+        "skipped->failed": 13
+      },
+      "regressions": []
+    },
+    {
+      "baseline": {
+        "files": 148,
+        "passed": 1212,
+        "failed": 110,
+        "pending": 89,
+        "assertions": 1411
+      },
+      "current": {
+        "files": 148,
+        "passed": 1319,
+        "failed": 46,
+        "pending": 46,
+        "assertions": 1411
+      },
+      "transitions": {
+        "failed->failed": 31,
+        "passed->passed": 1212,
+        "skipped->skipped": 46,
+        "failed->passed": 79,
+        "skipped->passed": 28,
+        "skipped->failed": 15
+      },
+      "regressions": []
+    },
+    {
+      "baseline": {
+        "files": 148,
+        "passed": 1212,
+        "failed": 110,
+        "pending": 89,
+        "assertions": 1411
+      },
+      "current": {
+        "files": 148,
+        "passed": 1321,
+        "failed": 44,
+        "pending": 46,
+        "assertions": 1411
+      },
+      "transitions": {
+        "failed->failed": 31,
+        "passed->passed": 1212,
+        "skipped->skipped": 46,
+        "failed->passed": 79,
+        "skipped->passed": 30,
+        "skipped->failed": 13
+      },
+      "regressions": []
+    }
+  ],
+  "focused": {
+    "focus-default": {
+      "numPassedTests": 16,
+      "numFailedTests": 0,
+      "numPendingTests": 0
+    },
+    "focus-maestro": {
+      "numPassedTests": 569,
+      "numFailedTests": 0,
+      "numPendingTests": 38
+    },
+    "focus-fixtures": {
+      "numPassedTests": 331,
+      "numFailedTests": 1,
+      "numPendingTests": 16
+    },
+    "defaults-extra": {
+      "numPassedTests": 35,
+      "numFailedTests": 0,
+      "numPendingTests": 0
+    }
+  },
+  "fenceReruns": [
+    {
+      "run": 1,
+      "numPassedTests": 3,
+      "numFailedTests": 0,
+      "numPendingTests": 0
+    },
+    {
+      "run": 2,
+      "numPassedTests": 3,
+      "numFailedTests": 0,
+      "numPendingTests": 0
+    },
+    {
+      "run": 3,
+      "numPassedTests": 3,
+      "numFailedTests": 0,
+      "numPendingTests": 0
+    }
+  ],
+  "linuxDefaultChecks": {
+    "numPassedTests": 14,
+    "numFailedTests": 0
+  },
+  "broadChangedCheck": {
+    "command": "pnpm check:changed --base=rocco/main --maxWorkers=2 --timeout=5",
+    "changedFiles": 322,
+    "checksPassed": 39,
+    "checksFailed": 3,
+    "failedChecks": {
+      "unit tests": "five-minute timeout",
+      "changed-code quality": "five-minute timeout; zero findings in four completed non-type-aware scans",
+      "react-compiler-compat-ratchet": "two inherited sidebar bailouts"
+    },
+    "unchangedSidebarBlob": "bad3ae498d5d6b94e0675ac381a312091381640b",
+    "inheritedSince": "2cf49e2276"
+  }
+}

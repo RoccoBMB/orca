@@ -162,3 +162,5 @@ ci-shards/
 # Maestro local build inputs and disposable CDP driver state.
 /.cache/maestro-packaging/
 /.local/maestro-qa/
+/.local/test-parity/
+/NOTES-test-regressions.md
