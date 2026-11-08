@@ -39,7 +39,9 @@ function isSetupGuideSidebarComplete(progress: FeatureWallSetupProgress): boolea
   return progress.coreDoneCount >= progress.coreTotal
 }
 
-export function SetupGuideSidebarEntry(): React.JSX.Element | null {
+export function SetupGuideSidebarEntry({
+  forceVisible = false
+}: { forceVisible?: boolean } = {}): React.JSX.Element | null {
   const openModal = useAppStore((s) => s.openModal)
   const activeModal = useAppStore((s) => s.activeModal)
   const persistedUIReady = useAppStore((s) => s.persistedUIReady)
@@ -51,7 +53,7 @@ export function SetupGuideSidebarEntry(): React.JSX.Element | null {
   const setupActive = activeModal === 'setup-guide'
   const showSetupGuideEntry = shouldShowSetupGuideEntry({
     ready: getSetupGuideSidebarEntryReady(persistedUIReady, setupProgress.ready),
-    setupComplete,
+    setupComplete: !forceVisible && setupComplete,
     dismissed: setupGuideSidebarDismissed
   })
   const lastVisibleProgressRef = React.useRef<FeatureWallSetupProgress | null>(null)

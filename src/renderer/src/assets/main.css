@@ -4059,3 +4059,10 @@ body:has([data-contextual-tour-target='tab-create-menu'][data-state='open'])
 :root[data-maestro-appearance] .maestro-dock-split:has([data-collapsed='true']) {
   flex: 0 0 36px !important;
 }
+:root[data-maestro-appearance] .native-chat-markdown div:has(> table) {
+  border: 0;
+  border-radius: 0;
+}
+:root[data-maestro-appearance] .native-chat-markdown div > table {
+  margin-block: 0;
+}

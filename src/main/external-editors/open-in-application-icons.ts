@@ -1,5 +1,5 @@
 import { app, nativeImage } from 'electron'
-import { access } from 'node:fs/promises'
+import { access, readFile } from 'node:fs/promises'
 import { basename, join } from 'node:path'
 import { homedir } from 'node:os'
 import { runProcess } from '@orca/process-host'
@@ -31,9 +31,30 @@ async function macBundleIcon(bundle: string) {
   })
   if (result.code === 0) {
     const name = basename(String(result.stdout).trim())
-    const image = nativeImage.createFromPath(
-      join(bundle, 'Contents', 'Resources', name.endsWith('.icns') ? name : `${name}.icns`)
+    const path = join(
+      bundle,
+      'Contents',
+      'Resources',
+      name.endsWith('.icns') ? name : `${name}.icns`
     )
+    const bytes = await readFile(path)
+    let image = nativeImage.createEmpty()
+    if (bytes.toString('ascii', 0, 4) === 'icns') {
+      for (let offset = 8; offset + 8 <= bytes.length;) {
+        const length = bytes.readUInt32BE(offset + 4)
+        if (length < 8 || offset + length > bytes.length) {
+          break
+        }
+        const payload = bytes.subarray(offset + 8, offset + length)
+        if (payload.subarray(0, 8).equals(Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]))) {
+          image = nativeImage.createFromBuffer(payload)
+          if (!image.isEmpty()) {
+            break
+          }
+        }
+        offset += length
+      }
+    }
     if (!image.isEmpty()) {
       return image.resize({ width: 32, height: 32 })
     }

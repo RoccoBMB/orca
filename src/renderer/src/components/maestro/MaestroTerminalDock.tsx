@@ -183,13 +183,15 @@ export function MaestroTerminalDock() {
               <Button
                 size="sm"
                 variant="outline"
-                onClick={() =>
-                  useAppStore.getState().openSettingsTarget({
+                onClick={() => {
+                  const state = useAppStore.getState()
+                  state.openSettingsTarget({
                     pane: 'repo',
                     repoId: repo?.id ?? null,
                     hostId: worktree.hostId
                   })
-                }
+                  state.openSettingsPage()
+                }}
               >
                 {translate(
                   'auto.components.maestro.MaestroTerminalDock.6c02bea157',

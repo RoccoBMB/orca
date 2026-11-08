@@ -1,5 +1,9 @@
 import { MaestroNavigation } from '@/components/maestro/MaestroNavigation'
-import { maestroFeatureVisible, conductorSidebarEnabled } from '../../../../shared/maestro-settings'
+import {
+  conductorAppearanceEnabled,
+  maestroFeatureVisible,
+  conductorSidebarEnabled
+} from '../../../../shared/maestro-settings'
 import React from 'react'
 import { BookOpen, CalendarClock, EyeOff, Files, Search, Smartphone } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
@@ -68,6 +72,9 @@ const SidebarNav = React.memo(function SidebarNav() {
   const showArtifactsButton = useAppStore((s) => shouldShowArtifactsButton(s.settings))
   const showSkillsButton = useAppStore((s) => shouldShowSkillsButton(s.settings))
   const showOnboarding = useAppStore((s) => maestroFeatureVisible(s.settings, 'showOnboarding'))
+  const forceOnboarding = useAppStore(
+    (s) => conductorAppearanceEnabled(s.settings) && s.settings?.maestro?.showOnboarding === true
+  )
   const showTasks = useAppStore((s) => maestroFeatureVisible(s.settings, 'showTasks'))
   const maestroAutomations = useAppStore((s) =>
     maestroFeatureVisible(s.settings, 'showAutomations')
@@ -131,7 +138,7 @@ const SidebarNav = React.memo(function SidebarNav() {
           ))}
         </span>
       </button>
-      {showOnboarding && <SetupGuideSidebarEntry />}
+      {showOnboarding && <SetupGuideSidebarEntry forceVisible={forceOnboarding} />}
       {showTasks && <SidebarTaskNavButton />}
       {showArtifactsButton ? (
         <ContextMenu>

@@ -1,3 +1,4 @@
+import { resolveNativeChatAppearanceSettings } from '../../../../../shared/native-chat/native-chat-appearance-settings'
 import { Settings } from 'lucide-react'
 import { useAppStore } from '../../../store/index'
 import { translate } from '@/i18n/i18n'
@@ -15,7 +16,9 @@ import { getChatWidthOptions } from '../../settings/appearance/chat/chat-appeara
 import { writeNativeChatAppearance } from './native-chat-appearance-write'
 
 export function NativeChatSettingsButton(): React.JSX.Element {
-  const width = useAppStore((state) => state.settings?.nativeChatAppearance?.width ?? 'comfortable')
+  const width = useAppStore(
+    (state) => resolveNativeChatAppearanceSettings(state.settings?.nativeChatAppearance).width
+  )
   const label = translate('components.native-chat.settings', 'Chat settings')
 
   return (

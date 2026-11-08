@@ -62,7 +62,10 @@ export function NativeChatComposerWorkspace({
         : translate('components.native-chat.composerWorkspace.worktree', 'Worktree')
 
   return (
-    <div className="@container mt-1 flex h-5.5 shrink-0 min-w-0 items-center gap-1.5 px-3 text-2xs text-chat-foreground-faint">
+    <div
+      data-maestro-workspace-footer
+      className="@container mt-1 flex h-5.5 shrink-0 min-w-0 items-center gap-1.5 px-3 text-2xs text-chat-foreground-faint"
+    >
       {hostId && (
         <span
           className={

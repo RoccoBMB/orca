@@ -82,6 +82,9 @@ export function MaestroSettingsSection() {
             const show = maestro?.[key] !== true
             if (show) {
               const state = useAppStore.getState()
+              if (key === 'showOnboarding') {
+                state.setSetupGuideSidebarDismissed(false)
+              }
               if (key === 'showStatusBar') {
                 state.setStatusBarVisible(true)
               }
@@ -102,9 +105,11 @@ export function MaestroSettingsSection() {
       <Button
         variant="outline"
         size="sm"
-        onClick={() =>
-          useAppStore.getState().openSettingsTarget({ pane: 'accounts', repoId: null })
-        }
+        onClick={() => {
+          const state = useAppStore.getState()
+          state.openSettingsTarget({ pane: 'accounts', repoId: null })
+          state.openSettingsPage()
+        }}
       >
         {translate(
           'auto.components.maestro.MaestroSettingsSection.9eabd40bea',
