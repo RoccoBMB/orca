@@ -99,6 +99,7 @@ function RightSidebarInner(): React.JSX.Element {
 
   const panelContent = rightSidebarOpen ? (
     <div
+      data-maestro-panel-content={conductor || undefined}
       className="flex flex-col flex-1 min-h-0 overflow-hidden scrollbar-sleek-parent"
       style={conductor ? { flex: `${dockRatio} 1 0%` } : undefined}
     >

@@ -65,7 +65,11 @@ export function MaestroWorkspaceRow({
       const entries = s.gitStatusByWorktree[worktree.id]
       if (
         !entries ||
-        entries.some((entry) => entry.added === undefined || entry.removed === undefined)
+        entries.some(
+          (entry) =>
+            entry.added === undefined ||
+            (entry.removed === undefined && entry.status !== 'untracked')
+        )
       ) {
         return null
       }
