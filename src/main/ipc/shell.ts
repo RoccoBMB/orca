@@ -1,6 +1,7 @@
+import { branding } from '../../shared/branding'
+import { isHomeDirectoryPath } from '../external-editors/home-directory-path'
 import { registerOpenInApplicationHandlers } from '../external-editors/installed-open-in-applications'
 import { homedir } from 'node:os'
-import { normalizeRuntimePathForComparison } from '../../shared/cross-platform-path'
 import { translateMain } from '../i18n/main-i18n'
 import { BrowserWindow, ipcMain, shell } from 'electron'
 import { showSingleFlightOpenDialog } from './single-flight-open-dialog'
@@ -157,11 +158,7 @@ export function registerShellHandlers(
   registerOpenInApplicationHandlers()
   ipcMain.handle('shell:isHomeDirectory', async (_event, path: string, ownerHostId: unknown) => {
     const target = await resolveOwnedPathTarget(path, ownerHostId)
-    return (
-      target.ok &&
-      normalizeRuntimePathForComparison(target.path) ===
-        normalizeRuntimePathForComparison(homedir())
-    )
+    return target.ok && isHomeDirectoryPath(target.path, homedir(), branding.conductorLayoutDefault)
   })
   ipcMain.handle(
     'shell:openPath',
