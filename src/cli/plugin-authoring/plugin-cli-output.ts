@@ -3,6 +3,7 @@ import type { HandlerContext } from '../dispatch'
 import { rejectRemoteSelectionFlags } from '../remote-selection-flag-rejection'
 import { RuntimeClientError } from '../runtime/types'
 import { writeStdoutLine } from '../stdout-line'
+import { productMessage } from '../../shared/branding-copy'
 
 /** One `{ ok, result }` object on stdout for --json; plain text otherwise. */
 export function printPluginResult(ctx: HandlerContext, result: unknown, text: string): void {
@@ -26,7 +27,10 @@ export function resolveLocalPluginPath(
   value: string,
   command: string
 ): string {
-  rejectRemoteSelectionFlags(ctx.flags, `orca plugin ${command}; it works on local files`)
+  rejectRemoteSelectionFlags(
+    ctx.flags,
+    productMessage`orca plugin ${command}; it works on local files`
+  )
   if (process.env.ORCA_CLI_CWD) {
     throw new RuntimeClientError(
       'invalid_environment',

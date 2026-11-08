@@ -10,6 +10,7 @@ import { isPseudoLocalizationLocale, pseudoLocalizeString } from './pseudo-local
 import { DEFAULT_UI_LOCALE } from './ui-locale'
 import type { PluginLanguagePackRegistration } from './plugins/artifacts/plugin-language-pack-artifact'
 import { replacePluginLanguagePackResources } from './plugins/plugin-language-pack-i18n-resources'
+import { productCopyCatalog, productCopyTemplate, productCopyVariables } from './branding-copy'
 
 export type OrcaI18n = {
   i18n: I18nInstance
@@ -44,7 +45,7 @@ export function createOrcaI18n(options: {
         return
       }
       load.then(
-        (catalog) => callback(null, catalog),
+        (catalog) => callback(null, productCopyCatalog(catalog)),
         (error) => callback(error instanceof Error ? error : new Error(String(error)), false)
       )
     }
@@ -62,11 +63,17 @@ export function createOrcaI18n(options: {
     load: 'currentOnly',
     // Serve eager English from resources while the backend lazily supplies other languages.
     partialBundledLanguages: true,
-    resources: { [DEFAULT_UI_LOCALE]: { translation: options.englishResources } },
+    resources: {
+      [DEFAULT_UI_LOCALE]: { translation: productCopyCatalog(options.englishResources) }
+    },
     // An empty catalog value falls back to English instead of rendering blank.
     returnEmptyString: false,
-    interpolation: { escapeValue: false },
-    ...options.initOptions
+    ...options.initOptions,
+    interpolation: {
+      ...options.initOptions?.interpolation,
+      escapeValue: false,
+      defaultVariables: productCopyVariables
+    }
   })
 
   return {
@@ -74,7 +81,14 @@ export function createOrcaI18n(options: {
     translate: (key, fallback, translateOptions) => {
       const { defaultValue_one: one, count, ...others } = translateOptions ?? {}
       // A pass-through `count: undefined` must interpolate like an absent count.
-      const rest = count === undefined ? others : { ...others, count }
+      const rest = Object.fromEntries(
+        Object.entries(count === undefined ? others : { ...others, count }).map(([name, value]) => [
+          name,
+          name.startsWith('defaultValue') && typeof value === 'string'
+            ? productCopyTemplate(value)
+            : value
+        ])
+      )
       // i18next would pick the English default by the active language's rule (ru 21 -> _one); English text needs English's.
       const defaultValue =
         typeof one === 'string' &&
@@ -82,7 +96,7 @@ export function createOrcaI18n(options: {
         ENGLISH_PLURAL_RULES.select(count) === 'one'
           ? one
           : fallback
-      const value = i18n.t(key, { defaultValue, ...rest })
+      const value = i18n.t(key, { ...rest, defaultValue: productCopyTemplate(defaultValue) })
       return isPseudoLocalizationLocale(i18n.language) ? pseudoLocalizeString(value) : value
     },
     setPluginLanguagePacks: (packs) => {

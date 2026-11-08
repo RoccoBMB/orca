@@ -1,3 +1,5 @@
+import { brandCliCopy } from '../../shared/branding-copy'
+import { brandedDocumentation } from '../../shared/branded-documentation'
 import { RuntimeClientError } from '../runtime-client'
 
 export type BundledSkillGuideReference = {
@@ -22,7 +24,15 @@ function canonicalGuides(guides: readonly BundledSkillGuide[]): BundledSkillGuid
 /** Defer the large guide table so unrelated commands avoid its startup cost. */
 export async function loadCanonicalGuides(): Promise<BundledSkillGuide[]> {
   const { BUNDLED_SKILL_GUIDES } = await import('../bundled-skill-guides.js')
-  return canonicalGuides(BUNDLED_SKILL_GUIDES)
+  return canonicalGuides(BUNDLED_SKILL_GUIDES).map((guide) => ({
+    ...guide,
+    description: brandCliCopy(guide.description),
+    markdown: brandedDocumentation(guide.markdown),
+    references: guide.references.map((reference) => ({
+      ...reference,
+      markdown: brandedDocumentation(reference.markdown)
+    }))
+  }))
 }
 
 export function requireTopic(

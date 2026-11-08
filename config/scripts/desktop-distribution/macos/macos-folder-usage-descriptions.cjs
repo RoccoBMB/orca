@@ -1,14 +1,12 @@
+const { branding } = require('../../../branding.cjs')
 const { readdirSync, writeFileSync } = require('node:fs')
 const { join } = require('node:path')
 const { execFileSync } = require('node:child_process')
 
 const MACOS_FOLDER_USAGE_DESCRIPTIONS = {
-  NSDesktopFolderUsageDescription:
-    "Orca allows terminal tools to access the user's Desktop folder when requested.",
-  NSDocumentsFolderUsageDescription:
-    "Orca allows terminal tools to access the user's Documents folder when requested.",
-  NSDownloadsFolderUsageDescription:
-    "Orca allows terminal tools to access the user's Downloads folder when requested."
+  NSDesktopFolderUsageDescription: `${branding.productName} allows terminal tools to access the user's Desktop folder when requested.`,
+  NSDocumentsFolderUsageDescription: `${branding.productName} allows terminal tools to access the user's Documents folder when requested.`,
+  NSDownloadsFolderUsageDescription: `${branding.productName} allows terminal tools to access the user's Downloads folder when requested.`
 }
 
 function applyMacHelperFolderUsageDescriptions(appPath, productFilename, run = execFileSync) {

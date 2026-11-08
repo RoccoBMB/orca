@@ -1,3 +1,4 @@
+import { brandProductCopy } from './branding-copy'
 // One English table for automation run skip/failure reasons: main persists `error`, the renderer translates by code.
 // Skip coalescing keys on exact `error` text, so wording changes here also split folded runs.
 export const AUTOMATION_RUN_FAILURE_COPY = {
@@ -71,7 +72,7 @@ export function automationRunFailure(
   errorCode: AutomationRunFailureCode,
   params?: Record<string, string>
 ): AutomationRunFailure {
-  const template: string = AUTOMATION_RUN_FAILURE_COPY[errorCode]
+  const template = brandProductCopy(AUTOMATION_RUN_FAILURE_COPY[errorCode])
   return params
     ? {
         error: template.replace(/\{\{(\w+)\}\}/g, (match, key: string) => params[key] ?? match),

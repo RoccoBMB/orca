@@ -551,6 +551,9 @@ importers:
       lucide-react:
         specifier: ^0.577.0
         version: 0.577.0(@types/react@19.2.18)(react@19.2.8)
+      magic-string:
+        specifier: 1.4.3
+        version: 1.4.3
       marked:
         specifier: ^17.0.1
         version: 17.0.6

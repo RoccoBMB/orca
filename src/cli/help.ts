@@ -5,6 +5,7 @@ import { formatCommandScopedFlagHelp } from './command-scoped-flag-help'
 import { FLAG_HELP_TEXT } from './flag-help-text'
 import { ROOT_HELP_TEXT_PRIMARY } from './root-help-text-primary'
 import { ROOT_HELP_TEXT_SECONDARY } from './root-help-text-secondary'
+import { brandedDocumentation } from '../shared/branded-documentation'
 
 const ROOT_HELP_TEXT = [ROOT_HELP_TEXT_PRIMARY, ROOT_HELP_TEXT_SECONDARY].join('\n')
 
@@ -26,7 +27,7 @@ export function printHelp(specs: CommandSpec[], commandPath: string[] = []): voi
     console.log(`Unknown command: ${commandPath.join(' ')}${recovery ? `\n${recovery}` : ''}\n`)
   }
 
-  console.log(ROOT_HELP_TEXT)
+  console.log(brandedDocumentation(ROOT_HELP_TEXT))
 }
 
 export function formatCommandHelp(spec: CommandSpec): string {
@@ -59,7 +60,7 @@ export function formatCommandHelp(spec: CommandSpec): string {
     }
   }
 
-  return lines.join('\n')
+  return brandedDocumentation(lines.join('\n'))
 }
 
 export function formatGroupHelp(specs: CommandSpec[], groupPath: string[]): string {
@@ -76,7 +77,7 @@ export function formatGroupHelp(specs: CommandSpec[], groupPath: string[]): stri
     lines.push(`  ${spec.path.slice(groupPath.length).join(' ').padEnd(18)} ${spec.summary}`)
   }
   lines.push('', `Run \`orca ${group} <command> --help\` for command-specific usage.`)
-  return lines.join('\n')
+  return brandedDocumentation(lines.join('\n'))
 }
 
 function formatCommandFlagHelp(flag: string, commandPath: string[]): string {

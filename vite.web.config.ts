@@ -1,3 +1,5 @@
+import { productCopyLiterals } from './config/build-plugins/product-copy-literals'
+import { productHtmlTitle } from './config/build-plugins/product-html-title'
 import { markdownParserAliases } from './config/build-plugins/markdown-parser-exports'
 import { resolve } from 'node:path'
 import { createRequire } from 'node:module'
@@ -16,6 +18,8 @@ export default defineConfig({
   // Resolve assets relatively for reverse-proxy pairing prefixes such as /orca/web-index.html.
   base: './',
   plugins: [
+    productHtmlTitle(),
+    productCopyLiterals(),
     react(),
     tailwindcss(),
     createPdfjsViewerAssetsPlugin(),

@@ -7,6 +7,9 @@ import { ORCAD_SERVER_ENTRY_FILENAME } from '../../../../src/shared/orcad-artifa
 
 const root = join(import.meta.dirname, '../../..', '..')
 const { brandingDefines } = createRequire(import.meta.url)('../../../branding.cjs')
+const { productCopyEsbuild } = createRequire(import.meta.url)(
+  '../../../build-plugins/product-copy-esbuild.cjs'
+)
 const { turnedOnDarkBuildDefines } = createRequire(import.meta.url)(
   '../../../dark-build-switches.cjs'
 )
@@ -73,7 +76,7 @@ const jsoncParserEsm = {
 }
 
 // Every orcad bundle (server, children, CLI) must share these, or one ships a UMD build that cannot load (#33592).
-export const ORCAD_BUNDLE_PLUGINS = [jsoncParserEsm, externalNativeAddons]
+export const ORCAD_BUNDLE_PLUGINS = [jsoncParserEsm, externalNativeAddons, productCopyEsbuild()]
 
 // One non-ASCII character makes V8 store the ~11MB bundle as ~21MB two-byte text; esbuild escapes strings but leaves regex/tagged-template literals.
 export function findNonAsciiSource(source) {

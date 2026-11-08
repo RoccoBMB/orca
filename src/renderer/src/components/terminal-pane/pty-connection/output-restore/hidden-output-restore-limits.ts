@@ -1,3 +1,4 @@
+import { brandProductCopy } from '../../../../../../shared/branding-copy'
 export const HIDDEN_OUTPUT_RESTORE_PENDING_CHARS = 512 * 1024
 export const HIDDEN_OUTPUT_RESTORE_DEFERRED_RETRY_MS = 50
 export const HIDDEN_OUTPUT_RESTORE_DEFERRED_RETRY_MAX = 3
@@ -13,8 +14,10 @@ export const HIDDEN_OUTPUT_RESTORE_REMOTE_OUTCOME_MAX_ATTEMPTS = 7
 // Client-side gates spend no host attempts; allow a larger termination cap spanning several resync windows to avoid false loss banners.
 export const HIDDEN_OUTPUT_RESTORE_LOCAL_GATE_MAX_ATTEMPTS = 30
 // Disclose skipped hidden output only when recovery is unavailable.
-export const HIDDEN_OUTPUT_RESTORE_UNAVAILABLE_WARNING =
+export const HIDDEN_OUTPUT_RESTORE_UNAVAILABLE_WARNING = brandProductCopy(
   '\r\n[Orca skipped hidden terminal output because main recovery was unavailable.]\r\n'
+)
 // Distinguish a permanent host inability to supply an image from exhausted transient retries.
-export const PARK_REVEAL_NO_HOST_IMAGE_WARNING =
+export const PARK_REVEAL_NO_HOST_IMAGE_WARNING = brandProductCopy(
   "\r\n[Orca could not restore this terminal's history from its host.]\r\n"
+)

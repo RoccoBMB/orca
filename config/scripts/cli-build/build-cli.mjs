@@ -6,6 +6,7 @@ import { fileURLToPath } from 'node:url'
 import { runProcess } from '@orca/process-host'
 import { describeProcessFailure } from '../tool-invocation/process-failure-message.mjs'
 import { isDirectInvocation } from '../tool-invocation/script-entry-detection.mjs'
+import { brandCliCopy } from './brand-cli-copy.mjs'
 import { supportsTsrs } from '../typecheck/project-execution/tsrs-typecheck-compiler.mjs'
 import {
   resolveProjectCompiler,
@@ -83,6 +84,7 @@ export async function buildCli({
 if (isDirectInvocation(import.meta.url, process.argv[1])) {
   try {
     await buildCli()
+    brandCliCopy(join(ROOT, 'out'))
     const { branding } = createRequire(import.meta.url)('../../branding.cjs')
     writeFileSync(join(ROOT, 'out/shared/branding-default.json'), JSON.stringify(branding))
   } catch (error) {

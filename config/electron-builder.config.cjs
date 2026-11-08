@@ -227,34 +227,39 @@ const windowsRuntimeResources = existsSync(
   : []
 
 // Shared with the terminal host helper so its purpose strings cannot drift from the app's.
-const macUsageDescriptions = {
-  NSAppleEventsUsageDescription:
-    'Orca allows terminal-launched developer tools to automate local apps when you request it.',
-  NSBluetoothAlwaysUsageDescription:
-    'Orca allows terminal-launched developer tools to access Bluetooth devices when you request it.',
-  NSBluetoothPeripheralUsageDescription:
-    'Orca allows terminal-launched developer tools to access Bluetooth devices when you request it.',
-  NSCalendarsUsageDescription:
-    'Orca allows terminal-launched developer tools to access your calendars when you request it.',
-  NSCalendarsFullAccessUsageDescription:
-    'Orca allows terminal-launched developer tools to access your calendars when you request it.',
-  NSCameraUsageDescription: "Application requests access to the device's camera.",
-  NSContactsUsageDescription:
-    'Orca allows terminal-launched developer tools to access your contacts when you request it.',
-  NSLocationUsageDescription:
-    'Orca allows terminal-launched developer tools to access location when you request it.',
-  NSLocalNetworkUsageDescription:
-    'Orca allows terminal-launched developer tools to discover and connect to local development servers when you request it.',
-  NSMicrophoneUsageDescription: "Application requests access to the device's microphone.",
-  NSRemindersUsageDescription:
-    'Orca allows terminal-launched developer tools to access your reminders when you request it.',
-  NSRemindersFullAccessUsageDescription:
-    'Orca allows terminal-launched developer tools to access your reminders when you request it.',
-  NSAudioCaptureUsageDescription:
-    'Orca allows terminal-launched developer tools to capture desktop audio when you request it.',
-  NSBonjourServices: ['_http._tcp', '_https._tcp'],
-  ...MACOS_FOLDER_USAGE_DESCRIPTIONS
-}
+const macUsageDescriptions = Object.fromEntries(
+  Object.entries({
+    NSAppleEventsUsageDescription:
+      'Orca allows terminal-launched developer tools to automate local apps when you request it.',
+    NSBluetoothAlwaysUsageDescription:
+      'Orca allows terminal-launched developer tools to access Bluetooth devices when you request it.',
+    NSBluetoothPeripheralUsageDescription:
+      'Orca allows terminal-launched developer tools to access Bluetooth devices when you request it.',
+    NSCalendarsUsageDescription:
+      'Orca allows terminal-launched developer tools to access your calendars when you request it.',
+    NSCalendarsFullAccessUsageDescription:
+      'Orca allows terminal-launched developer tools to access your calendars when you request it.',
+    NSCameraUsageDescription: "Application requests access to the device's camera.",
+    NSContactsUsageDescription:
+      'Orca allows terminal-launched developer tools to access your contacts when you request it.',
+    NSLocationUsageDescription:
+      'Orca allows terminal-launched developer tools to access location when you request it.',
+    NSLocalNetworkUsageDescription:
+      'Orca allows terminal-launched developer tools to discover and connect to local development servers when you request it.',
+    NSMicrophoneUsageDescription: "Application requests access to the device's microphone.",
+    NSRemindersUsageDescription:
+      'Orca allows terminal-launched developer tools to access your reminders when you request it.',
+    NSRemindersFullAccessUsageDescription:
+      'Orca allows terminal-launched developer tools to access your reminders when you request it.',
+    NSAudioCaptureUsageDescription:
+      'Orca allows terminal-launched developer tools to capture desktop audio when you request it.',
+    NSBonjourServices: ['_http._tcp', '_https._tcp'],
+    ...MACOS_FOLDER_USAGE_DESCRIPTIONS
+  }).map(([key, value]) => [
+    key,
+    typeof value === 'string' ? value.replaceAll('Orca', branding.productName) : value
+  ])
+)
 // Developer ID team that signs every release-channel mac build.
 const ORCA_MAC_TEAM_ID = '6CX3WHS9HZ'
 
@@ -553,6 +558,7 @@ module.exports = {
     }
   },
   win: {
+    ...(branding.productName === 'Maestro' ? { icon: 'resources/maestro/icon.ico' } : {}),
     executableName: branding.productName,
     // SignPath signs Windows installers after packaging, so set release publisherName explicitly.
     // Unsigned dev channels omit it or updater signature checks reject dev updates and return to stable.
@@ -625,7 +631,10 @@ module.exports = {
     ],
     // Bundled ONNX Runtime (speech) needs macOS 13.4 (#22690); the update-manifest gate reads this from Info.plist.
     minimumSystemVersion: '13.4',
-    icon: 'resources/build/icon.icns',
+    icon:
+      branding.productName === 'Maestro'
+        ? 'resources/maestro/icon.icns'
+        : 'resources/build/icon.icns',
     entitlements: 'resources/build/entitlements.mac.plist',
     entitlementsInherit: 'resources/build/entitlements.mac.plist',
     ...(isMacRelease
@@ -694,13 +703,17 @@ module.exports = {
     artifactName: 'orca-macos-${arch}.${ext}'
   },
   linux: {
+    ...(branding.productName === 'Maestro' ? { icon: 'resources/maestro/icon.png' } : {}),
     // shared-mime-info already maps md/markdown: advertise handler only, leaving mimeapps.list defaults intact.
     // Omit mdx because Ubuntu 24.04 maps it to application/x-genesis-32x-rom; claiming it would need a glob override.
     mimeTypes: ['text/markdown', 'text/csv', 'text/tab-separated-values'],
     // Avoid GNOME Orca’s orca package and /usr/bin/orca names.
     executableName: branding.linuxCliCommand,
     // Use icns to generate hicolor sizes; some Linux docks ignore a lone 1024px PNG.
-    icon: 'resources/build/icon.icns',
+    icon:
+      branding.productName === 'Maestro'
+        ? 'resources/maestro/icon.icns'
+        : 'resources/build/icon.icns',
     desktop: {
       entry: {
         // Why: Electron reports WM_CLASS=orca for the visible Linux window;

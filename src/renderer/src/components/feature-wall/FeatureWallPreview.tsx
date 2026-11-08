@@ -10,6 +10,8 @@ import { track } from '@/lib/telemetry'
 import { translate } from '@/i18n/i18n'
 import { getLocalizedFeatureWallTileTitle } from './feature-wall-tour-localized-copy'
 import { openAppHttpLink } from '@/lib/browser/navigation/app-http-link-open'
+import { branding } from '../../../../shared/branding'
+import { productLogo } from '@/lib/product-assets'
 
 export function PreviewMedia(props: {
   posterUrl: string | null
@@ -20,6 +22,17 @@ export function PreviewMedia(props: {
   const { posterUrl, gifUrl, showGif, workflowTitle } = props
   const [posterFailed, setPosterFailed] = useState(false)
   const [gifFailed, setGifFailed] = useState(false)
+  if (branding.productName === 'Maestro') {
+    return (
+      <figure
+        className="flex aspect-[16/10] w-full flex-col items-center justify-center gap-4 rounded-md border border-border bg-muted"
+        aria-hidden
+      >
+        <img src={productLogo} alt="" className="size-20 invert dark:invert-0" />
+        <span className="text-sm font-semibold text-foreground">{workflowTitle}</span>
+      </figure>
+    )
+  }
   const renderPoster = posterUrl !== null && !posterFailed
   const renderGif = showGif && gifUrl !== null && !gifFailed
 

@@ -1,3 +1,4 @@
+import { branding } from '../../../../shared/branding'
 import type { PreloadApi } from '../../../../preload/api-types'
 import { sanitizeWebRuntimeWorkspaceSession } from '../web-workspace-session'
 import { sessionStorageKeyForHost } from './web-workspace-session-api'
@@ -17,7 +18,7 @@ export function createWebAppApi(): Partial<PreloadApi> {
         Promise.reject(new Error('Administrator restart requires the Windows desktop app.')),
       getIdentity: () =>
         Promise.resolve({
-          name: 'Orca',
+          name: branding.productName,
           isDev: false,
           devLabel: null,
           devBranch: null,

@@ -1,3 +1,4 @@
+import { brandProductCopy } from '../../../shared/branding-copy'
 import { toast } from 'sonner'
 import type { CliInstallStatus } from '../../../shared/cli-install-types'
 import { translate } from '@/i18n/i18n'
@@ -7,9 +8,12 @@ type EnsureOrcaCliAvailableOptions = {
   registrationPromptDelayMs?: number
 }
 
-export const CLI_PREREQUISITE_REGISTRATION_TOAST = 'Orca needs to register its CLI on PATH.'
-export const CLI_PREREQUISITE_REGISTRATION_TOAST_DESCRIPTION =
+export const CLI_PREREQUISITE_REGISTRATION_TOAST = brandProductCopy(
+  'Orca needs to register its CLI on PATH.'
+)
+export const CLI_PREREQUISITE_REGISTRATION_TOAST_DESCRIPTION = brandProductCopy(
   'Approve the system prompt so skill setup can use the Orca CLI command.'
+)
 
 export function isOrcaCliAvailableOnPath(status: CliInstallStatus | null | undefined): boolean {
   return status?.state === 'installed' && status.pathConfigured === true

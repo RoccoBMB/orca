@@ -1,6 +1,6 @@
 import { branding } from '../../../shared/branding'
 import { ArrowLeft, ArrowRight, MoreHorizontal, PanelLeft } from 'lucide-react'
-import logo from '../../../../resources/logo.svg'
+import { productLogo as logo } from '@/lib/product-assets'
 import { translate } from '@/i18n/i18n'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import {

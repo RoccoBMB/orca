@@ -1,3 +1,4 @@
+import { brandProductCopy } from './branding-copy'
 // One English table for Orca-authored chat auto-name failures: main builds the wire `message`, the renderer translates by code.
 export const CHAT_NAMING_FAILURE_COPY = {
   noName: 'The chat-name agent returned no name.',
@@ -13,5 +14,5 @@ export function chatNamingFailure(code: ChatNamingFailureCode): {
   error: string
   errorCode: ChatNamingFailureCode
 } {
-  return { error: CHAT_NAMING_FAILURE_COPY[code], errorCode: code }
+  return { error: brandProductCopy(CHAT_NAMING_FAILURE_COPY[code]), errorCode: code }
 }

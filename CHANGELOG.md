@@ -1,5 +1,17 @@
 # Changelog
 
+## 2026-11-08 — Maestro product names and original identity assets
+
+- Maestro builds interpolate product/command names in desktop and mobile translations,
+  CLI help, native menus/helpers, window/tray/crash names and plugin documentation/approval copy.
+- Added an original M-and-baton SVG, desktop icon set and mobile mark. Upstream Orca
+  defaults, compatibility identifiers, user values and MIT attribution remain intact.
+- Authored-copy build adapters cover desktop/CLI/WSL/remote/mobile bundles without
+  rewriting upstream catalogs or interpolated paths. Regression checks exercise the
+  packaged hidden app and CLI; verification lives in `docs/maestro/NOTES-names.md`.
+- Revert the `feat(branding)` implementation commit for this entry to restore the
+  previous presentation. No profile/schema migration is involved.
+
 ## 2026-11-07 — Orca unit-test parity with explicit Maestro builds
 
 - Restored Orca defaults for source execution and ordinary unit tests through

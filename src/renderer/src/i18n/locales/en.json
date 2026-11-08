@@ -24321,5 +24321,11 @@
     "stopped": "{{host}} stopped controlling browser tabs until Orca restarts.",
     "disallowed": "{{host}} can no longer control browser tabs. Turn it back on in Settings > SSH.",
     "failed": "Couldn’t stop {{host}}. Turn off its browser control in Settings > SSH."
+  },
+  "maestro": {
+    "about": {
+      "title": "About {{productName}}",
+      "source": "Source and attribution"
+    }
   }
 }

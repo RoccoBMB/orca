@@ -17,7 +17,7 @@ const entitlementsPath = path.join(
   'entitlements.computer-use.mac.plist'
 )
 const bundleId = process.env.ORCA_COMPUTER_MACOS_BUNDLE_ID ?? `${branding.appId}.computer-use`
-const displayName = 'Orca Computer Use'
+const displayName = `${branding.productName} Computer Use`
 const signingIdentity = resolveSigningIdentity()
 const universalTriples = ['arm64-apple-macosx', 'x86_64-apple-macosx']
 
@@ -54,7 +54,15 @@ function createHelperApp() {
   mkdirSync(path.dirname(appExecutablePath), { recursive: true })
   mkdirSync(path.join(appPath, 'Contents', 'Resources'), { recursive: true })
   copyFileSync(binaryPath, appExecutablePath)
-  copyFileSync(path.join(repoRoot, 'resources', 'build', 'icon.icns'), appIconPath)
+  copyFileSync(
+    path.join(
+      repoRoot,
+      'resources',
+      branding.productName === 'Maestro' ? 'maestro' : 'build',
+      'icon.icns'
+    ),
+    appIconPath
+  )
   chmodSync(appExecutablePath, 0o755)
   writeFileSync(path.join(appPath, 'Contents', 'Info.plist'), infoPlist(), 'utf8')
   const signer = spawnSync('codesign', codesignArgs(signingIdentity, appPath), { stdio: 'inherit' })
@@ -141,9 +149,9 @@ function infoPlist() {
   <key>LSUIElement</key>
   <true/>
   <key>NSAccessibilityUsageDescription</key>
-  <string>Orca Computer Use needs Accessibility permission to read and interact with app interfaces when you ask Orca to use apps.</string>
+  <string>${escapePlist(displayName)} needs Accessibility permission to read and interact with app interfaces when you ask ${escapePlist(branding.productName)} to use apps.</string>
   <key>NSScreenCaptureUsageDescription</key>
-  <string>Orca Computer Use needs Screen Recording permission to capture app windows when you ask Orca to inspect your screen.</string>
+  <string>${escapePlist(displayName)} needs Screen Recording permission to capture app windows when you ask ${escapePlist(branding.productName)} to inspect your screen.</string>
 </dict>
 </plist>
 `

@@ -4,6 +4,11 @@ import { pseudoLocalizeString } from '../../../src/shared/pseudo-localization'
 import { DEFAULT_UI_LOCALE, type SupportedUiLocale } from '../../../src/shared/ui-locale'
 import enRuntimeRequired from './en-runtime-required.json'
 import { importLocaleCatalog } from './locale-catalog-imports'
+import {
+  productCopyCatalog,
+  productCopyTemplate,
+  productCopyVariables
+} from '../../../src/shared/branding-copy'
 
 export type Translate = (key: string, fallback: string, options?: TOptions) => string
 
@@ -16,10 +21,10 @@ void mobileI18n.init({
   load: 'currentOnly',
   initAsync: false,
   // Inline fallbacks carry English; the runtime subset keeps plural families and non-literal defaults.
-  resources: { en: { translation: enRuntimeRequired } },
+  resources: { en: { translation: productCopyCatalog(enRuntimeRequired) } },
   partialBundledLanguages: true,
   returnEmptyString: false,
-  interpolation: { escapeValue: false }
+  interpolation: { escapeValue: false, defaultVariables: productCopyVariables }
 })
 
 let activeLocale: SupportedUiLocale = DEFAULT_UI_LOCALE
@@ -40,9 +45,17 @@ function publish(): void {
 }
 
 function translateUncached(key: string, fallback: string, options?: TOptions): string {
+  const brandedOptions = Object.fromEntries(
+    Object.entries(options ?? {}).map(([name, value]) => [
+      name,
+      name.startsWith('defaultValue') && typeof value === 'string'
+        ? productCopyTemplate(value)
+        : value
+    ])
+  )
   const value = mobileI18n.t(resolvePluralFamilyKey(key, options), {
-    defaultValue: fallback,
-    ...options,
+    defaultValue: productCopyTemplate(fallback),
+    ...brandedOptions,
     // Catalog text never nests keys; interpolated values must not either.
     nest: false
   })
@@ -91,9 +104,16 @@ export async function activateMobileUiLocale(locale: SupportedUiLocale): Promise
     if (locale !== 'en' && !mobileI18n.hasResourceBundle(locale, 'translation')) {
       const catalog = await importLocaleCatalog(locale)
       if (!mobileI18n.hasResourceBundle(locale, 'translation')) {
-        mobileI18n.addResourceBundle(locale, 'translation', catalog, false, true, {
-          skipCopy: true
-        })
+        mobileI18n.addResourceBundle(
+          locale,
+          'translation',
+          productCopyCatalog(catalog),
+          false,
+          true,
+          {
+            skipCopy: true
+          }
+        )
       }
     }
     if (request !== activationRequest) {

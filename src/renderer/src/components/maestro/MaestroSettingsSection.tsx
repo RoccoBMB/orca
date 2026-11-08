@@ -25,12 +25,13 @@ export function MaestroSettingsSection() {
   const enabled = useAppStore((s) => conductorSidebarEnabled(s.settings))
   const { updateMaestro } = useMaestroSettings()
   const [aboutOpen, setAboutOpen] = useState(false)
-  const upstreamName = translate('auto.App.5096cbbc86', 'Orca')
+  const upstreamName = 'Orca'
+  if (branding.productName !== 'Maestro') {
+    return null
+  }
   return (
     <section className="space-y-3">
-      <SettingsSubsectionHeader
-        title={translate('auto.components.maestro.MaestroSettingsSection.7898f12dee', 'Maestro')}
-      />
+      <SettingsSubsectionHeader title={branding.productName} />
       <SettingsSwitchRow
         label={translate(
           'auto.components.maestro.MaestroSettingsSection.0dd0342921',
@@ -50,7 +51,7 @@ export function MaestroSettingsSection() {
         )}
       </p>
       <Button variant="outline" size="sm" onClick={() => setAboutOpen(true)}>
-        {translate('auto.components.maestro.MaestroSettingsSection.9569a2b8d0', 'About Maestro')}
+        {translate('maestro.about.title', 'About {{productName}}')}
       </Button>
       <Dialog open={aboutOpen} onOpenChange={setAboutOpen}>
         <DialogContent scrollable>
@@ -66,10 +67,7 @@ export function MaestroSettingsSection() {
           </DialogHeader>
           <p className="text-sm">{branding.attribution}</p>
           <Button variant="link" onClick={() => openAppHttpLink(branding.sourceUrl)}>
-            {translate(
-              'auto.components.maestro.MaestroSettingsSection.948dc382d3',
-              'Orca source and attribution'
-            )}
+            {translate('maestro.about.source', 'Source and attribution')}
           </Button>
           <pre className="whitespace-pre-wrap text-xs text-muted-foreground">{license}</pre>
         </DialogContent>

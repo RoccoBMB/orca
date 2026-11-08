@@ -1,6 +1,6 @@
 import { basename, dirname, join } from 'node:path'
 import type { DiscoveredSkill } from '../../shared/skills'
-import { BUNDLED_SKILL_SOURCES } from './bundled-skill-install/bundled-skill-sources'
+import { brandedBundledSkillSources as BUNDLED_SKILL_SOURCES } from './bundled-skill-install/branded-bundled-skill-sources'
 import { bundledSkillTextDigest, classifyBundledSkillPath } from './bundled-skill-install/classify'
 import { nativeBundledSkillFilesystem } from './bundled-skill-install/filesystem'
 

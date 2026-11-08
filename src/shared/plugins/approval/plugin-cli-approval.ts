@@ -1,3 +1,4 @@
+import { brandCliCopy, productMessage } from '../../branding-copy'
 import { createHash } from 'node:crypto'
 import {
   canonicalizeCapability,
@@ -127,10 +128,10 @@ export function pluginApprovalGrants(manifest: PluginManifest): PluginApprovalGr
   const execution = pluginExecutionProfile(manifest)
   return {
     execution,
-    executionDescription: EXECUTION_DESCRIPTIONS[execution],
+    executionDescription: brandCliCopy(EXECUTION_DESCRIPTIONS[execution]),
     capabilities: uniqueCapabilities(manifest.capabilities).map((capability) => ({
       kind: capability.kind,
-      description: PLUGIN_CAPABILITY_DESCRIPTIONS[capability.kind]
+      description: brandCliCopy(PLUGIN_CAPABILITY_DESCRIPTIONS[capability.kind])
     })),
     contributions: pluginContributionSummary(manifest),
     ...withReplacements(manifest)
@@ -193,9 +194,11 @@ export function buildPluginApprovalRequest(
     contentIdentity: subject.contentIdentity,
     isDev: subject.isDev,
     grants,
-    why: pluginNeedsCliApproval(subject.manifest)
-      ? `It can run code or act in Orca, so Orca does not enable it without an explicit approval bound to exactly these files and this access.${devNote}`
-      : 'It now comes from a different repository or folder, so Orca does not keep it on without an explicit approval bound to exactly these files.',
+    why: brandCliCopy(
+      pluginNeedsCliApproval(subject.manifest)
+        ? `It can run code or act in Orca, so Orca does not enable it without an explicit approval bound to exactly these files and this access.${devNote}`
+        : 'It now comes from a different repository or folder, so Orca does not keep it on without an explicit approval bound to exactly these files.'
+    ),
     approveFlag,
     nextSteps: [
       'Approving grants the access listed above. Confirm with your user first unless they already asked for exactly this plugin and access.',
@@ -241,7 +244,7 @@ export function formatPluginApprovalMessage(request: PluginApprovalRequest, stal
     ...request.grants.capabilities.map((capability) => `- ${capability.description}`),
     ...(request.grants.replacements ?? []).map(
       (replacement) =>
-        `- Runs "${replacement.command}" instead of Orca's own ${replacement.action} (switch it back on the plugin's page)`
+        productMessage`- Runs "${replacement.command}" instead of Orca's own ${replacement.action} (switch it back on the plugin's page)`
     )
   ]
   if (request.grants.contributions.length > 0) {
@@ -279,12 +282,14 @@ export class PluginNotFoundError extends Error {
   readonly data: { pluginKey: string; nextSteps: string[] }
 
   constructor(pluginKey: string) {
-    super(`No valid plugin ${pluginKey} is loaded on this Orca host.`)
+    super(productMessage`No valid plugin ${pluginKey} is loaded on this Orca host.`)
     this.name = 'PluginNotFoundError'
     this.data = {
       pluginKey,
       nextSteps: [
-        'Check the plugin key, and that the plugin is installed or loaded on this Orca host.'
+        brandCliCopy(
+          'Check the plugin key, and that the plugin is installed or loaded on this Orca host.'
+        )
       ]
     }
   }

@@ -25,6 +25,11 @@ import {
 } from '../../mobile-web-app/mobile-web-app-route-manifest.mjs'
 import { MOBILE_WEB_PAGE_ROUTES } from './mobile-web-page-routes.mjs'
 
+const { branding, brandingDefines } = createRequire(import.meta.url)('../../../branding.cjs')
+const { productCopyEsbuild } = createRequire(import.meta.url)(
+  '../../../build-plugins/product-copy-esbuild.cjs'
+)
+
 const projectDir = fileURLToPath(new URL('../../../..', import.meta.url))
 const mobileDir = join(projectDir, 'mobile')
 const defaultAppDir = join(mobileDir, 'app')
@@ -265,6 +270,9 @@ export function mobileWebAppBuildOptions(routes) {
       zod: MOBILE_ZOD_PACKAGE
     },
     plugins: [
+      productCopyEsbuild({
+        sourceRoots: [join(projectDir, 'src'), join(mobileDir, 'src'), join(mobileDir, 'app')]
+      }),
       routeManifestPlugin(renderMobileWebAppRouteManifest(routes), routes),
       lucideBarrelPlugin,
       hairlineDevicePixelPlugin
@@ -298,6 +306,7 @@ export function mobileWebAppBuildOptions(routes) {
       js: `globalThis.process ??= { env: { NODE_ENV: 'production', EXPO_OS: 'web' }, platform: 'web', version: '', nextTick: (fn) => setTimeout(fn, 0) };${ZOD_JITLESS_BANNER}`
     },
     define: {
+      ...brandingDefines,
       global: 'globalThis',
       __DEV__: 'false',
       'process.env.NODE_ENV': '"production"',
@@ -558,7 +567,7 @@ export async function buildMobileWebAppBundle({
     '<meta name="viewport" content="width=device-width, initial-scale=1" />\n' +
     // Empty favicon prevents repeated unmanifested /favicon.ico requests/403s; WebView needs no tab icon asset.
     '<link rel="icon" href="data:," />\n' +
-    `<title>Orca</title>\n${MOBILE_WEB_APP_ROOT_RESET}\n${MOBILE_WEB_APP_NATIVE_PARITY_STYLE}\n<style id="orca-scrollbars">${scrollbarStyle}</style>\n</head>\n<body>\n<div id="root"></div>\n` +
+    `<title>${branding.productName}</title>\n${MOBILE_WEB_APP_ROOT_RESET}\n${MOBILE_WEB_APP_NATIVE_PARITY_STYLE}\n<style id="orca-scrollbars">${scrollbarStyle}</style>\n</head>\n<body>\n<div id="root"></div>\n` +
     `<script type="module" src="/${scriptAsset.path}"></script>\n</body>\n</html>\n`
   const indexBytes = Buffer.from(html, 'utf8')
   const indexAsset = {

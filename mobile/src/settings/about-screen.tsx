@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { branding } from '../../../src/shared/branding'
 import { View, Text } from 'react-native'
 import { Globe } from 'lucide-react-native'
 import Svg, { Path } from 'react-native-svg'
@@ -49,7 +50,7 @@ export default function AboutScreen({
     <SettingsScreen title={t('settings.aboutScreen.title', 'About')} onBack={onBack}>
       <View style={styles.brand}>
         <OrcaLogo size={28} />
-        <Text style={styles.brandName}>Orca</Text>
+        <Text style={styles.brandName}>{branding.productName}</Text>
         <Text style={styles.brandSub}>
           {t('settings.aboutScreen.tagline', 'Open-source agent IDE for 100x builders')}
         </Text>

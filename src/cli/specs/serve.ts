@@ -1,5 +1,6 @@
 import type { CommandSpec } from '../args'
 import { LOCAL_COMMAND_FLAGS } from '../args'
+import { branding } from '../../shared/branding'
 
 export const SERVE_COMMAND_SPECS: CommandSpec[] = [
   {
@@ -83,8 +84,8 @@ export const SERVE_COMMAND_SPECS: CommandSpec[] = [
       'macOS writes a LaunchAgent; Linux writes a systemd user unit. Both run `orca serve --supervise --no-pairing` for this profile, so the server restarts with growing delays and gives up after repeated failures instead of looping.',
       'The service never prints a pairing link to its log. Pair clients with `orca pair` while it runs, or from the desktop app.',
       'On Linux the service stops at logout unless lingering is on (`loginctl enable-linger`); install reports it.',
-      "Reinstalling replaces the unit and clears a previous give-up. --command defaults to the installed Orca app's `orca` command on PATH (`orca-ide` on Linux) and must not be a launcher tied to one Orca version. --dry-run prints the unit without installing it.",
-      "Needs the Orca app installed on this machine. The `orca` command in an Orca terminal on an SSH host belongs to that connection's server and cannot install a service.",
+      `Reinstalling replaces the unit and clears a previous give-up. --command defaults to the installed Orca app's \`${branding.cliCommand}\` command on PATH (\`${branding.linuxCliCommand}\` on Linux) and must not be a launcher tied to one Orca version. --dry-run prints the unit without installing it.`,
+      `Needs the Orca app installed on this machine. The \`${branding.cliCommand}\` command in an Orca terminal on an SSH host belongs to that connection's server and cannot install a service.`,
       'Not available on Windows yet.'
     ],
     examples: [

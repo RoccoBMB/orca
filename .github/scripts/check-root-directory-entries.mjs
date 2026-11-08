@@ -18,6 +18,7 @@ const REVIEWED_ROOT_ENTRIES = new Set([
   'opencode.json',
   'CHANGELOG.md',
   'ROCCO.md',
+  'NOTES-names.md',
   'scripts'
 ])
 

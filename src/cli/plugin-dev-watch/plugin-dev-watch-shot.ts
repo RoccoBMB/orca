@@ -31,7 +31,7 @@ export const PLUGIN_DEV_WATCH_SHOOTABLE = new Set(['running', 'idle', 'restartin
 /** A host that cannot capture now never will this session: too old, or no desktop window. */
 export function isLastingShotFailure(error: unknown): boolean {
   if (error instanceof RuntimeRpcFailureError) {
-    return error.response.error.message.includes('only available in the Orca desktop app')
+    return /only available in the [^\n]+ desktop app/.test(error.response.error.message)
   }
   return error instanceof RuntimeClientError && error.code === 'runtime_unsupported'
 }

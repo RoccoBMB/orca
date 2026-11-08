@@ -14,6 +14,9 @@ import {
 
 const __dirname = import.meta.dirname
 const { brandingDefines } = createRequire(import.meta.url)('../../../branding.cjs')
+const { productCopyEsbuild } = createRequire(import.meta.url)(
+  '../../../build-plugins/product-copy-esbuild.cjs'
+)
 const ROOT = join(__dirname, '../../..', '..')
 // Why: lets a contract test build into a temp tree instead of clobbering a developer's out/relay.
 const OUT_ROOT = process.env.ORCA_WSL_GUEST_OUT_ROOT ?? join(ROOT, 'out', 'relay')
@@ -35,6 +38,7 @@ const bundle = (entry, outfile, extra = {}) =>
     sourcemap: false,
     minify: true,
     define: { ...brandingDefines, 'process.env.NODE_ENV': '"production"' },
+    plugins: [productCopyEsbuild()],
     ...extra
   })
 
