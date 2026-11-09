@@ -1,4 +1,5 @@
 import { MAX_FILE_RANGE_READ_BYTES } from '../../shared/file-range-read'
+import { brandProductCopy } from '../../shared/branding-copy'
 import type { RemoteFilePreviewAddress } from '../../shared/remote-file-preview-address'
 import { remoteFileRequest } from '../../shared/remote-file-locator'
 import { isRenewableTerminalFileGrantRefusal } from '../../shared/terminal-file-grant-refusal'
@@ -10,8 +11,9 @@ const STAT_TIMEOUT_MS = 15_000
 // Why: previews share a two-call lane; a stalled chunk must free it well before a download's minute.
 const READ_CHUNK_TIMEOUT_MS = 20_000
 
-export const REMOTE_PREVIEW_UPDATE_REQUIRED_MESSAGE =
+export const REMOTE_PREVIEW_UPDATE_REQUIRED_MESSAGE = brandProductCopy(
   'Previewing this file requires a newer Orca on the paired machine. Update it and try again.'
+)
 
 /** The pairing that minted a grant is gone; the grant can never answer again. */
 export class RemotePreviewPairingChangedError extends Error {}

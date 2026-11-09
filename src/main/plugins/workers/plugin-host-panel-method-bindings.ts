@@ -1,3 +1,4 @@
+import { brandProductCopy } from '../../../shared/branding-copy'
 import {
   PLUGIN_HOST_API,
   type PluginJsonValue
@@ -32,7 +33,10 @@ function requireBridge(
   bridge: PluginPanelBridgeServices | null | undefined
 ): PluginPanelBridgeServices {
   if (!bridge) {
-    throw new PluginHostCallError('unavailable', 'panels cannot reach their worker in this Orca')
+    throw new PluginHostCallError(
+      'unavailable',
+      brandProductCopy('panels cannot reach their worker in this Orca')
+    )
   }
   return bridge
 }

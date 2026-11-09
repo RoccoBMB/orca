@@ -75,7 +75,9 @@ function ownsDisplayCopy(node, tree, errorNamespaces) {
   if (ts.isCallExpression(owner)) {
     if (owner.expression.kind === ts.SyntaxKind.SuperKeyword) {
       let declaration = owner.parent
-      while (declaration && !ts.isClassDeclaration(declaration)) declaration = declaration.parent
+      while (declaration && !ts.isClassDeclaration(declaration)) {
+        declaration = declaration.parent
+      }
       const base = declaration?.heritageClauses
         ?.find((clause) => clause.token === ts.SyntaxKind.ExtendsKeyword)
         ?.types[0]?.expression.getText(tree)
@@ -153,11 +155,10 @@ function productCopyBuild(source, filename) {
         module &&
         ts.isStringLiteral(module) &&
         module.text.startsWith('.') &&
-        /\/cli\/runtime\/types$/.test(
-          resolve(dirname(filename), module.text)
-            .replace(/\\/g, '/')
-            .replace(/\.(?:js|ts)$/, '')
-        )
+        resolve(dirname(filename), module.text)
+          .replace(/\\/g, '/')
+          .replace(/\.(?:js|ts)$/, '')
+          .endsWith('/cli/runtime/types')
       ) {
         errorNamespaces.add(node.name.text)
       }

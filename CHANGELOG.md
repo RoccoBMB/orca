@@ -1,5 +1,15 @@
 # Changelog
 
+## 2026-11-09 — Maestro naming follow-up and QA
+
+- Covered remaining authored text in browser/Web Store prompts, terminal recovery,
+  remote previews, CLI formatters and mobile relay/diagnostics surfaces.
+- Moved naming notes under `docs/maestro/` and removed the root guard exception.
+  Disposable profiles and generic fixtures keep user workspace names out of QA.
+- Verification and screenshots: `docs/maestro/NOTES-names.md`, `docs/maestro/qa/names-*`.
+- Revert this follow-up to restore the previous copy; revert `8954eadd91` as well
+  to remove the original naming implementation. No profile/schema migration is involved.
+
 ## 2026-11-08 — Maestro product names and original identity assets
 
 - Maestro builds interpolate product/command names in desktop and mobile translations,

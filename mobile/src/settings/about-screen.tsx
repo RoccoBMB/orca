@@ -39,6 +39,7 @@ export default function AboutScreen({
   versionLabel: string
 }) {
   const t = useMobileTranslation()
+  const isUpstream = branding.productName === 'Orca'
   useMobileColorScheme()
   const [error, setError] = useState(false)
   const openLink = (url: string) => {
@@ -59,23 +60,45 @@ export default function AboutScreen({
       <SettingsSection first separatorInset={LIST_LEADING_INSET}>
         <ListRow
           key="website"
-          title="onOrca.dev"
+          title={
+            isUpstream
+              ? 'onOrca.dev'
+              : t('settings.aboutScreen.upstreamWebsite', 'Upstream website')
+          }
           leading={<Globe size={18} color={colors.textSecondary} />}
-          accessibilityLabel={t('settings.aboutScreen.website', 'Orca website')}
+          accessibilityLabel={
+            isUpstream
+              ? t('settings.aboutScreen.website', 'Orca website')
+              : t('settings.aboutScreen.upstreamWebsite', 'Upstream website')
+          }
           onPress={() => openLink('https://onOrca.dev')}
         />
         <ListRow
           key="source"
-          title="stablyai/orca"
+          title={
+            isUpstream
+              ? 'stablyai/orca'
+              : t('settings.aboutScreen.sourceAttribution', 'Source and attribution')
+          }
           leading={<GithubIcon size={18} />}
-          accessibilityLabel={t('settings.aboutScreen.sourceCode', 'Orca source code')}
+          accessibilityLabel={
+            isUpstream
+              ? t('settings.aboutScreen.sourceCode', 'Orca source code')
+              : t('settings.aboutScreen.sourceAttribution', 'Source and attribution')
+          }
           onPress={() => openLink('https://github.com/stablyai/orca')}
         />
         <ListRow
           key="social"
-          title="@orca_build"
+          title={
+            isUpstream ? '@orca_build' : t('settings.aboutScreen.upstreamSocial', 'Upstream on X')
+          }
           leading={<XIcon size={18} />}
-          accessibilityLabel={t('settings.aboutScreen.socialProfile', 'Orca on X')}
+          accessibilityLabel={
+            isUpstream
+              ? t('settings.aboutScreen.socialProfile', 'Orca on X')
+              : t('settings.aboutScreen.upstreamSocial', 'Upstream on X')
+          }
           onPress={() => openLink('https://x.com/orca_build')}
         />
       </SettingsSection>

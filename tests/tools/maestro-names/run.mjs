@@ -127,7 +127,7 @@ try {
           .map((animation) => animation.finished.catch(() => {}))
       )
     )
-    await page.screenshot({ path: join(evidence, `names-${name}.png`) })
+    await page.screenshot({ path: join(evidence, `names-${name}.png`), animations: 'disabled' })
     console.log(`Captured ${name}`)
   }
 
@@ -233,6 +233,7 @@ try {
   assert.ok(bridgedMessage.includes('this shell forwards maestro to the Maestro host'))
   report.bridgedCliError = bridgedMessage
   assert.deepEqual(report.errors, [])
+  await rm(join(evidence, 'names-failure.png'), { force: true })
   report.passed = true
 } catch (error) {
   report.failure = String(error)

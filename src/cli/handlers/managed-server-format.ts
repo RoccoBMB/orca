@@ -1,3 +1,4 @@
+import { productMessage } from '../../shared/branding-copy'
 import type { OrcadManagedRuntimeStatus } from '../../shared/orcad-managed-runtime'
 
 function count(value: number | null): string {
@@ -6,13 +7,13 @@ function count(value: number | null): string {
 
 export function formatManagedServerStatus(status: OrcadManagedRuntimeStatus): string {
   const lines = [
-    `Active version: ${status.activeVersion ?? 'none'}${status.activeAppVersion ? ` (Orca ${status.activeAppVersion})` : ''}`,
+    `Active version: ${status.activeVersion ?? 'none'}${status.activeAppVersion ? productMessage` (Orca ${status.activeAppVersion})` : ''}`,
     `Previous version: ${status.previousVersion ?? 'none'}${status.rollbackAvailable ? ' (rollback available)' : ''}`,
     `Live terminals: ${count(status.terminals.liveSessions)}`
   ]
   if (status.recovery) {
     lines.push(
-      `Interrupted ${status.recovery.operation} of ${status.recovery.version} (${status.recovery.phase}); run \`orca environment recover\`.`
+      productMessage`Interrupted ${status.recovery.operation} of ${status.recovery.version} (${status.recovery.phase}); run \`orca environment recover\`.`
     )
   }
   if (status.migration) {
@@ -25,7 +26,7 @@ export function formatManagedServerStatus(status: OrcadManagedRuntimeStatus): st
   }
   if (status.availableUpdate) {
     lines.push(
-      `Update available: ${status.availableUpdate}; run \`orca environment update --environment ${status.environmentId}\`.`
+      productMessage`Update available: ${status.availableUpdate}; run \`orca environment update --environment ${status.environmentId}\`.`
     )
   }
   return lines.join('\n')

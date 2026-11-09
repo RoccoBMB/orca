@@ -1,3 +1,4 @@
+import { branding } from '../shared/branding'
 import type { ContextBridge, IpcRenderer } from 'electron'
 import {
   installChromeWebStoreApis,
@@ -52,5 +53,8 @@ export function installChromeWebStoreBridge(): void {
     func: installChromeWebStoreApis,
     args: [bridge, typeof process !== 'undefined' ? (process.versions.chrome ?? '') : '']
   })
-  contextBridge.executeInMainWorld({ func: adaptChromeWebStoreWordingForOrca })
+  contextBridge.executeInMainWorld({
+    func: adaptChromeWebStoreWordingForOrca,
+    args: [branding.productName]
+  })
 }

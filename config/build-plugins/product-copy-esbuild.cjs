@@ -14,10 +14,13 @@ function productCopyEsbuild({ sourceRoots = [sourceRoot] } = {}) {
             const sourcePath = relative(root, path)
             return !sourcePath.startsWith('..') && !isAbsolute(sourcePath)
           })
-        )
+        ) {
           return null
+        }
         const result = productCopyBuild(readFileSync(path, 'utf8'), path)
-        if (!result) return null
+        if (!result) {
+          return null
+        }
         const extension = extname(path)
         return {
           contents: `${result.code}\n//# sourceMappingURL=${result.map.toUrl()}`,

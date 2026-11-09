@@ -1,6 +1,7 @@
 import { isRendererUnavailableReply } from '../transport/renderer-unavailable-reply'
 import type { RpcFailure } from '../transport/types'
 import type { MarkdownDocState } from './mobile-session-route-types'
+import { brandProductCopy } from '../../../src/shared/branding-copy'
 
 export function shouldReadMarkdownFromDiskAfterReadTabFailure(response: RpcFailure): boolean {
   return isRendererUnavailableReply(response)
@@ -14,7 +15,7 @@ export function buildMarkdownDiskFallbackDoc(args: {
 }): Extract<MarkdownDocState, { status: 'ready' }> {
   const readOnlyReason = args.tabIsDirty
     ? 'Desktop has unsaved changes. Showing disk content.'
-    : 'Editing needs Orca desktop running.'
+    : brandProductCopy('Editing needs Orca desktop running.')
   return {
     status: 'ready',
     content: args.content,
