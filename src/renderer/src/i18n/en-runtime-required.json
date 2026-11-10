@@ -55,9 +55,6 @@
     }
   },
   "auto": {
-    "App": {
-      "5096cbbc86": "Orca"
-    },
     "components": {
       "GitHubItemDialog": {
         "filesViewed_one": "{{viewed}} / {{count}} file viewed",
@@ -345,13 +342,6 @@
             "teamCount_one": "{{count}} team",
             "teamCount_other": "{{count}} teams"
           }
-        }
-      },
-      "maestro": {
-        "MaestroSettingsSection": {
-          "7898f12dee": "Maestro",
-          "948dc382d3": "Orca source and attribution",
-          "9569a2b8d0": "About Maestro"
         }
       },
       "onboarding": {

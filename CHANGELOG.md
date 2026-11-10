@@ -4,6 +4,7 @@
 
 - Covered remaining authored text in browser/Web Store prompts, terminal recovery,
   remote previews, CLI formatters and mobile relay/diagnostics surfaces.
+- Pruned four obsolete translation keys and regenerated the required runtime catalog.
 - Moved naming notes under `docs/maestro/` and removed the root guard exception.
   Disposable profiles and generic fixtures keep user workspace names out of QA.
 - Verification and screenshots: `docs/maestro/NOTES-names.md`, `docs/maestro/qa/names-*`.
