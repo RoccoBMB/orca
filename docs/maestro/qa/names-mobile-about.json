@@ -1,0 +1,11 @@
+{
+  "kind": "React Native Web presentational fixture",
+  "source": "mobile/src/settings/about-screen.tsx",
+  "viewport": {
+    "width": 375,
+    "height": 812
+  },
+  "text": "About\nMaestro\nOpen-source agent IDE for 100x builders\nUpstream website\nSource and attribution\nUpstream on X\nBrand preview",
+  "errors": [],
+  "passed": true
+}

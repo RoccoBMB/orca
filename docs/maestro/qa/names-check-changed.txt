@@ -1,0 +1,92 @@
+$ node config/scripts/preflight/changed-checks/check-changed.mjs --base=14635e6ed5 --maxWorkers=2 --timeout=8
+check:changed: 114 changed file(s) since 14635e6ed5 (14635e6ed5); running 42 check(s).
+✓ typecheck (tsconfig.node, tsconfig.tc.web, tsconfig.tc.cli, tsconfig.test) (10.5s)
+✓ format (0.1s)
+✓ oxlint (0.6s)
+✓ daemon-blocking-call-ratchet (2.1s)
+✓ direct-link-open-ratchet (1.7s)
+✓ e2e-typecheck-ratchet (4.1s)
+✓ flaky-test-pattern-ratchet (18.3s)
+✓ focus-read-ratchet (11.7s)
+✓ host-list-render-ratchet (1.4s)
+✓ id-only-store-write-ratchet (0.2s)
+✓ layout-writer-ratchets (8.8s)
+… 61.6s elapsed; running: unit tests 60.0s, changed-code quality 60.0s, legacy-relay-fence-ratchet 0.5s
+… 121.6s elapsed; running: unit tests 120.0s, changed-code quality 120.0s, legacy-relay-fence-ratchet 60.5s
+✓ legacy-relay-fence-ratchet (61.7s)
+✓ main-sync-spawn-ratchet (7.9s)
+✓ max-lines-ratchet (17.7s)
+✓ memo-translate-subscription-ratchet (0.8s)
+✓ path-literal-ratchet (0.6s)
+
+✗ react-compiler-compat-ratchet (11.0s)
+::error::src/renderer/src/components/maestro/use-maestro-sidebar-reveal.ts: 2 bailout(s), baseline allows 0.
+  src/renderer/src/components/maestro/use-maestro-sidebar-reveal.ts:94 (BuildHIR::lowerExpression) Handle UpdateExpression to variables captured within lambdas.
+    Fix: Fix or isolate the pattern so the function compiles.
+  src/renderer/src/components/maestro/use-maestro-sidebar-reveal.ts:30 Existing memoization could not be preserved
+    Fix: Make the useMemo/useCallback deps list exactly what the callback reads.
+
+react-compiler-compat ratchet failed (8845 files, 10.7s).
+✓ repo-host-read-ratchet (3.3s)
+✓ runtime-electron-ratchet (1.9s)
+✓ ts-nocheck-ratchet (7.1s)
+✓ unproven-pty-retirement-ratchet (1.6s)
+✓ workspace-record-read-ratchet (1.0s)
+✓ worktree-id-composer-ratchet (1.6s)
+✓ rpc params catalog (1.8s)
+✓ acp protocol (0.0s)
+✓ bundled skill guides (0.1s)
+… 181.6s elapsed; running: unit tests 180.0s, changed-code quality 180.0s, skill bundle manifest 2.4s
+✓ skill bundle manifest (5.9s)
+✓ localization catalogs (19.9s)
+✓ localization coverage (9.2s)
+✓ mobile localization (4.9s)
+✓ mobile localization coverage (1.5s)
+… 241.6s elapsed; running: unit tests 240.0s, changed-code quality 240.0s, localization extraction 20.9s
+… 301.9s elapsed; running: unit tests 300.3s, changed-code quality 300.3s, localization extraction 81.2s
+… 361.8s elapsed; running: unit tests 360.3s, changed-code quality 360.3s, localization extraction 141.2s
+… 422.0s elapsed; running: unit tests 420.4s, changed-code quality 420.4s, localization extraction 201.3s
+
+✗ localization extraction (237.1s)
+Extracted 19077 keys; 841 dynamic defaults are report-only, 204 existing English entries are not statically referenced (4 named nowhere in source), and 0 inline defaults differ from en.json.
+Catalog keys no source references. Delete them from every locale catalog and config/scripts/locale-*-overrides.*, then run `pnpm sync:localization-runtime-catalog`:
+  auto.App.5096cbbc86
+  auto.components.maestro.MaestroSettingsSection.948dc382d3
+  auto.components.maestro.MaestroSettingsSection.9569a2b8d0
+  auto.components.maestro.MaestroSettingsSection.7898f12dee
+✓ reliability gates (0.4s)
+✓ node runtime pin (0.8s)
+
+✗ changed-code quality (480.1s)
+code quality: 0 new finding(s) across 89 changed file(s).
+JS plugins: 0 new finding(s) across 89 changed file(s).
+casting code quality: 0 new finding(s) across 89 changed file(s).
+focused plugins: 0 new finding(s) across 89 changed file(s).
+
+Timed out after 8 min; pass --timeout=<minutes> to extend.
+… 481.9s elapsed; running: unit tests 480.4s, test file runners 23.0s, mobile shared dependency versions 0.3s
+✓ mobile shared dependency versions (0.7s)
+✓ readme local links (0.5s)
+
+✗ unit tests (482.2s)
+
+ RUN  v5.0.5 /Users/roccobombardieri/Coding Projects/Personal Projects/Orca-rename
+
+ ❯ |node-runtime| src/main/runtime/orchestration-message-delivery-identity.test.ts (5 tests | 1 failed) 4271ms
+   ❯ STA-4325 message and delivery identity (5)
+     × keeps the built CLI count and Delivery output aligned with isolated SQLite state 3555ms
+(node:98507) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/roccobombardieri/Coding%20Projects/Personal%20Projects/Orca-rename/src/shared/orcad-artifacts.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/roccobombardieri/Coding Projects/Personal Projects/Orca-rename/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+Timed out after 8 min; pass --timeout=<minutes> to extend.
+✓ compiled :has() restyle scope (7.9s)
+✓ dead design-system classes (10.5s)
+… 542.0s elapsed; running: test file runners 83.0s, import boundaries 58.2s
+✓ test file runners (103.3s)
+… 602.8s elapsed; running: import boundaries 119.0s
+✓ import boundaries (146.0s)
+
+✗ 4 of 42 check(s) failed in 629.7s: react-compiler-compat-ratchet, localization extraction, changed-code quality, unit tests
+[ELIFECYCLE] Command failed with exit code 1.
