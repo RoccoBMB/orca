@@ -1,4 +1,6 @@
 import { useMemo } from 'react'
+import { useAppStore } from '@/store'
+import { conductorAppearanceEnabled } from '../../../../shared/maestro-settings'
 import { ChevronRight } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { translate } from '@/i18n/i18n'
@@ -84,6 +86,7 @@ export function NativeChatToolLine({
   /** Identity this line's open state is remembered under while it is unmounted. */
   disclosureKey?: string
 }): React.JSX.Element | null {
+  const conductor = useAppStore((s) => conductorAppearanceEnabled(s.settings))
   const { open: expanded, setOpen: setExpanded } = useNativeChatDisclosure(disclosureKey, false)
 
   const view = useMemo(
@@ -113,6 +116,7 @@ export function NativeChatToolLine({
     <div>
       <button
         type="button"
+        data-native-chat-tool-line
         onClick={() => hasDetail && setExpanded(!expanded)}
         className={cn(
           'group/tool-line flex min-h-6.5 w-full items-center gap-2 rounded-md text-left font-sans text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring',
@@ -132,7 +136,7 @@ export function NativeChatToolLine({
           <span aria-hidden className="size-4 shrink-0" />
         )}
         {label?.verb && label.verb !== name ? <span className="sr-only">{name} </span> : null}
-        {commandAlone ? (
+        {commandAlone && !conductor ? (
           // The run's header already says these ran; the row is the command itself.
           <span className="sr-only">{label?.verb} </span>
         ) : (
@@ -153,7 +157,11 @@ export function NativeChatToolLine({
             className={TARGET_CLASS}
           />
         ) : (label?.target ?? resultPreview) ? (
-          <span className={TARGET_CLASS} title={label?.title ?? resultPreview}>
+          <span
+            className={TARGET_CLASS}
+            title={label?.title ?? resultPreview}
+            data-native-chat-command={label?.command || undefined}
+          >
             {label?.target ?? resultPreview}
           </span>
         ) : null}

@@ -1,5 +1,20 @@
 # Changelog
 
+## 2026-11-09 — Maestro parity iteration 01
+
+- Combined Conductor appearance and Maestro product naming on `rocco/parity`.
+- Made expanded tool work easier to scan with visible command verbs, command/file chips
+  and row spacing. Enlarged Changes rows/labels/counts with matching virtual estimates.
+  Reordered attachment/mic controls and squared Send/Stop. These use the existing
+  appearance setting; staging groups, diff actions and responsive overflow remain.
+- Fixed inherited sidebar reveal compiler bailouts without changing memoized targeting
+  or retry counts. Excluded local caches and changing QA logs from desktop archives.
+- Replaced earlier look captures with generic fixtures. Scores, validation and captures:
+  `docs/maestro/parity/`; external iteration report: `Orca-briefs/parity/iterations/01.md`.
+- Revert the iteration's `feat(maestro)` commit to remove the UI/package changes;
+  keep the separate fixture/evidence commit so old screenshot data is not restored.
+  No profile/schema migration or installed-app replacement is involved.
+
 ## 2026-11-09 — Maestro naming follow-up and QA
 
 - Covered remaining authored text in browser/Web Store prompts, terminal recovery,

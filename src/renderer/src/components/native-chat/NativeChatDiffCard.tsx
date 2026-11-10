@@ -147,6 +147,7 @@ export function NativeChatDiffCard({
       <div className="flex min-w-0 items-center gap-2">
         <button
           type="button"
+          data-native-chat-tool-line
           onClick={() => hasBody && setExpanded(!expanded)}
           className={cn(
             'flex min-h-6.5 min-w-0 flex-1 items-center gap-2 rounded-md text-left font-sans text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring',

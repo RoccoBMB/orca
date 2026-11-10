@@ -1,4 +1,6 @@
 import React from 'react'
+import { useAppStore } from '@/store'
+import { conductorAppearanceEnabled } from '../../../../../../shared/maestro-settings'
 import { Button } from '@/components/ui/button'
 import { translate } from '@/i18n/i18n'
 import type {
@@ -57,6 +59,7 @@ export function SourceControlBranchSection({
   ) => void
   diffCommentCountByPath: Map<string, number>
 }): React.JSX.Element {
+  const conductor = useAppStore((s) => conductorAppearanceEnabled(s.settings))
   const baseRef = branchSummary.baseRef?.trim()
   const fileCount = filteredBranchEntries.length
   // Counts measure current base differences, not historical touches; omit the total label when filters narrow the list.
@@ -105,6 +108,7 @@ export function SourceControlBranchSection({
         (sourceControlViewMode === 'tree' ? (
           <VirtualizedList
             rows={visibleBranchTreeRows}
+            estimateRowHeightPx={(row) => (conductor && row.type === 'file' ? 38 : 24)}
             scrollElement={fileListScrollElement}
             getRowKey={(node) => node.key}
             renderRow={(node) => {
@@ -138,6 +142,7 @@ export function SourceControlBranchSection({
         ) : (
           <VirtualizedList
             rows={filteredBranchEntries}
+            estimateRowHeightPx={conductor ? 38 : undefined}
             scrollElement={fileListScrollElement}
             getRowKey={(entry) => `branch::${entry.path}`}
             renderRow={(entry) => (

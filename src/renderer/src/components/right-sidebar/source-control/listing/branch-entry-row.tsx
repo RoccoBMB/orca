@@ -81,7 +81,7 @@ export function BranchEntryRow({
           className: 'size-3.5 shrink-0',
           style: { color: STATUS_COLORS[entry.status] }
         })}
-        <span className="min-w-0 flex-1 truncate text-xs">
+        <span data-source-control-file-label className="min-w-0 flex-1 truncate text-xs">
           <span className="text-foreground">{fileName}</span>
           {showPathHint && dirPath && (
             <span className="ml-1.5 text-[11px] text-muted-foreground">{dirPath}</span>

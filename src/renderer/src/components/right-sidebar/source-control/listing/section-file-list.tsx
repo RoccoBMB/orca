@@ -1,4 +1,6 @@
 import React from 'react'
+import { useAppStore } from '@/store'
+import { conductorAppearanceEnabled } from '../../../../../../shared/maestro-settings'
 import type { GitStatusEntry } from '../../../../../../shared/git/status/git-status-types'
 import type { ConflictResolution } from '../../../../../../shared/source-control/listing/source-control-entry-actions'
 import type { SourceControlViewMode } from '../../../../../../shared/ui-chrome-types'
@@ -73,9 +75,11 @@ export function SourceControlSectionFileList({
   requestDiscardEntry: (entry: GitStatusEntry) => void
   diffCommentCountByPath: Map<string, number>
 }): React.JSX.Element {
+  const conductor = useAppStore((s) => conductorAppearanceEnabled(s.settings))
   return sourceControlViewMode === 'tree' ? (
     <VirtualizedList
       rows={treeRows}
+      estimateRowHeightPx={(row) => (conductor && row.type === 'file' ? 38 : 24)}
       scrollElement={fileListScrollElement}
       getRowKey={(node) => node.key}
       renderRow={(node) => {
@@ -140,6 +144,7 @@ export function SourceControlSectionFileList({
   ) : (
     <VirtualizedList
       rows={listRows}
+      estimateRowHeightPx={(row) => (conductor && row.type === 'entry' ? 38 : 24)}
       scrollElement={fileListScrollElement}
       getRowKey={(row) =>
         row.type === 'submodule-placeholder' ? row.key : `${row.entry.area}::${row.entry.path}`

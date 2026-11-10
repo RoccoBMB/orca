@@ -20,7 +20,7 @@ export function NativeChatToolFileTarget({
   if (!onLinkClick) {
     return (
       <>
-        <span className={className} title={path} aria-hidden="true">
+        <span data-native-chat-file-target className={className} title={path} aria-hidden="true">
           {label}
         </span>
         <span className="sr-only">{path}</span>
@@ -30,6 +30,7 @@ export function NativeChatToolFileTarget({
   const href = createNativeChatFileHref(path, 'literal')
   return (
     <span
+      data-native-chat-file-target
       role="link"
       tabIndex={0}
       data-native-chat-link-href={href}

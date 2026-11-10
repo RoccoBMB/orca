@@ -159,6 +159,7 @@ export const NativeChatComposerActions = memo(function NativeChatComposerActions
   ) : (
     <Button
       type="button"
+      data-native-chat-send
       data-native-chat-critical-action={stops ? 'stop' : undefined}
       aria-label={
         stops
@@ -171,7 +172,7 @@ export const NativeChatComposerActions = memo(function NativeChatComposerActions
       // A press keeps focus where it was; a focused button drops it to <body> when it disables.
       onMouseDown={(event) => event.preventDefault()}
       onClick={handleCriticalAction}
-      variant={stops ? 'secondary' : 'default'}
+      variant={stops && !conductor ? 'secondary' : 'default'}
       size="icon"
       className="size-8 rounded-full pointer-coarse:size-10"
     >
@@ -347,8 +348,9 @@ export const NativeChatComposerActions = memo(function NativeChatComposerActions
       right={
         conductor
           ? [
-              ...right.filter((item) => item.id !== 'model'),
-              ...left.filter((item) => item.id === 'attach')
+              ...right.filter((item) => item.id !== 'model' && item.id !== 'dictation'),
+              ...left.filter((item) => item.id === 'attach'),
+              ...right.filter((item) => item.id === 'dictation')
             ]
           : right
       }

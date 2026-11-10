@@ -16,7 +16,10 @@ export function DiffLineCounts({
     return null
   }
   return (
-    <span className={cn('shrink-0 tabular-nums', size === 'sm' ? 'text-xs' : 'text-[10px]')}>
+    <span
+      data-diff-line-counts
+      className={cn('shrink-0 tabular-nums', size === 'sm' ? 'text-xs' : 'text-[10px]')}
+    >
       {hasAdded && <span style={{ color: 'var(--git-decoration-added)' }}>+{added}</span>}
       {hasAdded && hasRemoved && <span> </span>}
       {hasRemoved && <span style={{ color: 'var(--git-decoration-deleted)' }}>-{removed}</span>}
