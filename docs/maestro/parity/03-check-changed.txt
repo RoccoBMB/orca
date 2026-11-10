@@ -1,0 +1,28 @@
+$ node config/scripts/preflight/changed-checks/check-changed.mjs --base=5d9f44df27
+check:changed: 34 changed file(s) since 5d9f44df27 (5d9f44df27); running 24 check(s).
+✓ typecheck (tsconfig.node, tsconfig.tc.web) (7.0s)
+✓ format (0.2s)
+✓ oxlint (0.5s)
+✓ direct-link-open-ratchet (1.3s)
+✓ changed-code quality (12.8s)
+✓ focus-read-ratchet (11.0s)
+✓ host-list-render-ratchet (0.4s)
+✓ flaky-test-pattern-ratchet (16.0s)
+✓ layout-writer-ratchets (3.9s)
+✓ legacy-relay-fence-ratchet (5.8s)
+✓ max-lines-ratchet (2.8s)
+✓ memo-translate-subscription-ratchet (0.2s)
+✓ path-literal-ratchet (0.4s)
+✓ ts-nocheck-ratchet (2.1s)
+✓ workspace-record-read-ratchet (0.9s)
+✓ worktree-id-composer-ratchet (1.6s)
+✓ react-compiler-compat-ratchet (6.9s)
+✓ localization coverage (4.6s)
+✓ localization catalogs (17.3s)
+✓ compiled :has() restyle scope (3.8s)
+… 62.5s elapsed; running: unit tests 60.0s, localization extraction 17.4s, import boundaries 2.9s
+✓ unit tests (76.8s)
+✓ dead design-system classes (3.8s)
+✓ localization extraction (42.6s)
+✓ import boundaries (32.3s)
+✓ 24 check(s) passed in 92.0s.

@@ -1,0 +1,21 @@
+{
+  "sharedSetup": "printf 'Shared setup fixture ready.\\n'",
+  "localSetup": "printf 'Local setup fixture ready.\\n'",
+  "retainedOutput": "printf 'Setup fixture output is ready.\\n'",
+  "terminalTitles": [
+    "Setup fixture",
+    "Check routes",
+    "Preview application",
+    "Review API compatibility",
+    "Check formatting",
+    "Inspect workspace files",
+    "Verify application navigation",
+    "Inspect retained output"
+  ],
+  "pairedPage": {
+    "title": "Paired preview fixture",
+    "url": "https://example.invalid/preview",
+    "hostDeviceName": "Fixture device"
+  },
+  "shellPrompt": "dev@maestro"
+}

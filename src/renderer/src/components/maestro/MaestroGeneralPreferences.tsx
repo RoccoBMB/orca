@@ -11,6 +11,7 @@ import { getNotificationsPaneSearchEntries } from '../settings/notifications/not
 import { SettingsSwitchRow } from '../settings/form-controls/SettingsFormControls'
 import { SearchableSetting } from '../settings/section-layout/SearchableSetting'
 import { matchesSettingsSearch } from '../settings/search/settings-search'
+import { MaestroNotificationSound } from './MaestroNotificationSound'
 
 const LOCAL_CHAT_HOST = { kind: 'local' } as const
 const NOTIFICATION_KEYS = ['enabled', 'agentTaskComplete', 'agentNeedsInput'] as const
@@ -88,6 +89,7 @@ export function MaestroGeneralPreferences(): React.JSX.Element | null {
           </SearchableSetting>
         )
       })}
+      {desktopNotifications && <MaestroNotificationSound />}
       {!query.trim() ||
       matchesSettingsSearch(query, [
         ...notifications,

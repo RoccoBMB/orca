@@ -19566,7 +19566,6 @@
         "MaestroTerminalDock": {
           "6c02bea157": "Configure setup",
           "350af2f832": "No setup command configured.",
-          "5c070eb920": "Workspace setup",
           "c29ab57329": "Open terminal",
           "17c55827b2": "Open another terminal",
           "ca8f1e43d6": "Open workspace terminal",
@@ -24391,6 +24390,21 @@
     "about": {
       "title": "About {{productName}}",
       "source": "Source and attribution"
+    },
+    "setup": {
+      "project": "Project setup",
+      "local": "Local",
+      "both": "Shared + local",
+      "shared": "Shared",
+      "checking": "Checking setup…",
+      "unavailable": "Could not check project setup. Try again.",
+      "output": "Terminal output",
+      "refresh": "Refresh setup"
+    },
+    "tabs": {
+      "showAll": "Show all tabs",
+      "search": "Find a tab…",
+      "noMatches": "No matching tabs."
     }
   }
 }

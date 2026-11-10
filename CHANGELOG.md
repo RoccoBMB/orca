@@ -1,5 +1,19 @@
 # Changelog
 
+## 2026-11-10 — Maestro parity iteration 03
+
+- Crowded tab strips gain a searchable picker covering regular tabs and paired-client
+  browser pages. Constrained widths and quieter close/rename controls improve scanning.
+- Setup previews effective shared/local project commands using existing policy and
+  background host inspection, with refresh/retry and links to retained terminal output.
+  Execution and trust policies remain authoritative; the preview does not run commands.
+- General exposes the existing desktop notification sound and volume controls, with
+  persistence, search, master-notification dependencies and web-client guarding.
+- Presentation remains behind Conductor appearance. Scores/captures/verification:
+  `docs/maestro/parity/`; external report: `Orca-briefs/parity/iterations/03.md`.
+- Disable Conductor appearance in General → Maestro to restore the prior presentation;
+  revert this iteration's feature commit to remove it. No profile/schema migration.
+
 ## 2026-11-09 — Maestro parity iteration 02
 
 - General leads with existing chat and desktop notification preferences; Maestro

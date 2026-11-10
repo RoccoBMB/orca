@@ -3992,6 +3992,36 @@ body:has([data-contextual-tour-target='tab-create-menu'][data-state='open'])
   margin-left: 16px;
   color: var(--muted-foreground);
 }
+:root[data-maestro-appearance] [data-tab-strip-slot] {
+  width: 240px;
+  max-width: 240px;
+  min-width: 160px;
+}
+:root[data-maestro-appearance] [data-tab-strip-slot][data-active-tab-dock] {
+  min-width: 180px;
+  background: var(--background);
+}
+:root[data-maestro-appearance] [data-tab-strip-slot]:has([data-tab-rename-input]) {
+  width: 300px;
+  max-width: 300px;
+}
+:root[data-maestro-appearance] [data-testid='sortable-tab'] [data-tab-close-button] {
+  display: flex;
+  opacity: 0;
+}
+:root[data-maestro-appearance]
+  [data-testid='sortable-tab']:is(:hover, :focus-within)
+  [data-tab-close-button] {
+  opacity: 1;
+}
+:root[data-maestro-appearance] .maestro-tab-pencil {
+  display: none;
+}
+:root[data-maestro-appearance]
+  [data-testid='sortable-tab']:is(:hover, :focus-within)
+  .maestro-tab-pencil {
+  display: inline-flex;
+}
 :root[data-maestro-appearance] [data-maestro-turn-summary] {
   border: 0;
   gap: 8px;

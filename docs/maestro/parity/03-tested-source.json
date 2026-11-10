@@ -1,0 +1,47 @@
+{
+  "base": "5d9f44df27",
+  "files": [
+    {
+      "path": "src/renderer/src/assets/main.css",
+      "sha256": "daa3ee2b15b6a8bac0e69d037757601e8c975c4a5d945828a06549b0aa3d1b5a"
+    },
+    {
+      "path": "src/renderer/src/components/maestro/MaestroGeneralPreferences.tsx",
+      "sha256": "63cdf18c05a1ba5f44ae73dd01dbd069a82840526042de994c72b33930cfc4f1"
+    },
+    {
+      "path": "src/renderer/src/components/maestro/MaestroNotificationSound.tsx",
+      "sha256": "a0c2731bc4b0afa42d5795e9c30abba510b9338fdaa3c35898bee10d6ec0d511"
+    },
+    {
+      "path": "src/renderer/src/components/maestro/MaestroSetupPanel.tsx",
+      "sha256": "5a1bcc33df8ba91fff35c029211d95549b2d57f0c4370d084dd65372e5a174ff"
+    },
+    {
+      "path": "src/renderer/src/components/maestro/MaestroTabOverflow.tsx",
+      "sha256": "e6b99ae008fa0f1cf405dad4318690813c5d8908514788d8e6d0ad51a8df0646"
+    },
+    {
+      "path": "src/renderer/src/components/maestro/MaestroTerminalDock.tsx",
+      "sha256": "76e4e81815d1e77960bc0f18bc747c3e060a29e74daf37bef53464715254d8bb"
+    },
+    {
+      "path": "src/renderer/src/components/tab-bar/tab-bar-surface.tsx",
+      "sha256": "12361f8ebb2c4923554c73809e15b4889a75e1820a7867d3c97ea5de8d62756d"
+    },
+    {
+      "path": "src/renderer/src/i18n/locales/en.json",
+      "sha256": "8e630dfa15915f5ad50e16e0c5569cca546884dfb479b2b13208a510301c7290"
+    }
+  ],
+  "baselineListSha256": "c68958c8f7755fe353a2ba3f2b071a8782888044e08f566112c3e443cba1ff8d",
+  "baselineResultsSha256": "48b3c9068f5955e4f64cc816c8d0614099c967e5617419c5929d6f4288bbff97",
+  "currentResultsSha256": "6f03c95e37f999f58d56c70f110560f184c138ffae63942cd8da77265bb753c6",
+  "baselineComparisonScope": "exact supplied 148-file inventory; final CSS active minimum and obsolete English-key cleanup followed this run; final package and changed-file gate validate those presentation-only edits",
+  "focusedTests": {
+    "files": 5,
+    "passed": 8
+  },
+  "nodeRuntime": "24.22.2",
+  "oldLauncherProbeNode": "22.20.0"
+}

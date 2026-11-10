@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import { ChevronDown, Plus } from 'lucide-react'
 import { useAppStore } from '@/store'
 import { useActiveWorktree } from '@/store/workspaces/selection/use-selected-worktree'
-import { useRepoById } from '@/store/repos/use-repository-catalog'
+import { MaestroSetupPanel } from './MaestroSetupPanel'
 import { Button } from '@/components/ui/button'
 import { TabBarQuickCommandsButton } from '../tab-bar/TabBarQuickCommandsButton'
 import { useMaestroTerminalDock } from './maestro-terminal-dock'
@@ -11,7 +11,6 @@ import { translate } from '@/i18n/i18n'
 
 export function MaestroTerminalDock() {
   const worktree = useActiveWorktree()
-  const repo = useRepoById(worktree?.repoId ?? null)
   const [tab, setTab] = useState<'setup' | 'run' | 'terminal'>('terminal')
   const [selected, setSelected] = useState<Record<string, string>>({})
   const [target, setTarget] = useState<HTMLDivElement | null>(null)
@@ -166,41 +165,7 @@ export function MaestroTerminalDock() {
               )}
             </div>
           )}
-          {tab === 'setup' && (
-            <div className="space-y-3 p-3 text-xs text-muted-foreground">
-              <p>
-                {translate(
-                  'auto.components.maestro.MaestroTerminalDock.5c070eb920',
-                  'Workspace setup'
-                )}
-              </p>
-              <pre className="whitespace-pre-wrap font-mono">
-                {repo?.hookSettings?.scripts.setup ||
-                  translate(
-                    'auto.components.maestro.MaestroTerminalDock.350af2f832',
-                    'No setup command configured.'
-                  )}
-              </pre>
-              <Button
-                size="sm"
-                variant="outline"
-                onClick={() => {
-                  const state = useAppStore.getState()
-                  state.openSettingsTarget({
-                    pane: 'repo',
-                    repoId: repo?.id ?? null,
-                    hostId: worktree.hostId
-                  })
-                  state.openSettingsPage()
-                }}
-              >
-                {translate(
-                  'auto.components.maestro.MaestroTerminalDock.6c02bea157',
-                  'Configure setup'
-                )}
-              </Button>
-            </div>
-          )}
+          {tab === 'setup' && <MaestroSetupPanel />}
         </div>
       )}
     </div>

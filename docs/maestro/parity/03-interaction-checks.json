@@ -1,0 +1,111 @@
+[
+  {
+    "name": "Searchable tab overflow, keyboard selection and active label geometry",
+    "passed": true,
+    "evidence": {
+      "retainedCount": 9,
+      "geometry": [
+        {
+          "id": "c0e89dbb-c214-4847-967a-3b4d52380894",
+          "x": 35,
+          "width": 160
+        },
+        {
+          "id": "01ab64f0-b5f3-483d-82e2-bc823a5af9e2",
+          "x": 195,
+          "width": 160
+        },
+        {
+          "id": "1dd293cf-cabf-4cb7-9266-67ec47608402",
+          "x": 355,
+          "width": 160
+        },
+        {
+          "id": "9dee12c2-4e25-4fc2-bdfe-0ea33fe8a6d3",
+          "x": 515,
+          "width": 160
+        },
+        {
+          "id": "c72ae73c-0b2a-4317-92d6-9bedae324448",
+          "x": 675,
+          "width": 180
+        },
+        {
+          "id": "c0be58a0-061b-453a-ac20-6a864c41cdaf",
+          "x": 855,
+          "width": 160
+        },
+        {
+          "id": "cae641b2-efc0-4327-9e0f-09ee5eacf9af",
+          "x": 1015,
+          "width": 160
+        },
+        {
+          "id": "60e20a8a-296b-4809-84ec-f65a3eaf42d4",
+          "x": 1175,
+          "width": 160
+        },
+        {
+          "id": "ed0405b4-0533-4bd3-af89-7f62dee60246",
+          "x": 1335,
+          "width": 160
+        }
+      ],
+      "keyboardSearchAndNoMatches": true
+    }
+  },
+  {
+    "name": "Setup shared/local policy, refresh, failure retry and folder handling",
+    "passed": true,
+    "evidence": {
+      "effectiveSharedAndLocal": true,
+      "refresh": true,
+      "parseFailureAndRetry": true,
+      "localOnly": true,
+      "folder": "local-script fixture"
+    }
+  },
+  {
+    "name": "Client-hosted browser rows included in picker and output selection clears them",
+    "passed": true,
+    "evidence": {
+      "pairedRowSearch": true,
+      "actualTerminalOutput": true,
+      "fakePrompt": true,
+      "retainedChat": true
+    }
+  },
+  {
+    "name": "General sound choice and volume persist through host; master disables controls",
+    "passed": true,
+    "evidence": {
+      "soundId": "two-tone",
+      "persistedVolume": 5,
+      "dependencies": true,
+      "volumeSearch": true,
+      "preview": "zero-volume selection only; audible playback not certified"
+    }
+  },
+  {
+    "name": "Appearance opt-out and desktop sound guard",
+    "passed": true,
+    "evidence": {
+      "generalOptOut": true,
+      "desktopGuardProbe": true,
+      "tabOptOut": true
+    }
+  },
+  {
+    "name": "Light/dark and desktop/narrow rendered layouts",
+    "passed": true,
+    "evidence": {
+      "viewports": [
+        [1440, 900],
+        [1280, 800],
+        [375, 812]
+      ],
+      "schemes": ["light", "dark"],
+      "narrow": "desktop renderer only"
+    }
+  }
+]

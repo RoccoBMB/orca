@@ -1,4 +1,5 @@
 import React from 'react'
+import { MaestroTabOverflow } from '../maestro/MaestroTabOverflow'
 import { SortableContext } from '@dnd-kit/sortable'
 import { ChevronLeft, ChevronRight, Plus } from 'lucide-react'
 import { translate } from '@/i18n/i18n'
@@ -27,6 +28,8 @@ import { TabBarStaticCreateMenu } from './tab-bar-static-create-menu'
 import ClientHostedBrowserTabRows from './ClientHostedBrowserTabRows'
 import type { ClientHostedBrowserRow } from '../../../../shared/client-hosted-browser-rows'
 import { advanceAgentSessionsTourPastNewTab } from '@/components/contextual-tours/agent-sessions-tour-new-tab'
+import { selectClientHostedBrowserRow } from '@/lib/pane-manager/client-hosted-browser-row-state'
+import { useAppStore } from '@/store'
 
 const EMPTY_CLIENT_HOSTED_ROWS: readonly ClientHostedBrowserRow[] = []
 
@@ -209,6 +212,25 @@ export function renderTabBarSurface({
           </TooltipContent>
         </Tooltip>
       ) : null}
+      {tabStripOverflowState.hasOverflow &&
+        orderedItems.length + clientHostedBrowserRows.length > 1 && (
+          <MaestroTabOverflow
+            items={orderedItems}
+            activeId={activeClientHostedBrowserRowId ?? itemProjection.activeVisibleTabId}
+            generatedTitles={runtime.generatedTabTitlesEnabled}
+            actions={itemActions}
+            clientHostedRows={clientHostedBrowserRows}
+            onSelectClientHostedRow={(browserPageId) => {
+              useAppStore.getState().focusGroup(worktreeId, resolvedGroupId)
+              selectClientHostedBrowserRow({
+                worktreeId,
+                browserPageId,
+                groupId: resolvedGroupId,
+                groupActiveTabIdAtSelection: props.groupActiveTabId ?? null
+              })
+            }}
+          />
+        )}
       <DropdownMenu
         open={newTabMenuOpen}
         onOpenChange={setNewTabMenuOpen}
