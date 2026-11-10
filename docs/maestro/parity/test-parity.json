@@ -1,0 +1,33 @@
+{
+  "baseline": {
+    "files": 148,
+    "passed": 1212,
+    "failed": 110,
+    "pending": 89,
+    "assertions": 1411
+  },
+  "current": {
+    "files": 148,
+    "passed": 1365,
+    "failed": 31,
+    "pending": 15,
+    "assertions": 1411
+  },
+  "transitions": {
+    "failed->failed": 31,
+    "passed->passed": 1212,
+    "skipped->skipped": 15,
+    "failed->passed": 79,
+    "skipped->passed": 74
+  },
+  "regressions": [],
+  "inputs": {
+    "base-tests.json": "48b3c9068f5955e4f64cc816c8d0614099c967e5617419c5929d6f4288bbff97",
+    "base-existing.txt": "c68958c8f7755fe353a2ba3f2b071a8782888044e08f566112c3e443cba1ff8d"
+  },
+  "resultSha256": "0668d54460df8d2ef3fa51df34284090d277d337edffc0bd2c6625999904ced5",
+  "rawResult": ".local/parity/verified-tests.json",
+  "allCurrentFailuresFailedInBaseline": true,
+  "parityFilesUnmodified": true,
+  "testedSourceCommit": "9f4d82ec3bfe776a10c7020777539d8f802b5ac7"
+}

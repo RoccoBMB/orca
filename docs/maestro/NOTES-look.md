@@ -1,5 +1,7 @@
 # Conductor presentation — 2026-11-08
 
+Current `qa/look-*.png` captures were regenerated with generic fixtures in parity iteration 01. Current scores and verification are in [parity/SCOREBOARD.md](parity/SCOREBOARD.md); the original validation notes below are historical.
+
 Branch `rocco/conductor-look`, based on `14635e6ed5` (`rocco/core`).
 Brief: `Orca-briefs/conductor-look.md` and `common.md`; visual references were the
 supplied Conductor chat, workspace, top-bar and settings screenshots.

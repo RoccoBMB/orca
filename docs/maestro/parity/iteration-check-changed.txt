@@ -1,0 +1,41 @@
+$ node config/scripts/preflight/changed-checks/check-changed.mjs --base=4599c68b18 --maxWorkers=2 --timeout=5
+check:changed: 27 changed file(s) since 4599c68b18 (4599c68b18); running 24 check(s).
+✓ typecheck (tsconfig.node, tsconfig.tc.web) (3.1s)
+✓ format (0.1s)
+✓ oxlint (0.2s)
+✓ direct-link-open-ratchet (0.6s)
+✓ flaky-test-pattern-ratchet (11.6s)
+✓ focus-read-ratchet (2.7s)
+✓ host-list-render-ratchet (0.6s)
+✓ layout-writer-ratchets (19.5s)
+… 60.7s elapsed; running: unit tests 60.0s, changed-code quality 60.0s, legacy-relay-fence-ratchet 21.6s
+✓ legacy-relay-fence-ratchet (64.1s)
+… 120.7s elapsed; running: unit tests 120.0s, changed-code quality 120.0s, max-lines-ratchet 17.5s
+✓ max-lines-ratchet (27.7s)
+✓ memo-translate-subscription-ratchet (3.0s)
+✓ path-literal-ratchet (2.8s)
+✓ react-compiler-compat-ratchet (22.4s)
+… 180.7s elapsed; running: unit tests 180.0s, changed-code quality 180.0s, ts-nocheck-ratchet 21.6s
+✓ ts-nocheck-ratchet (46.6s)
+✓ workspace-record-read-ratchet (1.9s)
+✓ worktree-id-composer-ratchet (11.9s)
+… 240.7s elapsed; running: unit tests 240.0s, changed-code quality 240.0s, localization catalogs 21.1s
+✓ unit tests (256.7s)
+✓ localization coverage (3.3s)
+✓ localization catalogs (43.6s)
+✓ compiled :has() restyle scope (2.9s)
+✓ localization extraction (24.0s)
+✓ dead design-system classes (4.0s)
+✓ import boundaries (24.6s)
+… 300.7s elapsed; running: changed-code quality 300.0s
+
+✗ changed-code quality (300.0s)
+code quality: 0 new finding(s) across 10 changed file(s).
+JS plugins: 0 new finding(s) across 10 changed file(s).
+casting code quality: 0 new finding(s) across 10 changed file(s).
+focused plugins: 0 new finding(s) across 10 changed file(s).
+
+Timed out after 5 min; pass --timeout=<minutes> to extend.
+
+✗ 1 of 24 check(s) failed in 300.7s: changed-code quality
+[ELIFECYCLE] Command failed with exit code 1.

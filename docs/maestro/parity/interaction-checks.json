@@ -1,0 +1,92 @@
+[
+  {
+    "name": "main and expanded tool presentation",
+    "passed": true,
+    "evidence": {
+      "rows": [
+        {
+          "height": 38,
+          "labelSize": "14px"
+        },
+        {
+          "height": 38,
+          "labelSize": "14px"
+        }
+      ],
+      "commandFont": "\"SF Mono\", SFMono-Regular, ui-monospace, \"Cascadia Code\", Menlo, Consolas, \"Liberation Mono\", monospace"
+    }
+  },
+  {
+    "name": "tool output disclosure and nested file link",
+    "passed": true,
+    "evidence": {
+      "before": "false",
+      "after": "false"
+    }
+  },
+  {
+    "name": "stage and unstage real fixture files",
+    "passed": true,
+    "evidence": "Real Git staging round trip using keyboard focus and Enter; hover-only pointer interaction is not asserted for hidden windows"
+  },
+  {
+    "name": "composer controls and narrow layout",
+    "passed": true,
+    "evidence": {
+      "attachX": 935.3046875,
+      "micX": 978.7265625,
+      "radius": "8px",
+      "narrow": {
+        "client": 345,
+        "scroll": 345
+      }
+    }
+  },
+  {
+    "name": "appearance toggle restores compact rows and round send",
+    "passed": true,
+    "evidence": {
+      "compactRowHeight": 24,
+      "roundSendRadius": "1.67772e+07px"
+    }
+  },
+  {
+    "name": "virtualized file list scrolls to the final row without overlaps",
+    "passed": true,
+    "evidence": {
+      "fixtureFiles": 60,
+      "mountedRows": 22,
+      "minHeight": 38,
+      "lastRow": "fixture-files/sample-59.ts",
+      "selectorScopedTo": "right panel"
+    }
+  },
+  {
+    "name": "dedicated terminal retains chat and uses fake prompt",
+    "passed": true,
+    "evidence": {
+      "before": 1,
+      "after": 2,
+      "fakePromptPresent": true,
+      "source": "headless"
+    }
+  },
+  {
+    "name": "settings, palette, creation and theme captures",
+    "passed": true,
+    "evidence": {
+      "viewports": [
+        [1280, 800],
+        [1440, 900],
+        [2000, 1300],
+        [375, 812]
+      ],
+      "themes": ["light", "dark", "mixed"]
+    }
+  },
+  {
+    "name": "folder and home guard",
+    "passed": true,
+    "evidence": "Temporary home stays collapsed and folder has no PR action"
+  }
+]

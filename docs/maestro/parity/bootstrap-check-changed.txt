@@ -1,0 +1,29 @@
+$ node config/scripts/preflight/changed-checks/check-changed.mjs --base=4178d68db3 --maxWorkers=2 --timeout=2
+check:changed: 2 changed file(s) since 4178d68db3 (4178d68db3); running 24 check(s).
+✓ typecheck (tsconfig.node, tsconfig.tc.web) (7.9s)
+✓ format (0.2s)
+✓ oxlint (0.7s)
+✓ direct-link-open-ratchet (2.4s)
+✓ changed-code quality (14.3s)
+✓ focus-read-ratchet (13.3s)
+✓ host-list-render-ratchet (1.0s)
+✓ flaky-test-pattern-ratchet (18.5s)
+✓ layout-writer-ratchets (5.0s)
+✓ max-lines-ratchet (3.3s)
+✓ memo-translate-subscription-ratchet (0.4s)
+✓ legacy-relay-fence-ratchet (8.1s)
+✓ path-literal-ratchet (0.8s)
+✓ ts-nocheck-ratchet (3.2s)
+✓ workspace-record-read-ratchet (1.4s)
+✓ worktree-id-composer-ratchet (2.1s)
+✓ react-compiler-compat-ratchet (9.7s)
+✓ localization coverage (6.0s)
+… 61.7s elapsed; running: unit tests 60.0s, localization catalogs 15.2s, localization extraction 6.4s
+✓ localization catalogs (20.2s)
+✓ compiled :has() restyle scope (6.8s)
+✓ unit tests (75.0s)
+✓ dead design-system classes (3.9s)
+… 121.7s elapsed; running: localization extraction 66.4s, import boundaries 48.3s
+✓ import boundaries (57.4s)
+✓ localization extraction (79.0s)
+✓ 24 check(s) passed in 134.3s.

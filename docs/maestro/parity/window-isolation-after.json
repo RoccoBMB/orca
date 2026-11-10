@@ -1,0 +1,23 @@
+{
+  "before": {
+    "home": "/var/folders/6k/401qrhtj2s5brq31dhcbg8qw0000gp/T/maestro-parity-mo69Ty/home",
+    "userData": "/var/folders/6k/401qrhtj2s5brq31dhcbg8qw0000gp/T/maestro-parity-mo69Ty/data",
+    "windows": [
+      {
+        "visible": false,
+        "focused": false
+      }
+    ]
+  },
+  "after": {
+    "home": "/var/folders/6k/401qrhtj2s5brq31dhcbg8qw0000gp/T/maestro-parity-mo69Ty/home",
+    "userData": "/var/folders/6k/401qrhtj2s5brq31dhcbg8qw0000gp/T/maestro-parity-mo69Ty/data",
+    "windows": [
+      {
+        "visible": false,
+        "focused": false
+      }
+    ]
+  },
+  "pageErrors": []
+}

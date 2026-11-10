@@ -1,0 +1,42 @@
+{
+  "terminalPrompt": "dev@maestro",
+  "host": "Development host",
+  "workspaces": [
+    {
+      "repo": "acme-web",
+      "workspace": "Fix login redirect",
+      "branch": "feature/login-redirect",
+      "status": "in-progress"
+    },
+    {
+      "repo": "acme-api",
+      "workspace": "Add billing page",
+      "branch": "feature/billing-page",
+      "status": "in-review"
+    },
+    {
+      "repo": "sample-docs",
+      "workspace": "Improve search results",
+      "branch": "feature/search-results",
+      "status": "in-progress"
+    },
+    {
+      "repo": "demo-ui",
+      "workspace": "Update documentation",
+      "branch": "feature/documentation",
+      "status": "todo"
+    },
+    {
+      "repo": "sample-service",
+      "workspace": "Investigate retry policy",
+      "branch": "feature/retry-policy",
+      "status": "canceled"
+    },
+    {
+      "repo": "demo-assets",
+      "workspace": "Refresh icons",
+      "branch": "feature/icons",
+      "status": "completed"
+    }
+  ]
+}

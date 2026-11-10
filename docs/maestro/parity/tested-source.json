@@ -1,0 +1,17 @@
+{
+  "baseCommit": "4599c68b18",
+  "files": {
+    "config/electron-builder.config.cjs": "0f3e5955a31f783ef492383898f3d1c41f24b7ca54ad8e2f66650aca1908dfb0",
+    "src/renderer/src/assets/main.css": "396f7e40114603369f25e601237c7f18370a38017ac56a12a81a1623fab309a5",
+    "src/renderer/src/components/native-chat/NativeChatComposerActions.tsx": "163ec65967e5aea8a766c00c86166f6a5be3b13bdbd13337179fe552d84290ad",
+    "src/renderer/src/components/native-chat/NativeChatDiffCard.tsx": "db6fecf4c56a0ca1f4c7b2c6afc69705b31ebef5c153ecd648282da694f6aee9",
+    "src/renderer/src/components/native-chat/NativeChatToolFileTarget.tsx": "136fa0885b35d3468e1430e26a886a1d972d7a3d92adebe06c6ec84adea166b0",
+    "src/renderer/src/components/native-chat/NativeChatToolLine.tsx": "83ddeb4163ad167ce8e9a1a01b15fb5769e49ef9b514619a651d94541a026b69",
+    "src/renderer/src/components/right-sidebar/source-control/listing/branch-entry-row.tsx": "6523b4ed885ff7c0a56bac6dc9a98fe2e374f234bb098d5767aee6894d8dcec1",
+    "src/renderer/src/components/right-sidebar/source-control/listing/branch-section.tsx": "cc1a4a95e0bb80725ae0b7c1082713706a2d2917e32e54fbcf71ab8413f5bb95",
+    "src/renderer/src/components/right-sidebar/source-control/listing/diff-line-counts.tsx": "6081229bbe4188ef8f9e9ed79581d7334bc36d285f7d98acc849d50c7ca4194b",
+    "src/renderer/src/components/right-sidebar/source-control/listing/section-file-list.tsx": "1079f4816b20db5d6e5ca7c03e08e2271352c9884f3d57ead8b43225cf362f50",
+    "src/renderer/src/components/right-sidebar/source-control/listing/uncommitted-entry-row.tsx": "24d5201ff1d3ec74ba9a24afc004f56c2489d4eb9b7e7e14877881bd3100f66c"
+  },
+  "sourceCommit": "9f4d82ec3bfe776a10c7020777539d8f802b5ac7"
+}

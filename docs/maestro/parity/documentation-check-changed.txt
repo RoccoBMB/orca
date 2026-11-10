@@ -1,0 +1,5 @@
+$ node config/scripts/preflight/changed-checks/check-changed.mjs --base=9f4d82ec3b --maxWorkers=2 --timeout=5
+check:changed: 52 changed file(s) since 9f4d82ec3b (9f4d82ec3b); running 2 check(s).
+✓ format (0.1s)
+✓ changed-code quality (0.4s)
+✓ 2 check(s) passed in 1.3s.

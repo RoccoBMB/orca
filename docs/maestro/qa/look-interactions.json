@@ -1,53 +1,23 @@
 [
   {
-    "name": "navigation and workspace presentation",
+    "name": "main and expanded tool presentation",
     "passed": true,
     "evidence": {
-      "nav": "Rocco's Mac\nDashboard\nHome\nCreate\nSearch",
-      "headings": ["Done\n1", "In review\n1", "In progress\n3", "Backlog\n1", "Canceled\n1"],
       "rows": [
         {
           "height": 38,
-          "text": "✅\nCompleted task\n1h",
-          "font": "14px"
+          "labelSize": "14px"
         },
         {
           "height": 38,
-          "text": "🎨\nBoffo branding\n1h",
-          "font": "14px"
-        },
-        {
-          "height": 38,
-          "text": "🦉\nConductor.build clone\n+21\n−30",
-          "font": "14px"
-        },
-        {
-          "height": 38,
-          "text": "🦉\nmaestro-look-ui-home\n27m",
-          "font": "14px"
-        },
-        {
-          "height": 38,
-          "text": "🟣\nMeta Leads Workspace\n1h",
-          "font": "14px"
-        },
-        {
-          "height": 38,
-          "text": "🖥️\nMac window rotation\n1h",
-          "font": "14px"
-        },
-        {
-          "height": 38,
-          "text": "🎮\nFix win98 games\n1h",
-          "font": "14px"
+          "labelSize": "14px"
         }
       ],
-      "bar": "🦉\nreverse-engineer-v1\nfeature/workspace-0\nfeature/workspace-0",
-      "statusBars": 0
+      "commandFont": "\"SF Mono\", SFMono-Regular, ui-monospace, \"Cascadia Code\", Menlo, Consolas, \"Liberation Mono\", monospace"
     }
   },
   {
-    "name": "tool disclosure uses existing expandable group",
+    "name": "tool output disclosure and nested file link",
     "passed": true,
     "evidence": {
       "before": "false",
@@ -55,30 +25,68 @@
     }
   },
   {
-    "name": "assistant copy and menu",
+    "name": "stage and unstage real fixture files",
+    "passed": true,
+    "evidence": "Real Git staging round trip using keyboard focus and Enter; hover-only pointer interaction is not asserted for hidden windows"
+  },
+  {
+    "name": "composer controls and narrow layout",
     "passed": true,
     "evidence": {
-      "copyButtons": 6
+      "attachX": 935.3046875,
+      "micX": 978.7265625,
+      "radius": "8px",
+      "narrow": {
+        "client": 345,
+        "scroll": 345
+      }
     }
   },
   {
-    "name": "commit controls remain available",
-    "passed": true,
-    "evidence": "Commit input opens in collapsed controls"
-  },
-  {
-    "name": "Open-in menu and remembered icon",
-    "passed": true,
-    "evidence": ["VS Code", "Cursor", "Terminal", "Finder", "Customize apps…"]
-  },
-  {
-    "name": "dedicated terminal dock and resize",
+    "name": "appearance toggle restores compact rows and round send",
     "passed": true,
     "evidence": {
-      "before": 3,
-      "after": 4,
-      "height": 276.7578125,
-      "resized": 314.53125
+      "compactRowHeight": 24,
+      "roundSendRadius": "1.67772e+07px"
     }
+  },
+  {
+    "name": "virtualized file list scrolls to the final row without overlaps",
+    "passed": true,
+    "evidence": {
+      "fixtureFiles": 60,
+      "mountedRows": 22,
+      "minHeight": 38,
+      "lastRow": "fixture-files/sample-59.ts",
+      "selectorScopedTo": "right panel"
+    }
+  },
+  {
+    "name": "dedicated terminal retains chat and uses fake prompt",
+    "passed": true,
+    "evidence": {
+      "before": 1,
+      "after": 2,
+      "fakePromptPresent": true,
+      "source": "headless"
+    }
+  },
+  {
+    "name": "settings, palette, creation and theme captures",
+    "passed": true,
+    "evidence": {
+      "viewports": [
+        [1280, 800],
+        [1440, 900],
+        [2000, 1300],
+        [375, 812]
+      ],
+      "themes": ["light", "dark", "mixed"]
+    }
+  },
+  {
+    "name": "folder and home guard",
+    "passed": true,
+    "evidence": "Temporary home stays collapsed and folder has no PR action"
   }
 ]

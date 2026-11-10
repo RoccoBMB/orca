@@ -1,0 +1,42 @@
+[
+  {
+    "target": "docs/maestro/qa/look-main-1440.png",
+    "source": "docs/maestro/parity/shots/01-after-main.png",
+    "sha256": "500733a0a67715c174efdc933eba32b6f56187f3afd75e78cb600d356d18ae22"
+  },
+  {
+    "target": "docs/maestro/qa/look-main-2000.png",
+    "source": "docs/maestro/parity/shots/01-after-desktop-2000.png",
+    "sha256": "f6d039bb2bdac810257f11c4f74b2f28f5f8d2d06e918ebc81d49e5e58452d3b"
+  },
+  {
+    "target": "docs/maestro/qa/look-dark.png",
+    "source": "docs/maestro/parity/shots/01-after-dark.png",
+    "sha256": "5e6aa2bceabb62e00009005a7c47fac45f3766b322294b12463c27aec5761a4d"
+  },
+  {
+    "target": "docs/maestro/qa/look-mixed-theme.png",
+    "source": "docs/maestro/parity/shots/01-after-mixed-theme.png",
+    "sha256": "a7abf2d593c9e5a1abb47ca6433709e313182cdb950de338ab4d4d5e4df309b8"
+  },
+  {
+    "target": "docs/maestro/qa/look-open-in.png",
+    "source": "docs/maestro/parity/shots/01-after-open-in.png",
+    "sha256": "5773ea0cd9d8f364c2d4ca82d1bc0fda47d9e4e8d6498d181901346d31627b50"
+  },
+  {
+    "target": "docs/maestro/qa/look-settings.png",
+    "source": "docs/maestro/parity/shots/01-after-settings.png",
+    "sha256": "f2ce73491a59cbd605f147e8d3e03c58bc2f0d8a1fe82f2e576905b4bb348f0b"
+  },
+  {
+    "target": "docs/maestro/qa/look-terminal-dock.png",
+    "source": "docs/maestro/parity/shots/01-after-terminal.png",
+    "sha256": "cdcebb9585d974143637a5bfc5c654364847b838014e4736a41157382ad09cd1"
+  },
+  {
+    "target": "docs/maestro/qa/look-home-folder.png",
+    "source": "docs/maestro/parity/shots/01-after-home-folder.png",
+    "sha256": "57a6d877ed548c818f20219eb3b760e6f62787ea311a1fffe0a40b784345b05c"
+  }
+]
