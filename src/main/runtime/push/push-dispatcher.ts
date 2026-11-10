@@ -1,3 +1,4 @@
+import { branding } from '../../../shared/branding'
 import { reserveNotificationCooldown } from '../../../shared/notification-burst-cooldown'
 // Send background push after socket fan-out without making sockets wait or fail on gateway results.
 import type { MobilePushRegistration } from '../../../shared/mobile-push-contract'
@@ -101,7 +102,7 @@ export class PushDispatcher {
           notificationEpoch: target.notificationEpoch,
           source: 'agent-task-complete',
           agentState: null,
-          title: 'Orca',
+          title: branding.productName,
           body: '',
           sound: false
         }

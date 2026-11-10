@@ -1,3 +1,4 @@
+import { productMessage } from '../../src/shared/branding-copy'
 // Carry the notice with navigation because the bouncing session screen unmounts before a toast can survive.
 
 export const HOST_ROUTE_NOTICES = {
@@ -31,5 +32,5 @@ export function visibleHostRouteNotice(
 }
 
 export function serverUpdateNeededNotice(hostLabel: string): string {
-  return `Update Orca on ${hostLabel} to open its workspaces from your phone.`
+  return productMessage`Update Orca on ${hostLabel} to open its workspaces from your phone.`
 }

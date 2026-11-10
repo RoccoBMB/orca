@@ -1,3 +1,4 @@
+import { brandProductCopy } from '../../../../shared/branding-copy'
 import {
   discardForegroundRenderSettle,
   type ForegroundTerminalOutputTarget
@@ -111,11 +112,13 @@ export function getTerminalOutputMaxQueueChars(): number {
   return maxQueueChars
 }
 // CAN aborts partial escapes before style reset; also close DEC 2026 because discarded tails may contain its end marker, hiding even the warning until xterm’s 1000ms timeout.
-export const BACKGROUND_BACKLOG_WARNING =
+export const BACKGROUND_BACKLOG_WARNING = brandProductCopy(
   '\x18\x1b[?2026l\x1b[0m\r\n[Orca skipped hidden terminal output because the backlog grew too large.]\r\n'
+)
 // Why a separate foreground message: a visible pane hitting the cap means the drain couldn't keep up with a flood (starved renderer), not merely output produced while hidden.
-export const FOREGROUND_BACKLOG_WARNING =
+export const FOREGROUND_BACKLOG_WARNING = brandProductCopy(
   '\x18\x1b[?2026l\x1b[0m\r\n[Orca skipped a burst of terminal output because the backlog grew too large.]\r\n'
+)
 export const ALWAYS_REFRESH_FOREGROUND_SYNCHRONOUSLY = (): boolean => true
 
 export const queuedByTerminal = new Map<TerminalOutputTarget, QueueEntry>()

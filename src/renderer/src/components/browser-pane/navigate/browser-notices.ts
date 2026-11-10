@@ -1,3 +1,4 @@
+import { brandProductCopy, productMessage } from '../../../../../shared/branding-copy'
 import type {
   BrowserDownloadFinishedEvent,
   BrowserPermissionDeniedEvent,
@@ -38,7 +39,7 @@ function humanizePermission(permission: string): string {
     case 'keyboardLock':
       return 'permission to capture keyboard input'
     case 'openExternal':
-      return 'permission to open a link outside Orca'
+      return brandProductCopy('permission to open a link outside Orca')
     case 'fileSystem':
       return 'access to your files or folders'
     case 'hid':
@@ -62,7 +63,7 @@ function humanizePermission(permission: string): string {
 
 export function formatPermissionNotice(event: BrowserPermissionDeniedEvent): string {
   const target = event.origin === 'unknown' ? 'this page' : event.origin
-  return `${target} asked for ${humanizePermission(event.permission)}, and Orca denied it.`
+  return productMessage`${target} asked for ${humanizePermission(event.permission)}, and Orca denied it.`
 }
 
 export function formatPopupNotice(event: BrowserPopupEvent): string | null {
@@ -73,7 +74,7 @@ export function formatPopupNotice(event: BrowserPopupEvent): string | null {
   if (event.action === 'opened-external') {
     return `${target} opened a new window in your default browser.`
   }
-  return `${target} tried to open a popup Orca does not support here.`
+  return productMessage`${target} tried to open a popup Orca does not support here.`
 }
 
 export function formatDownloadFinishedNotice(event: BrowserDownloadFinishedEvent): string {

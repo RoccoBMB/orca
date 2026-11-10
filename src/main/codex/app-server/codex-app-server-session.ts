@@ -1,3 +1,4 @@
+import { branding } from '../../../shared/branding'
 import type { ChildProcessWithoutNullStreams } from 'node:child_process'
 import { spawnManagedProviderProcess } from '../../provider-process/managed-provider-process'
 import { resolveProviderChildEnv } from '../../provider-process/provider-process-launch'
@@ -294,7 +295,7 @@ export async function runCodexAppServerSession<T>(
   try {
     const session = async (): Promise<T> => {
       await requestRpc('initialize', {
-        clientInfo: { name: 'orca_desktop', title: 'Orca', version: '0.0.0' },
+        clientInfo: { name: 'orca_desktop', title: branding.productName, version: '0.0.0' },
         ...(invocation.experimentalApi ? { capabilities: { experimentalApi: true } } : {})
       })
       notify('initialized')

@@ -1,3 +1,5 @@
+import { branding } from '../../../shared/branding'
+import maestroIcon from '../../../../resources/maestro/icon.png?asset'
 import {
   execFile as execFileChildProcess,
   type ChildProcess,
@@ -14,7 +16,12 @@ import blueMacDockIcon from '../../../../resources/app-icons/orca-blue.png?asset
 import { normalizeAppIconId, type AppIconId } from '../../../shared/app-icon'
 
 const APP_ICON_PATHS = {
-  classic: !app.isPackaged ? classicDevIcon : classicIcon,
+  classic:
+    branding.productName === 'Maestro'
+      ? maestroIcon
+      : !app.isPackaged
+        ? classicDevIcon
+        : classicIcon,
   watercolor: watercolorIcon,
   blue: blueIcon
 } satisfies Record<AppIconId, string>
@@ -73,7 +80,7 @@ let macDockIconPersistenceGeneration = 0
 let macDockIconPersistenceQueue = Promise.resolve()
 
 export function getAppIconPath(value: unknown): string {
-  return APP_ICON_PATHS[normalizeAppIconId(value)]
+  return APP_ICON_PATHS[branding.productName === 'Maestro' ? 'classic' : normalizeAppIconId(value)]
 }
 
 export function createAppIconImage(value: unknown): Electron.NativeImage {
@@ -269,7 +276,7 @@ export function persistMacDockIcon(value: unknown, options: PersistMacDockIconOp
     return
   }
   const execFile = options.execFile ?? defaultExecFile
-  const iconId = normalizeAppIconId(value)
+  const iconId = branding.productName === 'Maestro' ? 'classic' : normalizeAppIconId(value)
   const generation = ++macDockIconPersistenceGeneration
   enqueueMacDockIconPersistence(async () => {
     if (generation !== macDockIconPersistenceGeneration) {

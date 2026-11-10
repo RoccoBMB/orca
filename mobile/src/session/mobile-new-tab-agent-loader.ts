@@ -1,3 +1,4 @@
+import { brandProductCopy } from '../../../src/shared/branding-copy'
 import { getRepoIdFromWorktreeId } from '../../../src/shared/worktree/id'
 import {
   PREFLIGHT_OTHER_RUNTIME_REFUSAL_RUNTIME_CAPABILITY,
@@ -31,8 +32,9 @@ import {
   type MobileNewTabAgentSettings
 } from './mobile-new-tab-agent-options'
 
-const WORKSPACE_ON_OTHER_RUNTIME_MESSAGE =
+const WORKSPACE_ON_OTHER_RUNTIME_MESSAGE = brandProductCopy(
   'This workspace runs on another Orca server. Pair that server directly to see its agents.'
+)
 
 export class MobileWorkspaceOnOtherRuntimeError extends Error {
   constructor() {

@@ -1,3 +1,4 @@
+import { productMessage } from '../../../shared/branding-copy'
 import type {
   LocalBaseRefRefreshResult,
   LocalBaseRefUpdateSuggestion
@@ -84,11 +85,11 @@ export function resolveWorktreeAddTimeoutMs(env: NodeJS.ProcessEnv = process.env
 }
 
 export function worktreeAddTimeoutMessage(timeoutMs: number): string {
-  const stopped = `Creating the worktree took longer than ${Math.round(timeoutMs / 1000)} seconds, so Orca stopped Git.`
+  const stopped = productMessage`Creating the worktree took longer than ${Math.round(timeoutMs / 1000)} seconds, so Orca stopped Git.`
   if (timeoutMs >= WORKTREE_ADD_TIMEOUT_MAX_MS) {
     return stopped
   }
-  return `${stopped} To allow more time, set ORCA_WORKTREE_ADD_TIMEOUT_MS (milliseconds, up to ${WORKTREE_ADD_TIMEOUT_MAX_MS}) in the environment that starts Orca on the machine running Git (the remote host for SSH or \`orca serve\` workspaces), then restart Orca there.`
+  return productMessage`${stopped} To allow more time, set ORCA_WORKTREE_ADD_TIMEOUT_MS (milliseconds, up to ${WORKTREE_ADD_TIMEOUT_MAX_MS}) in the environment that starts Orca on the machine running Git (the remote host for SSH or \`orca serve\` workspaces), then restart Orca there.`
 }
 
 export type GitExecOptionsForWorktree = {

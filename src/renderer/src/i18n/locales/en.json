@@ -1347,7 +1347,6 @@
       "df1d56bf87": "The workspace shell hit an error.",
       "9e0b441a91": "Toggle right sidebar",
       "e81217c1b7": "Hide App Name",
-      "5096cbbc86": "Orca",
       "8b0b8eb54f": "Application menu",
       "caea5b51b9": "Restart now",
       "0a9e810705": "Changes won't be saved until restart. Your previous tabs are safe on disk.",
@@ -19512,13 +19511,10 @@
           "72202dc21b": "Edit section"
         },
         "MaestroSettingsSection": {
-          "948dc382d3": "Orca source and attribution",
           "3bc8846b9f": "Built on {{name}} · MIT License",
-          "9569a2b8d0": "About Maestro",
           "d038b03b29": "Automatic updates are disabled. Build a new version locally to update Maestro.",
           "a0ee737c8e": "Group by status and your own sections. Turn off to use Orca’s project grouping.",
           "0dd0342921": "Conductor sidebar sections",
-          "7898f12dee": "Maestro",
           "9eabd40bea": "Accounts and usage",
           "9ff963bc93": "Warm surfaces, spacious chat and underline tabs.",
           "2559dc422e": "Conductor appearance"
@@ -24390,5 +24386,11 @@
     "stopped": "{{host}} stopped controlling browser tabs until Orca restarts.",
     "disallowed": "{{host}} can no longer control browser tabs. Turn it back on in Settings > SSH.",
     "failed": "Couldn’t stop {{host}}. Turn off its browser control in Settings > SSH."
+  },
+  "maestro": {
+    "about": {
+      "title": "About {{productName}}",
+      "source": "Source and attribution"
+    }
   }
 }

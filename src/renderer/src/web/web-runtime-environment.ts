@@ -1,3 +1,4 @@
+import { branding } from '../../../shared/branding'
 import {
   pairedRuntimeConnectionFromOffer,
   type PairedRuntimeConnection
@@ -152,7 +153,7 @@ export function createStoredWebRuntimeEnvironment(args: {
   const compatibleEnvironmentIds = sameHost?.compatibleEnvironmentIds ?? []
   return {
     id,
-    name: args.name.trim() || 'Orca Server',
+    name: args.name.trim() || `${branding.productName} Server`,
     createdAt: sameHost?.createdAt ?? now,
     updatedAt: now,
     // Why bump: request fences compare revisions, and the device token they captured is gone.

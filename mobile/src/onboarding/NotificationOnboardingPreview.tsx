@@ -1,3 +1,4 @@
+import { branding } from '../../../src/shared/branding'
 import { useEffect, useRef } from 'react'
 import { Animated, Easing, Text, View } from 'react-native'
 import { OrcaLogo } from '../components/OrcaLogo'
@@ -114,7 +115,7 @@ function SampleBanner({
       </View>
       <View style={styles.cardCopy}>
         <View style={styles.cardMeta}>
-          <Text style={styles.appName}>Orca</Text>
+          <Text style={styles.appName}>{branding.productName}</Text>
           <Text style={styles.now}>{t('onboarding.notificationOnboardingPreview.now', 'now')}</Text>
         </View>
         <Text style={styles.cardTitle} numberOfLines={1}>

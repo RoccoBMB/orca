@@ -1,3 +1,5 @@
+import { brandCliCopy } from '../shared/branding-copy'
+import { brandedDocumentation } from '../shared/branded-documentation'
 import type { CommandSpec } from './args'
 import { effectiveAllowedFlags } from './args'
 
@@ -33,15 +35,15 @@ export function buildAgentContext(specs: CommandSpec[]): AgentContextSchema {
       path: spec.path,
       aliases: spec.aliases ?? [],
       argumentMode: spec.argumentMode ?? 'parsed',
-      summary: spec.summary,
-      usage: spec.usage,
+      summary: brandedDocumentation(spec.summary),
+      usage: brandCliCopy(spec.usage),
       // Include globals and conditional flags so discovery matches validation.
       flags: effectiveAllowedFlags(spec),
       positionalArgs: spec.positionalArgs ?? [],
       ...(spec.variadicPositional ? { variadicPositional: true } : {}),
       ...(spec.repeatableFlags ? { repeatableFlags: spec.repeatableFlags } : {}),
-      examples: spec.examples ?? [],
-      notes: spec.notes ?? []
+      examples: (spec.examples ?? []).map(brandCliCopy),
+      notes: (spec.notes ?? []).map(brandedDocumentation)
     }))
     .sort((a, b) => a.command.localeCompare(b.command))
   return {
@@ -52,8 +54,10 @@ export function buildAgentContext(specs: CommandSpec[]): AgentContextSchema {
 }
 
 export function formatAgentContextSummary(schema: AgentContextSchema): string {
-  return [
-    `${schema.commandCount} commands (schema v${schema.schemaVersion}).`,
-    'Run `orca agent-context --json` for the full machine-readable command schema.'
-  ].join('\n')
+  return brandCliCopy(
+    [
+      `${schema.commandCount} commands (schema v${schema.schemaVersion}).`,
+      'Run `orca agent-context --json` for the full machine-readable command schema.'
+    ].join('\n')
+  )
 }

@@ -1,3 +1,5 @@
+import { branding } from '../../../../shared/branding'
+import { productLogo } from '@/lib/product-assets'
 import type {
   ClaudeUsageDailyPoint,
   ClaudeUsageSummary
@@ -132,6 +134,9 @@ export function getLegendItems(provider: 'claude' | 'codex') {
 }
 
 export function OrcaLogo(): React.JSX.Element {
+  if (branding.productName === 'Maestro') {
+    return <img src={productLogo} alt={branding.productName} width={26} height={26} />
+  }
   return (
     <svg
       width={26}

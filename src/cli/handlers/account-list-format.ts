@@ -1,3 +1,4 @@
+import { brandProductCopy } from '../../shared/branding-copy'
 import type { AntigravityAccountState } from '../../shared/antigravity-account-types'
 import type { ManagedDataAccountsState } from '../../shared/managed-account-types'
 
@@ -38,7 +39,9 @@ export function formatAccountsBlock(label: string, block: AccountsBlock): string
   const lines = block.accounts.map(
     (account) =>
       `  ${account.id}  ${account.email}${activeAccountIds.has(account.id) ? ' (active)' : ''}${
-        account.needsSignIn ? ' (sign in again in Orca Settings > AI Provider Accounts)' : ''
+        account.needsSignIn
+          ? brandProductCopy(' (sign in again in Orca Settings > AI Provider Accounts)')
+          : ''
       }`
   )
   return `Managed ${label} accounts (${block.accounts.length}):\n${system}\n${lines.join('\n')}`

@@ -1,3 +1,4 @@
+import { brandProductCopy, productMessage } from '../../shared/branding-copy'
 import { existsSync } from 'node:fs'
 import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import { dirname, isAbsolute, join, resolve } from 'node:path'
@@ -45,7 +46,9 @@ function requireLocal(ctx: HandlerContext): void {
   if (process.env.ORCA_CLI_CWD || ctx.client.isRemote) {
     throw refuse(
       'invalid_environment',
-      "shot --scenario runs the plugin's code on this machine and shows it in the Orca on this machine, so it does not reach another host. Run it where Orca and the plugin folder are, without --environment."
+      brandProductCopy(
+        "shot --scenario runs the plugin's code on this machine and shows it in the Orca on this machine, so it does not reach another host. Run it where Orca and the plugin folder are, without --environment."
+      )
     )
   }
 }
@@ -63,7 +66,7 @@ async function readManifest(dir: string): Promise<PluginManifest> {
   const parsed = parsePluginManifest(raw)
   if (!parsed.ok) {
     throw refuse('plugin_invalid', `${dir}: ${parsed.error}`, [
-      `\`orca plugin validate ${dir}\` lists every problem.`
+      productMessage`\`orca plugin validate ${dir}\` lists every problem.`
     ])
   }
   return parsed.manifest
@@ -94,15 +97,17 @@ async function resolveFolder(
   const plugins = await callPlugins<PluginHostListEntry[]>(ctx, 'plugins.list')
   const entry = plugins.find((plugin) => plugin.pluginKey === target)
   if (!entry) {
-    throw refuse('plugin_not_found', `Orca has no plugin ${target}.`, [
-      'Pass the plugin folder instead: `orca plugin shot <dir> --scenario <name>`.'
+    throw refuse('plugin_not_found', productMessage`Orca has no plugin ${target}.`, [
+      brandProductCopy(
+        'Pass the plugin folder instead: `orca plugin shot <dir> --scenario <name>`.'
+      )
     ])
   }
   if (!entry.isDev) {
     throw refuse(
       'invalid_argument',
       `${target} is installed, not a development folder; --scenario renders a plugin's own source folder.`,
-      ['Pass the plugin folder: `orca plugin shot <dir> --scenario <name>`.']
+      [brandProductCopy('Pass the plugin folder: `orca plugin shot <dir> --scenario <name>`.')]
     )
   }
   const enclosing = enclosingPluginFolder(ctx.cwd)
@@ -110,8 +115,8 @@ async function resolveFolder(
   if (!enclosing || !manifest || folderKey(manifest) !== target) {
     throw refuse(
       'invalid_argument',
-      `Run this inside ${target}'s folder, or pass the folder; Orca does not share where a development folder is.`,
-      [`orca plugin shot <dir> --scenario <name>`]
+      productMessage`Run this inside ${target}'s folder, or pass the folder; Orca does not share where a development folder is.`,
+      [brandProductCopy('orca plugin shot <dir> --scenario <name>')]
     )
   }
   return { dir: enclosing, manifest, pluginKey: target }
@@ -208,7 +213,9 @@ export async function takePluginScenarioShot(
   if (reply.replay !== true) {
     throw refuse(
       'runtime_unsupported',
-      'This Orca does not draw shot --scenario previews; update Orca, then run it again.'
+      brandProductCopy(
+        'This Orca does not draw shot --scenario previews; update Orca, then run it again.'
+      )
     )
   }
   const path =

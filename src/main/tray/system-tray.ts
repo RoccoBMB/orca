@@ -1,3 +1,6 @@
+import { branding } from '../../shared/branding'
+import maestroMenuBarIcon from '../../../resources/maestro/menu-barTemplate.png?asset&asarUnpack'
+import maestroMenuBarRetinaIcon from '../../../resources/maestro/menu-barTemplate@2x.png?asset&asarUnpack'
 import { Menu, Tray, nativeImage, nativeTheme, type NativeImage } from 'electron'
 import menuBarIconPath from '../../../resources/tray/orca-menu-barTemplate.png?asset&asarUnpack'
 import menuBarIconRetinaPath from '../../../resources/tray/orca-menu-barTemplate@2x.png?asset&asarUnpack'
@@ -45,9 +48,11 @@ let nativeThemeUpdatedListener: (() => void) | null = null
 // Per-worktree tooltips distinguish concurrent dev instances.
 function baseTooltip(): string {
   if (!devIndicator) {
-    return 'Orca'
+    return branding.productName
   }
-  return devIndicator.label ? `Orca DEV (${devIndicator.label})` : 'Orca DEV'
+  return devIndicator.label
+    ? `${branding.productName} DEV (${devIndicator.label})`
+    : `${branding.productName} DEV`
 }
 
 // Downscale the app image for Windows' 16px notification-area slot.
@@ -115,14 +120,18 @@ function scheduleTrayImage(): void {
 }
 
 function createMacMenuBarImage(): NativeImage | null {
-  const image = nativeImage.createFromPath(menuBarIconPath)
+  const image = nativeImage.createFromPath(
+    branding.productName === 'Maestro' ? maestroMenuBarIcon : menuBarIconPath
+  )
   const { width, height } = image.getSize()
   if (width <= 0 || height <= 0) {
     console.warn('[system-tray] macOS menu bar icon could not be loaded')
     return null
   }
 
-  const retinaImage = nativeImage.createFromPath(menuBarIconRetinaPath)
+  const retinaImage = nativeImage.createFromPath(
+    branding.productName === 'Maestro' ? maestroMenuBarRetinaIcon : menuBarIconRetinaPath
+  )
   const retinaSize = retinaImage.getSize()
   if (retinaSize.width > 0 && retinaSize.height > 0) {
     try {

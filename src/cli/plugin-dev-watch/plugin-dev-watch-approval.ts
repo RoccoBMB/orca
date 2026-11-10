@@ -1,3 +1,4 @@
+import { productMessage } from '../../shared/branding-copy'
 import { createInterface } from 'node:readline'
 import { z } from 'zod'
 import { formatPluginGrantLines } from '../plugin-authoring/plugin-grant-lines'
@@ -34,7 +35,7 @@ function firstLoadApprovalOf(error: unknown): FirstLoadApproval | null {
 
 export function pluginDevWatchApprovalQuestion(approval: FirstLoadApproval): string {
   return [
-    `${approval.name} needs your approval before Orca runs it. Approving grants:`,
+    productMessage`${approval.name} needs your approval before Orca runs it. Approving grants:`,
     ...formatPluginGrantLines(approval),
     ...(approval.why ? [approval.why] : []),
     'Approve and load? [y/N] '

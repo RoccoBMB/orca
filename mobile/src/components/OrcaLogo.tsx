@@ -1,4 +1,5 @@
-import Svg, { G, Path, Defs } from 'react-native-svg'
+import Svg, { G, Path, Defs, Circle } from 'react-native-svg'
+import { branding } from '../../../src/shared/branding'
 import { colors } from '../theme/mobile-theme'
 import { useMobileColorScheme } from '../theme/use-mobile-color-scheme'
 
@@ -9,6 +10,21 @@ type Props = {
 
 export function OrcaLogo({ size = 24, color = colors.textPrimary }: Props) {
   useMobileColorScheme()
+  if (branding.productName === 'Maestro') {
+    return (
+      <Svg width={size} height={size} viewBox="0 0 64 64" fill="none">
+        <Path
+          d="M10 49V19L32 40L54 19V49"
+          stroke={color}
+          strokeWidth={6}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <Path d="M26 25L43 8" stroke={color} strokeWidth={4} strokeLinecap="round" />
+        <Circle cx={45} cy={6} r={3} fill={color} />
+      </Svg>
+    )
+  }
   const aspectRatio = 318.6 / 202.67
   const width = size * aspectRatio
   return (

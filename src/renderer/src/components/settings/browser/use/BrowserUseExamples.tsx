@@ -1,3 +1,4 @@
+import { brandProductCopy } from '../../../../../../shared/branding-copy'
 import { Copy, Sparkles } from 'lucide-react'
 import { toast } from 'sonner'
 import { Button } from '../../../ui/button'
@@ -8,7 +9,7 @@ const EXAMPLE_PROMPTS: string[] = [
   'Using Orca CLI, open https://github.com/notifications and click the first unread pull request.',
   "Take a screenshot of my open Linear board with the Orca CLI and tell me what's blocked.",
   'With Orca CLI, go to our staging app, log in (my cookies are imported), and verify the checkout flow works.'
-]
+].map(brandProductCopy)
 
 async function handleCopyText(text: string, label: string): Promise<void> {
   try {

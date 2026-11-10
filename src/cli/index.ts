@@ -8,6 +8,7 @@ import {
   specPaths,
   validateCommandAndFlags
 } from './args'
+import { brandCliCopy } from '../shared/branding-copy'
 import { readOrcaCliVersion } from './cli-version'
 import { dispatch } from './dispatch'
 import {
@@ -48,7 +49,7 @@ export async function main(
   if (argv.length === 1 && (argv[0] === '--version' || argv[0] === '-v')) {
     const version = readOrcaCliVersion()
     if (!version) {
-      process.stderr.write('Could not determine the Orca version for this build.\n')
+      process.stderr.write(brandCliCopy('Could not determine the Orca version for this build.\n'))
       process.exitCode = 1
       return
     }

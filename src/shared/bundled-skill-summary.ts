@@ -1,3 +1,4 @@
+import { brandProductCopy } from './branding-copy'
 import {
   isBundledSkillLeaveReason,
   isBundledSkillOpKind,
@@ -36,12 +37,12 @@ const OP_PLAN_STATE: Readonly<Record<BundledSkillOpKind, BundledSkillPlanState>>
 }
 
 export const BUNDLED_SKILL_LEAVE_REASON_TEXT: Readonly<Record<BundledSkillLeaveReason, string>> = {
-  edited: 'Skill edited outside Orca',
+  edited: brandProductCopy('Skill edited outside Orca'),
   other: 'A different skill uses this name',
-  unwritable: "Orca can't write to this folder",
-  unreadable: "Orca can't read every file",
+  unwritable: brandProductCopy("Orca can't write to this folder"),
+  unreadable: brandProductCopy("Orca can't read every file"),
   busy: 'Another install is still running',
-  'shared-not-current': "The shared copy isn't Orca's"
+  'shared-not-current': brandProductCopy("The shared copy isn't Orca's")
 }
 
 /** What Update does at one location, for plain-text surfaces; the app translates its own. */

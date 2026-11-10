@@ -1,3 +1,4 @@
+import { brandProductCopy } from '../../../shared/branding-copy'
 import { absolutePathToFileUri } from '@/components/editor/markdown/link-routing/markdown-internal-links'
 import { getConnectionIdForFile } from '@/lib/connection-context'
 import { basename } from '@/lib/path'
@@ -6,10 +7,12 @@ import { runtimeEnvironmentIdOrLocalUnlessTwin } from '@/lib/workspace/ownership
 import { useAppStore } from '@/store'
 
 /** Still the answer for flows that need a real `file://` URL (e.g. dropping a file on a browser pane). */
-export const REMOTE_FILE_BROWSER_UNSUPPORTED_MESSAGE =
+export const REMOTE_FILE_BROWSER_UNSUPPORTED_MESSAGE = brandProductCopy(
   'Open in Orca Browser is only available for local files.'
-export const TWIN_FILE_BROWSER_UNSUPPORTED_MESSAGE =
+)
+export const TWIN_FILE_BROWSER_UNSUPPORTED_MESSAGE = brandProductCopy(
   'This project is on more than one host, so Orca cannot tell which copy to open.'
+)
 
 export type WorkspaceFileBrowserOpenTarget =
   | {

@@ -1,3 +1,5 @@
+import { branding } from '../../../../../shared/branding'
+import { productIcon } from '@/lib/product-assets'
 import type React from 'react'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import classicIconUrl from '../../../../../../resources/icon.png?url'
@@ -58,6 +60,9 @@ function IconCycleButton({ label, onClick, children }: IconCycleButtonProps): Re
 export function AppIconSelector({ value, onChange }: AppIconSelectorProps): React.JSX.Element {
   const selected = normalizeAppIconId(value)
 
+  if (branding.productName === 'Maestro') {
+    return <img src={productIcon} alt={branding.productName} className="size-24 object-contain" />
+  }
   return (
     <div className="flex items-center justify-center gap-2">
       <IconCycleButton

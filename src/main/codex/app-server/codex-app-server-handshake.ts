@@ -1,3 +1,4 @@
+import { branding } from '../../../shared/branding'
 import type { CodexAppServerConnection } from './codex-app-server-connection-types'
 
 /** The caller owns the bound; null leaves cancellation to its startup signal. */
@@ -8,7 +9,7 @@ export async function initializeCodexAppServerConnection(
   await connection.request(
     'initialize',
     {
-      clientInfo: { name: 'orca_desktop', title: 'Orca', version: '0.0.0' },
+      clientInfo: { name: 'orca_desktop', title: branding.productName, version: '0.0.0' },
       capabilities: {
         experimentalApi: true,
         requestAttestation: false,

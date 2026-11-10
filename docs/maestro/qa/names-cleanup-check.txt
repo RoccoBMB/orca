@@ -1,0 +1,50 @@
+$ node config/scripts/preflight/changed-checks/check-changed.mjs --base=93a50982d3 --maxWorkers=2 --timeout=5
+check:changed: 24 changed file(s) since 93a50982d3 (93a50982d3); running 22 check(s).
+✓ changed-code quality (0.8s)
+✓ format (0.4s)
+✓ direct-link-open-ratchet (26.1s)
+✓ typecheck (tsconfig.node, tsconfig.tc.web) (33.3s)
+✓ flaky-test-pattern-ratchet (25.8s)
+✓ host-list-render-ratchet (5.0s)
+… 61.9s elapsed; running: unit tests 60.0s, focus-read-ratchet 26.7s, layout-writer-ratchets 1.8s
+✓ focus-read-ratchet (32.9s)
+✓ layout-writer-ratchets (42.8s)
+… 122.0s elapsed; running: unit tests 120.1s, legacy-relay-fence-ratchet 53.8s, max-lines-ratchet 19.1s
+✓ max-lines-ratchet (49.8s)
+✓ memo-translate-subscription-ratchet (1.5s)
+✓ path-literal-ratchet (0.6s)
+✓ legacy-relay-fence-ratchet (88.2s)
+✓ ts-nocheck-ratchet (4.7s)
+
+✗ react-compiler-compat-ratchet (7.0s)
+::error::src/renderer/src/components/maestro/use-maestro-sidebar-reveal.ts: 2 bailout(s), baseline allows 0.
+  src/renderer/src/components/maestro/use-maestro-sidebar-reveal.ts:94 (BuildHIR::lowerExpression) Handle UpdateExpression to variables captured within lambdas.
+    Fix: Fix or isolate the pattern so the function compiles.
+  src/renderer/src/components/maestro/use-maestro-sidebar-reveal.ts:30 Existing memoization could not be preserved
+    Fix: Make the useMemo/useCallback deps list exactly what the callback reads.
+
+react-compiler-compat ratchet failed (8845 files, 6.7s).
+✓ workspace-record-read-ratchet (1.1s)
+✓ worktree-id-composer-ratchet (2.3s)
+✓ localization coverage (4.6s)
+✓ localization catalogs (13.1s)
+… 182.0s elapsed; running: unit tests 180.1s, localization extraction 13.2s, import boundaries 6.6s
+✓ localization extraction (23.7s)
+✓ import boundaries (19.2s)
+✓ dead design-system classes (3.4s)
+… 242.0s elapsed; running: unit tests 240.1s
+… 302.0s elapsed; running: unit tests 300.1s
+
+✗ unit tests (300.7s)
+
+ RUN  v5.0.5 /Users/roccobombardieri/Coding Projects/Personal Projects/Orca-rename
+
+(node:56657) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/roccobombardieri/Coding%20Projects/Personal%20Projects/Orca-rename/src/shared/orcad-artifacts.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/roccobombardieri/Coding Projects/Personal Projects/Orca-rename/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+Timed out after 5 min; pass --timeout=<minutes> to extend.
+
+✗ 2 of 22 check(s) failed in 302.6s: react-compiler-compat-ratchet, unit tests
+[ELIFECYCLE] Command failed with exit code 1.

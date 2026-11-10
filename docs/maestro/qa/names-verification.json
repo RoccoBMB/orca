@@ -1,0 +1,45 @@
+{
+  "date": "2026-11-09",
+  "branch": "rocco/maestro-names",
+  "sourceCommits": ["8954eadd91", "93a50982d3", "bba0a155dc"],
+  "node": "24.22.2",
+  "pnpm": "12.14.0",
+  "build": "pnpm build:maestro passed with stable inputs",
+  "archiveSha256": "63fe704f40c11cefb4d1c10e05925178072b6afca6e17fa766f57c7511765362",
+  "archiveValidation": "package JSON, main/preload parsing and deep strict codesign passed",
+  "typechecks": {
+    "desktop": "passed",
+    "mobile": "passed"
+  },
+  "focusedTests": {
+    "desktopCliI18n": 113,
+    "webStorePluginFollowup": 14,
+    "mobileFallback": 6,
+    "mobileDiagnosticsHost": 50,
+    "deliveryRecheck": 5
+  },
+  "localization": "catalog, runtime catalog, extraction, desktop/mobile coverage passed",
+  "review": "independent Codex review and follow-up re-review: no remaining findings",
+  "rootGuard": "passed against origin/main and task base",
+  "parity": "names-parity-summary.json: exact 148 files, 1411 assertions; three targeted reruns restored environment-dependent baseline coverage",
+  "packagedQa": "names-rendered.json: passed; 1280x800, five surfaces, five CLI help variants, hidden/unfocused windows and menus",
+  "mobileQa": "names-mobile-about.json: passed; 375x812",
+  "screenshotsVisuallyReviewed": true,
+  "broadChangedCheck": {
+    "passed": 38,
+    "total": 42,
+    "limitations": [
+      "inherited React Compiler bailouts",
+      "localization extraction, subsequently fixed and passed",
+      "type-aware quality timeout after 8 minutes, four completed scans reported zero new findings",
+      "unit selection timeout after 8 minutes; delivery fixture recheck passed"
+    ]
+  },
+  "cleanupChangedCheck": {
+    "passed": 20,
+    "total": 22,
+    "limitations": ["inherited React Compiler bailouts", "unit selection timeout after 5 minutes"]
+  },
+  "distDeleted": true,
+  "fixtures": "disposable profiles and generic data; My Orca Project proves dynamic names remain intact"
+}

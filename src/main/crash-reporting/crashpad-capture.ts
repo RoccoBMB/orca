@@ -1,3 +1,4 @@
+import { branding } from '../../shared/branding'
 // Keep raw process-memory dumps local; extract text signatures to identify crashes.
 
 import { constants as fsConstants } from 'node:fs'
@@ -49,6 +50,7 @@ export function startCrashpadCapture(options: CrashpadCaptureOptions = {}): bool
   }
   try {
     crashReporter.start({
+      productName: branding.productName,
       // No submitURL is configured; avoid uploads and endless retries to an invalid endpoint.
       uploadToServer: false,
       // Preserve OS crash handling if Crashpad initialization fails.

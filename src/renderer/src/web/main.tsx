@@ -1,3 +1,4 @@
+import { branding } from '../../../shared/branding'
 import '../assets/main.css'
 
 import { Suspense, useMemo, useState } from 'react'
@@ -54,7 +55,7 @@ function WebRoot(): React.JSX.Element {
     if (startupDecision.kind === 'auto-save-runtime-offer') {
       saveStoredWebRuntimeEnvironment(
         createStoredWebRuntimeEnvironment({
-          name: 'Orca Server',
+          name: `${branding.productName} Server`,
           offer: startupDecision.offer,
           previousEnvironment: readStoredWebRuntimeEnvironment()
         })

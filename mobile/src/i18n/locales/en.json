@@ -21,7 +21,10 @@
       "website": "Orca website",
       "sourceCode": "Orca source code",
       "socialProfile": "Orca on X",
-      "openLinkFailed": "Could not open the link. Try again."
+      "openLinkFailed": "Could not open the link. Try again.",
+      "upstreamWebsite": "Upstream website",
+      "sourceAttribution": "Source and attribution",
+      "upstreamSocial": "Upstream on X"
     },
     "appUpdateSettingsRows": {
       "checking": "Checking…",

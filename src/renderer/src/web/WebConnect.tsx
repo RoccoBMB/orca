@@ -1,3 +1,4 @@
+import { branding } from '../../../shared/branding'
 import { pairedRuntimeConnectionFromOffer } from '../../../shared/remote-runtime/pairing/paired-runtime-connection'
 import { useEffect, useEffectEvent, useMemo, useRef, useState } from 'react'
 import { Cable, Loader2, Server, ShieldAlert, Trash2 } from 'lucide-react'
@@ -32,7 +33,7 @@ export default function WebConnect({
 }: WebConnectProps): React.JSX.Element {
   const existingEnvironment = readStoredWebRuntimeEnvironment()
   const [name, setName] = useState(
-    (!confirmReplacingSavedServer && existingEnvironment?.name) || 'Orca Server'
+    (!confirmReplacingSavedServer && existingEnvironment?.name) || `${branding.productName} Server`
   )
   const [pairingCode, setPairingCode] = useState(initialPairingInput ?? '')
   const [error, setError] = useState<string | null>(null)

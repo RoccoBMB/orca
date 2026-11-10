@@ -2,7 +2,7 @@ import type {
   BundledSkillInstallResult,
   BundledSkillPlan
 } from '../../../shared/bundled-skill-plan'
-import { BUNDLED_SKILL_SOURCES } from './bundled-skill-sources'
+import { brandedBundledSkillSources } from './branded-bundled-skill-sources'
 import {
   autoUpdateBundledSkills,
   executeBundledSkillPlan,
@@ -18,7 +18,7 @@ function withDefaults(input: BundledSkillServiceInput): BundledSkillExecuteInput
   return {
     ...input,
     filesystem: input.filesystem ?? nativeBundledSkillFilesystem,
-    sources: input.sources ?? BUNDLED_SKILL_SOURCES
+    sources: input.sources ?? brandedBundledSkillSources
   }
 }
 

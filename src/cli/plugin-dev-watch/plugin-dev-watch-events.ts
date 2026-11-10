@@ -1,3 +1,4 @@
+import { productMessage } from '../../shared/branding-copy'
 import type { PluginHostStatus } from '../../shared/plugins/plugin-list-entry'
 import { formatPluginPanelCheck } from '../plugin-authoring/plugin-panel-check'
 import type { PluginDevWatchCheckResult } from './plugin-dev-watch-check'
@@ -87,7 +88,7 @@ function checkHeadline(event: Extract<PluginDevWatchEvent, { type: 'check' }>): 
   if (!event.checkOk) {
     return `✗ check failed for ${event.pluginKey}`
   }
-  return `✗ check passed, but in Orca ${event.pluginKey} is ${pluginStatusPhrase(event.pluginStatus, event.pluginError)}`
+  return productMessage`\u2717 check passed, but in Orca ${event.pluginKey} is ${pluginStatusPhrase(event.pluginStatus, event.pluginError)}`
 }
 
 export function formatPluginDevWatchEvent(event: PluginDevWatchEvent): string {
@@ -118,7 +119,9 @@ export function formatPluginDevWatchEvent(event: PluginDevWatchEvent): string {
       return [
         checkHeadline(event),
         ...(!event.ok && !event.checkOk && !PLUGIN_DEV_WATCH_SHOOTABLE.has(event.pluginStatus)
-          ? [`  in Orca: ${pluginStatusPhrase(event.pluginStatus, event.pluginError)}`]
+          ? [
+              productMessage`  in Orca: ${pluginStatusPhrase(event.pluginStatus, event.pluginError)}`
+            ]
           : []),
         ...event.invalid.map((error) => `  invalid: ${error}`),
         ...event.panels.flatMap(formatPluginPanelCheck).map((line) => `  ${line}`),
@@ -139,7 +142,7 @@ export function formatPluginDevWatchEvent(event: PluginDevWatchEvent): string {
     case 'warning':
       return `warning: ${event.message}`
     case 'disconnected':
-      return `Lost the connection to Orca: ${event.message}`
+      return productMessage`Lost the connection to Orca: ${event.message}`
     case 'unloaded':
       return event.removed
         ? `Unloaded ${event.pluginKey} (${event.path}).`

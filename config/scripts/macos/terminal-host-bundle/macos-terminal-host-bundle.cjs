@@ -1,3 +1,4 @@
+const { branding } = require('../../../branding.cjs')
 // The signed `com.stablyai.orca` helper that runs the terminal daemon on the pinned Node.
 const { spawnSync } = require('node:child_process')
 const {
@@ -194,8 +195,8 @@ function buildMacTerminalHostInfo({ appInfo, usageDescriptions, minimumOs }) {
   return {
     ...usageDescriptions,
     CFBundleIdentifier: appInfo.CFBundleIdentifier,
-    CFBundleName: 'Orca',
-    CFBundleDisplayName: 'Orca',
+    CFBundleName: appInfo.CFBundleName ?? branding.productName,
+    CFBundleDisplayName: appInfo.CFBundleDisplayName ?? branding.productName,
     CFBundleExecutable: MAC_TERMINAL_HOST_EXECUTABLE,
     CFBundlePackageType: 'APPL',
     CFBundleInfoDictionaryVersion: '6.0',

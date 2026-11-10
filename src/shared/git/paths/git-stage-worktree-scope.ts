@@ -1,3 +1,4 @@
+import { brandProductCopy } from '../../branding-copy'
 import { encodeGitPathspecs } from './git-pathspec-stdin'
 
 /** Host-side staging covers paths omitted by capped status listings: all includes untracked, tracked excludes them. */
@@ -10,8 +11,9 @@ export function parseGitStageWorktreeScope(value: unknown): GitStageWorktreeScop
   return value === 'all' || value === 'tracked' ? value : undefined
 }
 
-export const GIT_STAGE_WORKTREE_SCOPE_UNSUPPORTED_MESSAGE =
+export const GIT_STAGE_WORKTREE_SCOPE_UNSUPPORTED_MESSAGE = brandProductCopy(
   'The Orca version running this workspace cannot stage changes beyond the ones listed, so nothing was staged. Update Orca on that host, or stage from a terminal.'
+)
 
 /** Older hosts strip scope and stage the empty filePaths list; require a receipt before reporting stage-all success. */
 export function requireGitStageWorktreeScopeReceipt(
