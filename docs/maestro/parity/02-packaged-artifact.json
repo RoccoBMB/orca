@@ -1,0 +1,10 @@
+{
+  "archiveBytes": 11263370,
+  "sha256": "6d1c36869993be456021de3f57724c7e09cfada04e2b96a5a03ec58eebd74356",
+  "files": 5688,
+  "packageName": "maestro",
+  "version": "1.4.253",
+  "main": "./out/main/index.js",
+  "mainAndPreloadParsed": true,
+  "localAndCacheExcluded": true
+}

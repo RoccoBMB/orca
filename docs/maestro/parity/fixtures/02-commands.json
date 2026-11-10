@@ -1,0 +1,16 @@
+[
+  {
+    "id": "fixture-check",
+    "label": "Check routes",
+    "command": "printf 'Route checks completed successfully.\\n'",
+    "appendEnter": true,
+    "scope": "acme-web repository on Development host"
+  },
+  {
+    "id": "fixture-preview",
+    "label": "Preview app",
+    "command": "printf 'Preview fixture ready.\\n'",
+    "appendEnter": true,
+    "scope": "acme-web repository on Development host"
+  }
+]

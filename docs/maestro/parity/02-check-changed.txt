@@ -1,0 +1,28 @@
+$ node config/scripts/preflight/changed-checks/check-changed.mjs --base=c862b9f66e --maxWorkers=2 --timeout=10
+check:changed: 45 changed file(s) since c862b9f66e (c862b9f66e); running 24 check(s).
+✓ typecheck (tsconfig.node, tsconfig.tc.web) (2.3s)
+✓ format (0.1s)
+✓ oxlint (0.2s)
+✓ direct-link-open-ratchet (0.8s)
+✓ changed-code quality (6.3s)
+✓ focus-read-ratchet (3.5s)
+✓ flaky-test-pattern-ratchet (6.6s)
+✓ host-list-render-ratchet (0.3s)
+✓ layout-writer-ratchets (2.9s)
+✓ legacy-relay-fence-ratchet (4.3s)
+✓ memo-translate-subscription-ratchet (0.2s)
+✓ max-lines-ratchet (2.0s)
+✓ path-literal-ratchet (0.3s)
+✓ ts-nocheck-ratchet (1.6s)
+✓ workspace-record-read-ratchet (0.7s)
+✓ worktree-id-composer-ratchet (1.1s)
+✓ react-compiler-compat-ratchet (4.7s)
+✓ localization coverage (3.4s)
+✓ localization catalogs (9.9s)
+✓ compiled :has() restyle scope (2.0s)
+✓ import boundaries (13.8s)
+✓ localization extraction (21.7s)
+✓ dead design-system classes (3.1s)
+… 60.6s elapsed; running: unit tests 60.0s
+✓ unit tests (73.4s)
+✓ 24 check(s) passed in 74.0s.

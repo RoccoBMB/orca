@@ -109,6 +109,11 @@ export function useNativeChatTranscriptSlots({
     if (!conductor) {
       return slots
     }
+    const responseIds = new Set(
+      slots.flatMap((slot) =>
+        slot.kind === 'message' && slot.endsResponse ? [slot.message.id] : []
+      )
+    )
     const summaries = new Map<string, { tools: number; messages: number }>()
     messages.forEach((message, index) => {
       const key = turnKeys[index]
@@ -119,6 +124,7 @@ export function useNativeChatTranscriptSlots({
       summary.tools += message.blocks.filter((block) => block.type === 'tool-call').length
       if (
         message.role === 'assistant' &&
+        !responseIds.has(message.id) &&
         message.blocks.some((block) => block.type === 'text' && block.text.trim())
       ) {
         summary.messages++

@@ -1,0 +1,44 @@
+{
+  "base": "c862b9f66e",
+  "files": [
+    {
+      "path": "src/renderer/src/components/maestro/MaestroTerminalDock.tsx",
+      "sha256": "0445d90c55a11d662f7811879f61b3ae1459c9825e25148fd12bcf91fdcfbf22"
+    },
+    {
+      "path": "src/renderer/src/components/native-chat/NativeChatToolRun.tsx",
+      "sha256": "64e8787d7db60cb9403eb4cf000d604f3035c2e8d66699a32d53188c5776843e"
+    },
+    {
+      "path": "src/renderer/src/components/native-chat/NativeChatWorkingStatus.tsx",
+      "sha256": "9c13573f890e9b76bfd5e2fe5734aa3a7ef5a82e9f84446598d84c469b47927e"
+    },
+    {
+      "path": "src/renderer/src/components/native-chat/messages/actions/NativeChatAgentControls.tsx",
+      "sha256": "ed505045658bfda4214eb7eda1a02611654047772b3bfc3b579f5952b19b5cb6"
+    },
+    {
+      "path": "src/renderer/src/components/native-chat/use-native-chat-transcript-slots.ts",
+      "sha256": "286b9b5f3f4a90e0a0eb263a3609e67b0c7fb096b049d82210931f9e57c7bfe2"
+    },
+    {
+      "path": "src/renderer/src/components/settings/general/GeneralPane.tsx",
+      "sha256": "4051356db4f1dcd6c55c7e2cb26974fc5b6197108fc269ccc6cf70961a1998a2"
+    },
+    {
+      "path": "src/renderer/src/components/tab-bar/TabBarQuickCommandsButton.tsx",
+      "sha256": "03050919e0958218a3fd35a58067d1edceb51c4bbcbd20ac32f26f8e3c35762e"
+    },
+    {
+      "path": "src/renderer/src/components/maestro/MaestroGeneralPreferences.tsx",
+      "sha256": "c3ad12747d846c3926892c854d60fdeee0d78fe5e9e50c5d5f617b3e2e7b9e52"
+    },
+    {
+      "path": "src/renderer/src/components/native-chat/native-chat-work-summary.ts",
+      "sha256": "7c9b062bcd1032e2e81d060c37896b67d6a88687ef5ef774ffbd34c0a98c86af"
+    }
+  ],
+  "baselineListSha256": "c68958c8f7755fe353a2ba3f2b071a8782888044e08f566112c3e443cba1ff8d",
+  "baselineResultsSha256": "48b3c9068f5955e4f64cc816c8d0614099c967e5617419c5929d6f4288bbff97",
+  "currentResultsSha256": "cc6c2a206fc41c3986d18ea6989630867e1fbce25a2d44ced10e41b73036b1d2"
+}

@@ -1,3 +1,4 @@
+import { nativeChatWorkSummary } from './native-chat-work-summary'
 import { useAppStore } from '@/store'
 import { conductorAppearanceEnabled } from '../../../../shared/maestro-settings'
 import { useMemo } from 'react'
@@ -153,7 +154,7 @@ export function NativeChatToolRun({
   const showsHeader = !hasAskCall || callCount > 0
   // A single command is more recognizable than its category summary.
   const runSentence = conductor
-    ? `${translate('components.native-chat.tool.callCount', '{{count}} tool calls', { count: callCount, defaultValue_one: '{{count}} tool call' })}, ${translate('components.maestro.chat.messageCount', '{{count}} messages', { count: asideCount, defaultValue_one: '{{count}} message' })}`
+    ? nativeChatWorkSummary(callCount, asideCount)
     : nativeChatToolRunSentence(headerBlocks, { live })
   // The card sits inside the run's own scroll box, so that box has to move too.
   const revealDiff = useMemo(

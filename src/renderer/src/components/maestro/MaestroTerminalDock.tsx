@@ -155,12 +155,13 @@ export function MaestroTerminalDock() {
             </div>
           )}
           {tab === 'run' && (
-            <div className="p-3 text-xs text-muted-foreground">
+            <div className="h-full min-h-0">
               {groupId && (
                 <TabBarQuickCommandsButton
                   worktreeId={worktreeId}
                   groupId={groupId}
                   isFocused={false}
+                  presentation="panel"
                 />
               )}
             </div>

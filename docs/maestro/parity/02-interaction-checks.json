@@ -1,0 +1,49 @@
+[
+  {
+    "name": "tool summaries and disclosures",
+    "passed": true,
+    "evidence": "Original tool output remains reachable; no empty message count."
+  },
+  {
+    "name": "General preference persistence and notification gating",
+    "passed": true,
+    "evidence": {
+      "persisted": true,
+      "queuePresent": 1,
+      "disabledChildren": true,
+      "canonicalNavigation": true
+    }
+  },
+  {
+    "name": "appearance off and web client guards",
+    "passed": true,
+    "evidence": "Appearance opt-out and desktop notification guard passed (desktop guard probe only)."
+  },
+  {
+    "name": "Run commands expose bodies and execute through retained terminals",
+    "passed": true,
+    "evidence": {
+      "actualCommandOutput": true,
+      "chatRetained": true,
+      "fakePrompt": true
+    }
+  },
+  {
+    "name": "empty Run and command editor",
+    "passed": true,
+    "evidence": "Empty pane leads directly to existing editor."
+  },
+  {
+    "name": "settings and workspace layouts in light, dark and narrow viewports",
+    "passed": true,
+    "evidence": {
+      "viewports": [
+        [1440, 900],
+        [1280, 800],
+        [375, 812]
+      ],
+      "schemes": ["light", "dark"],
+      "narrow": "desktop renderer only"
+    }
+  }
+]

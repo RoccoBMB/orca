@@ -1,3 +1,4 @@
+import { nativeChatWorkSummary } from './native-chat-work-summary'
 import { ChevronRight } from 'lucide-react'
 import { translate } from '@/i18n/i18n'
 import { cn } from '@/lib/utils'
@@ -68,9 +69,7 @@ export function NativeChatWorkingStatus({
     verdict
   })
   const summaryLabel =
-    summary && workedSeconds != null
-      ? `${translate('components.native-chat.tool.callCount', '{{count}} tool calls', { count: summary.tools, defaultValue_one: '{{count}} tool call' })}, ${translate('components.maestro.chat.messageCount', '{{count}} messages', { count: summary.messages, defaultValue_one: '{{count}} message' })}`
-      : null
+    summary && workedSeconds != null ? nativeChatWorkSummary(summary.tools, summary.messages) : null
   const label = summaryLabel
     ? key === 'workedFor'
       ? summaryLabel

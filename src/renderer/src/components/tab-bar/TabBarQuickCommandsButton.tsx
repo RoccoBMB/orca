@@ -1,3 +1,6 @@
+import { Button } from '@/components/ui/button'
+import { TabBarQuickCommandAddActions } from './TabBarQuickCommandAddActions'
+import { TabBarQuickCommandHostLoadStatus } from './TabBarQuickCommandHostLoadStatus'
 import { useMemo, useState } from 'react'
 import { Play } from 'lucide-react'
 import { useAppStore } from '@/store'
@@ -8,6 +11,7 @@ import {
   TerminalQuickCommandDialog
 } from '@/components/terminal-quick-commands/TerminalQuickCommandDialog'
 import {
+  getTerminalQuickCommandBody,
   getTerminalQuickCommandScope,
   isTerminalQuickCommandComplete
 } from '../../../../shared/terminal/quick-commands/terminal-quick-commands'
@@ -31,12 +35,14 @@ type TabBarQuickCommandsButtonProps = {
   worktreeId: string
   groupId: string
   isFocused: boolean
+  presentation?: 'button' | 'panel'
 }
 
 export function TabBarQuickCommandsButton({
   worktreeId,
   groupId,
-  isFocused
+  isFocused,
+  presentation = 'button'
 }: TabBarQuickCommandsButtonProps): React.JSX.Element | null {
   const recentByGroup = useAppStore((s) => s.recentQuickCommandIdByGroup)
   const repos = useAppStore((s) => s.repos)
@@ -160,6 +166,67 @@ export function TabBarQuickCommandsButton({
   // Hide without a repo run target, including folder workspaces and floating terminals.
   if (!repoId) {
     return null
+  }
+
+  if (presentation === 'panel') {
+    return (
+      <div className="h-full overflow-y-auto scrollbar-sleek">
+        <div className="divide-y divide-border">
+          {[...repoCommands, ...globalCommands].map((entry) => (
+            <div key={entry.key} className="flex min-w-0 items-center gap-2 px-3 py-2">
+              <div className="min-w-0 flex-1">
+                <p className="truncate text-sm font-medium">{entry.command.label}</p>
+                <p className="whitespace-pre-wrap break-words font-mono text-xs text-muted-foreground">
+                  {getTerminalQuickCommandBody(entry.command)}
+                </p>
+                {hosts.length > 1 && (
+                  <p className="text-xs text-muted-foreground">{entry.hostLabel}</p>
+                )}
+              </div>
+              <Button
+                variant="outline"
+                size="sm"
+                aria-label={translate(
+                  'auto.components.settings.PluginContributionActionCommand.runName',
+                  'Run {{value0}}',
+                  { value0: entry.command.label }
+                )}
+                onClick={() => handleRun(entry)}
+              >
+                <Play className="size-3.5" />
+                {translate('auto.components.maestro.MaestroTerminalDock.8e1855145e', 'Run')}
+              </Button>
+            </div>
+          ))}
+        </div>
+        {!hasAnyCommands && !remoteHostPending && (
+          <p className="p-3 text-xs text-muted-foreground">
+            {translate(
+              'auto.components.tab.bar.TabBarQuickCommandsButton.1d411fb6a5',
+              'Save a quick command for this repo'
+            )}
+          </p>
+        )}
+        {(remoteHostPending || remoteHostLoadFailed) && (
+          <TabBarQuickCommandHostLoadStatus failed={remoteHostLoadFailed} />
+        )}
+        {remoteHostLoadFailed && (
+          <Button variant="outline" size="sm" onClick={refreshRemoteHost}>
+            {translate('common.retry', 'Retry')}
+          </Button>
+        )}
+        <TabBarQuickCommandAddActions hosts={hosts} onAdd={addRepoCommand} />
+        <TerminalQuickCommandDialog
+          open={editor !== null}
+          mode={editor?.mode ?? 'add'}
+          command={editor?.command ?? createTerminalQuickCommandDraft({ type: 'repo', repoId })}
+          repos={editorRepos}
+          agentPromptMaxLength={editorPromptMaxLength}
+          onOpenChange={(open) => !open && setEditor(null)}
+          onSave={handleSaveCommand}
+        />
+      </div>
+    )
   }
 
   if (!hasAnyCommands && hosts.length === 1 && !remoteHostPending) {

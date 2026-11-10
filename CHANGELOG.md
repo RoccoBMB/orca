@@ -1,5 +1,19 @@
 # Changelog
 
+## 2026-11-09 — Maestro parity iteration 02
+
+- General leads with existing chat and desktop notification preferences; Maestro
+  navigation/appearance switches move into a disclosure. Canonical settings search
+  and detailed preference panes remain available.
+- Run lists saved commands and their bodies directly, using the existing host/scoping,
+  command editor and retained-terminal launch paths. Empty Run opens the same editor.
+- Transcript detail summaries omit empty counts and count intermediate prose separately
+  from the final answer. Duration metadata avoids a separator when no timestamp exists.
+- All presentation uses the existing appearance setting. Evidence and scores:
+  `docs/maestro/parity/`; external report: `Orca-briefs/parity/iterations/02.md`.
+- Disable Conductor appearance in General → Maestro to restore the previous presentation;
+  revert this iteration's feature commit to remove the changes. No profile migration.
+
 ## 2026-11-09 — Maestro parity iteration 01
 
 - Combined Conductor appearance and Maestro product naming on `rocco/parity`.

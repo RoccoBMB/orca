@@ -1,3 +1,6 @@
+import { MaestroGeneralPreferences } from '@/components/maestro/MaestroGeneralPreferences'
+import { conductorAppearanceEnabled } from '../../../../../shared/maestro-settings'
+import { branding } from '../../../../../shared/branding'
 import { MaestroSettingsSection } from '@/components/maestro/MaestroSettingsSection'
 import type React from 'react'
 import type { GlobalSettings } from '../../../../../shared/global-settings-types'
@@ -267,7 +270,22 @@ export function GeneralPane({
 
   return (
     <div className="space-y-6">
-      <MaestroSettingsSection />
+      <MaestroGeneralPreferences />
+      {conductorAppearanceEnabled(settings) && branding.productName === 'Maestro' ? (
+        <details
+          className="group rounded-md border border-border p-3"
+          open={searchQuery.trim() ? true : undefined}
+        >
+          <summary className="cursor-pointer text-sm font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+            {branding.productName}
+          </summary>
+          <div className="pt-3">
+            <MaestroSettingsSection />
+          </div>
+        </details>
+      ) : (
+        <MaestroSettingsSection />
+      )}
       <SettingsSectionStack sections={visibleSections} spacing="section" />
       {matchesSettingsSearch(searchQuery, getGeneralSupportSearchEntries()) ? (
         <GeneralSupportSection

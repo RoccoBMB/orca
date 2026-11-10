@@ -38,7 +38,12 @@ export function NativeChatAgentControls({
         data-maestro-turn-meta
         className="mt-3 flex items-center gap-2 text-xs text-chat-foreground-faint"
       >
-        {duration && <span>{duration} ·</span>}
+        {duration && (
+          <span className="tabular-nums">
+            {duration}
+            {timestamp !== null && Number.isFinite(timestamp) ? ' ·' : ''}
+          </span>
+        )}
         <NativeChatMessageTimestamp timestamp={timestamp} />
         {markdown && (
           <NativeChatCopyButton text={withoutNativeChatVisualDirectiveLines(markdown)} />
