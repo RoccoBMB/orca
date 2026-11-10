@@ -167,3 +167,5 @@ ci-shards/
 
 /.local/look/
 /NOTES-look.md
+/.local/parity/
+/NOTES-parity.md

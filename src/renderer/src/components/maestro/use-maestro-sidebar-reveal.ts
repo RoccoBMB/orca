@@ -1,10 +1,40 @@
 import { useEffect, useMemo, type RefObject } from 'react'
 import { useAppStore } from '@/store'
+import type {
+  PendingSidebarWorktreeReveal,
+  PendingSidebarRowReveal
+} from '@/store/slices/ui/ui-slice-contract-core'
+import type { ExecutionHostId } from '../../../../shared/execution-host'
 import { getWorktreeHostIdentity } from '../../../../shared/worktree/host-qualified-identity'
 import { useMaestroSettings } from './use-maestro-settings'
 import type { MaestroSidebarGroup } from './MaestroSidebarSection'
 import { useSidebarRevealHighlight } from '../sidebar/worktree-list/navigation/use-reveal-highlight'
 import { revealMountedSidebarRowElement } from '../sidebar/worktree-list/navigation/mounted-row-reveal'
+
+function findRevealTarget(
+  groups: readonly MaestroSidebarGroup[],
+  request: PendingSidebarWorktreeReveal | null,
+  rowRequest: PendingSidebarRowReveal | null,
+  activeHost: ExecutionHostId | null
+) {
+  if (!request && !rowRequest) {
+    return undefined
+  }
+  for (const group of groups) {
+    for (const worktree of group.items) {
+      const rowKey = `${group.key}:${getWorktreeHostIdentity(worktree)}`
+      if (
+        request
+          ? worktree.id === request.worktreeId &&
+            (worktree.hostId ?? 'local') === (request.executionHostId ?? activeHost ?? 'local')
+          : rowRequest?.rowKey === rowKey
+      ) {
+        return { group, worktree, rowKey }
+      }
+    }
+  }
+  return undefined
+}
 
 export function useMaestroSidebarReveal(
   groups: readonly MaestroSidebarGroup[],
@@ -27,25 +57,10 @@ export function useMaestroSidebarReveal(
     },
     [clearRevealHighlightFrame, clearRevealHighlightTimeout]
   )
-  const target = useMemo(() => {
-    if (!request && !rowRequest) {
-      return undefined
-    }
-    for (const group of groups) {
-      for (const worktree of group.items) {
-        const rowKey = `${group.key}:${getWorktreeHostIdentity(worktree)}`
-        if (
-          request
-            ? worktree.id === request.worktreeId &&
-              (worktree.hostId ?? 'local') === (request.executionHostId ?? activeHost ?? 'local')
-            : rowRequest?.rowKey === rowKey
-        ) {
-          return { group, worktree, rowKey }
-        }
-      }
-    }
-    return undefined
-  }, [groups, request, rowRequest, activeHost])
+  const target = useMemo(
+    () => findRevealTarget(groups, request, rowRequest, activeHost),
+    [groups, request, rowRequest, activeHost]
+  )
   const reveal = useMemo(
     () => (target && !target.group.collapsed ? { rowKey: target.rowKey } : undefined),
     [target]
@@ -91,7 +106,8 @@ export function useMaestroSidebarReveal(
           (request ?? rowRequest)?.behavior ?? 'auto'
         )
       if (!element) {
-        if (++attempts < 12) {
+        attempts += 1
+        if (attempts < 12) {
           frame = requestAnimationFrame(finish)
         }
         return
