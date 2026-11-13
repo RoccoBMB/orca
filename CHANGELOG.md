@@ -1,5 +1,14 @@
 # Changelog
 
+## 2026-11-12 — Ship: Maestro parity build on `rocco/core`
+
+- `rocco/core` now fast-forwards to `rocco/parity`, which contains the Conductor appearance, Maestro naming and parity
+  iterations 01–03. The parity loop is stopped because Conductor is not shutting down, so Maestro stays dormant.
+- Ship check: `pnpm tc` passed. The 148-file comparison against plain Orca has zero Maestro-only failures; one
+  orcad isolation test flaked under load and passed 2 of 2 runs in isolation.
+- Unreviewed iteration-04 work is kept on `rocco/parity-wip-04` and is not merged.
+- Revert: reset `rocco/core` to `14635e6ed5`, the pre-parity core.
+
 ## 2026-11-10 — Maestro parity iteration 03
 
 - Crowded tab strips gain a searchable picker covering regular tabs and paired-client
