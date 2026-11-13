@@ -11,6 +11,7 @@ export const MAESTRO_STATUSES = [
 
 export const MaestroSettingsSchema = z.object({
   conductorAppearance: z.boolean().optional(),
+  sendKey: z.enum(['enter', 'mod-enter']).optional(),
   showOnboarding: z.boolean().optional(),
   showTasks: z.boolean().optional(),
   showAutomations: z.boolean().optional(),
@@ -56,4 +57,10 @@ export function maestroFeatureVisible(
   feature: 'showOnboarding' | 'showTasks' | 'showAutomations' | 'showMobile' | 'showStatusBar'
 ): boolean {
   return !conductorAppearanceEnabled(settings) || settings?.maestro?.[feature] === true
+}
+
+export function maestroUsesModifiedSend(
+  settings: { maestro?: MaestroSettings } | null | undefined
+): boolean {
+  return conductorAppearanceEnabled(settings) && settings?.maestro?.sendKey === 'mod-enter'
 }

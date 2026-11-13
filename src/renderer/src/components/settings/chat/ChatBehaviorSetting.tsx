@@ -16,7 +16,11 @@ import { SearchableSetting } from '../section-layout/SearchableSetting'
 import { nativeChatQueueFollowUps } from '../../../../../shared/native-chat/input/native-chat-follow-up-behavior'
 import { nativeChatScrollsToLatestOnSend } from '../../../../../shared/native-chat/native-chat-appearance-settings'
 import { SettingsSubsectionHeader, SettingsSwitchRow } from '../form-controls/SettingsFormControls'
-import { getChatBehaviorEntriesByKey, getChatBehaviorTitle } from './chat-behavior-search'
+import {
+  getChatBehaviorEntriesByKey,
+  getChatQueueFollowUpDescription,
+  getChatBehaviorTitle
+} from './chat-behavior-search'
 import { getChatPermissionSearchEntry } from './chat-permission-search'
 import { matchesSettingsSearch } from '../search/settings-search'
 
@@ -138,7 +142,7 @@ export function ChatBehaviorSetting({
               >
                 <SettingsSwitchRow
                   label={entries.queueFollowUps.title}
-                  description={entries.queueFollowUps.description}
+                  description={getChatQueueFollowUpDescription(settings)}
                   checked={queueFollowUps}
                   ariaLabel={entries.queueFollowUps.title}
                   onChange={() => updateSettings({ nativeChatQueueFollowUps: !queueFollowUps })}

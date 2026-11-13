@@ -4,6 +4,7 @@ import { createNativeChatSteerChordPreviewHook } from '../../../../shared/native
 
 import type { NativeChatComposerSendIntent } from './native-chat-composer-types'
 import { isMacPlatform } from './native-chat-shortcut'
+import { useNativeChatModifiedSend } from './native-chat-send-key'
 
 export { NATIVE_CHAT_STEER_CHORD_HOLD_MS } from '../../../../shared/native-chat/input/use-native-chat-steer-chord-preview'
 
@@ -21,12 +22,13 @@ export function useNativeChatSteerChordPreview(
   send: (intent?: NativeChatComposerSendIntent) => void,
   pickerOpen: boolean
 ) {
+  const modifiedSend = useNativeChatModifiedSend()
   return useSteerChordPreview(
     root,
     sendState,
     steerHead,
     () => send({ alternate: true }),
-    pickerOpen,
+    pickerOpen || modifiedSend,
     isMacPlatform() ? 'Meta' : 'Control'
   )
 }

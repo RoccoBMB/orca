@@ -4,7 +4,8 @@ import { useActiveWorktree } from '@/store/workspaces/selection/use-selected-wor
 import { useRepoById } from '@/store/repos/use-repository-catalog'
 import { Button } from '@/components/ui/button'
 import { checkRuntimeHooks, type HookCheckResult } from '@/runtime/repo-hooks/runtime-hooks-client'
-import { getSetupConfig } from '../../../../shared/orca-hook-setup-config'
+import { getSetupConfig, getSetupTrustContent } from '../../../../shared/orca-hook-setup-config'
+import { MaestroSetupRun } from './MaestroSetupRun'
 import { resolveHookCommandSourcePolicy } from '../../../../shared/hook-command-source-policy'
 import { SetupCommandPreview } from '../new-workspace/SetupCommandPreview'
 import { translate } from '@/i18n/i18n'
@@ -103,6 +104,15 @@ export function MaestroSetupPanel() {
         </p>
       )}
       <div className="flex flex-wrap gap-2">
+        {config && worktree && repo && repo.kind !== 'folder' && (
+          <MaestroSetupRun
+            key={`${worktree.hostId}:${worktree.id}`}
+            worktree={worktree}
+            repo={repo}
+            config={config}
+            trustContent={getSetupTrustContent(inspectShared ? (result?.hooks ?? null) : null)}
+          />
+        )}
         <Button
           size="sm"
           variant="outline"

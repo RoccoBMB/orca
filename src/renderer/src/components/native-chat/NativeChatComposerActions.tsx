@@ -6,7 +6,8 @@ import { ArrowUp, CornerDownRight, ListEnd, Mic, Plus, Save, Square } from 'luci
 import { Button } from '@/components/ui/button'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import { translate } from '@/i18n/i18n'
-import { getScreenSubmitShortcutLabel } from '@/lib/screen-submit-shortcut'
+import { useNativeChatModifiedSend } from './native-chat-send-key'
+import { nativeChatAlternateSendShortcut } from '@/lib/native-chat-send-shortcut'
 import { useUiLanguageRevision } from '@/i18n/use-ui-language-revision'
 import type { NativeChatFollowUpBehavior } from '../../../../shared/native-chat/input/native-chat-follow-up-behavior'
 import type {
@@ -100,6 +101,7 @@ export const NativeChatComposerActions = memo(function NativeChatComposerActions
 }: NativeChatComposerActionsProps): React.JSX.Element {
   useUiLanguageRevision()
   const conductor = useAppStore((s) => conductorAppearanceEnabled(s.settings))
+  const modifiedSend = useNativeChatModifiedSend()
   const mode = useNativeChatPlanMode({
     surface: sessionOptionsSurface,
     snapshot: sessionOptionsSnapshot,
@@ -127,10 +129,10 @@ export const NativeChatComposerActions = memo(function NativeChatComposerActions
     (!stops && alternateSend
       ? alternateSend === 'steer'
         ? translate('components.native-chat.composer.alternateSteerHint', '{{shortcut}} to steer', {
-            shortcut: getScreenSubmitShortcutLabel()
+            shortcut: nativeChatAlternateSendShortcut(modifiedSend)
           })
         : translate('components.native-chat.composer.alternateQueueHint', '{{shortcut}} to queue', {
-            shortcut: getScreenSubmitShortcutLabel()
+            shortcut: nativeChatAlternateSendShortcut(modifiedSend)
           })
       : null)
   const steerPreviewLabel =

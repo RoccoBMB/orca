@@ -1,5 +1,23 @@
 # Changelog
 
+## 2026-11-10 — Maestro parity iteration 04
+
+- General exposes a persisted chat send-key preference: Enter or the platform's
+  Command/Ctrl+Enter. Modified-send mode keeps plain Enter for newlines and uses
+  Alt+Command/Ctrl+Enter for the existing alternate queue/steer action. IME,
+  autocomplete and the queued-head steer chord retain their authority.
+- Setup offers explicit command review and requests execution through the existing
+  host runner. Changed workspace commands require another review; changed local
+  settings invalidate the open review. Host request results and retained terminal
+  output stay distinct. Direct SSH and folder execution are not added.
+- New-workspace creation summarizes a single local host behind an expandable control.
+  Other host choices, agents, projects and Advanced remain reachable; expanded fields
+  stack on narrow layouts. Appearance opt-out retains the previous presentation.
+- All three changes use Conductor appearance. Scores, captures and verification:
+  `docs/maestro/parity/`; external report: `Orca-briefs/parity/iterations/04.md`.
+- Disable Conductor appearance in General → Maestro to restore previous behavior;
+  revert this iteration's feature commit to remove the changes. No profile migration.
+
 ## 2026-11-10 — Maestro parity iteration 03
 
 - Crowded tab strips gain a searchable picker covering regular tabs and paired-client

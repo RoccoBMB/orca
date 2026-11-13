@@ -1,0 +1,105 @@
+{
+  "base": "1fdb1eec6e378610442ce08d0ffa9ddf42c44080",
+  "files": [
+    {
+      "path": "src/renderer/src/components/NewWorkspaceComposerCard.tsx",
+      "sha256": "42e466a7d5fd1276518624749c9d0f310d1ed01e0a03710660fc3006ff1fe271"
+    },
+    {
+      "path": "src/renderer/src/components/maestro/MaestroGeneralPreferences.tsx",
+      "sha256": "65401e1812821bdde515d8e6a74b8859795a19acab5a6dc644f6ebfc650e005b"
+    },
+    {
+      "path": "src/renderer/src/components/maestro/MaestroSendKeyPreference.tsx",
+      "sha256": "2730e392d50f088184744a1a887c5fecbe0a1334fa51737c1568af0fbbf1b7bd"
+    },
+    {
+      "path": "src/renderer/src/components/maestro/MaestroSetupPanel.tsx",
+      "sha256": "ea3c29a4fc757eb70299e4342db8b1fa8d8c1fea458d4243cba8b951ec20891a"
+    },
+    {
+      "path": "src/renderer/src/components/maestro/MaestroSetupRun.tsx",
+      "sha256": "719643adf7a6ba18a8fe9d6a7def5759e4b862714de426d5280eba4eb4118d4d"
+    },
+    {
+      "path": "src/renderer/src/components/maestro/maestro-send-key-search.ts",
+      "sha256": "010838af343b43555c6df423fd26d1988628dc98c51213e6e4376b86867fee6f"
+    },
+    {
+      "path": "src/renderer/src/components/native-chat/NativeChatComposerActions.tsx",
+      "sha256": "968c75a16d9cf46d0f149736c54146a6ef62381a2ff98f16fb7ceed4b4680b7f"
+    },
+    {
+      "path": "src/renderer/src/components/native-chat/NativeChatComposerPane.tsx",
+      "sha256": "28246823f8d6d10cc26fe396b740d93caf1eddb2ca6aa13953974b0e5290ab2a"
+    },
+    {
+      "path": "src/renderer/src/components/native-chat/native-chat-send-key.test.tsx",
+      "sha256": "c37410a49dbbc9e3578e43d0d201f6fcd18f40f5bff319d08bcd6335614fc478"
+    },
+    {
+      "path": "src/renderer/src/components/native-chat/native-chat-send-key.ts",
+      "sha256": "dfe40ad60b4cd81189410e408f91df2d9e31bbd5bed362a244f5b7bb571a9079"
+    },
+    {
+      "path": "src/renderer/src/components/native-chat/use-native-chat-composer-keydown.ts",
+      "sha256": "740a405ed0517abd0effed9927cbe24117d00d79b92d45c62693b4beb1bad56b"
+    },
+    {
+      "path": "src/renderer/src/components/native-chat/use-native-chat-steer-chord-preview.ts",
+      "sha256": "17e89863ca21a8489c37b4dc6db86a69eddf59659df1fc60b75cf08ab5674c9d"
+    },
+    {
+      "path": "src/renderer/src/components/new-workspace/NewWorkspaceComposerProjectSection.tsx",
+      "sha256": "0bae42bdc402624cfce0451e42e905019144d811fd710451fc05b138f5b9b576"
+    },
+    {
+      "path": "src/renderer/src/components/settings/chat/ChatBehaviorSetting.tsx",
+      "sha256": "3ee459792c090a21f49f253bc8c041b3c760655d627807856f9260b2a043526f"
+    },
+    {
+      "path": "src/renderer/src/components/settings/chat/chat-behavior-search.ts",
+      "sha256": "938da1328e0491a643d333ff6d55d7dd6be8b5e65e4a05f35ec8878cebf1446b"
+    },
+    {
+      "path": "src/renderer/src/components/settings/general/general-search.ts",
+      "sha256": "e2c1152f9372c13a7833a82e6c58ff4c6179316d0ffc1e713efc61a65bc9bb2e"
+    },
+    {
+      "path": "src/renderer/src/hooks/settings-navigation-build-options.ts",
+      "sha256": "5587091b1c1f2553389ccbe4a2aade3b1c74ca8c600811988b3d553009e5cd1c"
+    },
+    {
+      "path": "src/renderer/src/hooks/settings-navigation-capability-sections.ts",
+      "sha256": "1960b5d8e5e439ad44e43140f37c050455bedb6d121aa29a1bfd3956a9e75677"
+    },
+    {
+      "path": "src/renderer/src/hooks/useSettingsNavigationMetadata.ts",
+      "sha256": "855c6565760b3e8e8669e2ef13bd181dc86716010f2eeae36df254bbf0601549"
+    },
+    {
+      "path": "src/renderer/src/i18n/locales/en.json",
+      "sha256": "541041768761659bb04a981be6084bac83cad8cc0e8bfbf2d5168fa96db86411"
+    },
+    {
+      "path": "src/renderer/src/lib/native-chat-send-shortcut.ts",
+      "sha256": "4b5b98ce8f7d6a87a48d0fe68c58794951379ba7199a8a44ec4ef258dec91873"
+    },
+    {
+      "path": "src/renderer/src/store/slices/worktrees/create/created-worktree-setup-trust.ts",
+      "sha256": "4964abd3e06805988a3e00cc16b645756ae05e00bbae512d6dbe2bde0843a2b2"
+    },
+    {
+      "path": "src/shared/maestro-settings.ts",
+      "sha256": "da25132267166de5fd7b2c35d3fda7762e492be2d87f8306b0eea16f6912fd09"
+    },
+    {
+      "path": "src/shared/plugins/languages/protected-copy-keys.json",
+      "sha256": "d03be78b38bb2bdbd90d6568aa5e97fc1578c0861895dbd5be320f2eaf9f5df1"
+    }
+  ],
+  "baselineListSha256": "c68958c8f7755fe353a2ba3f2b071a8782888044e08f566112c3e443cba1ff8d",
+  "baselineResultsSha256": "48b3c9068f5955e4f64cc816c8d0614099c967e5617419c5929d6f4288bbff97",
+  "nodeRuntime": "24.22.2",
+  "oldLauncherProbeNode": "22.20.0"
+}

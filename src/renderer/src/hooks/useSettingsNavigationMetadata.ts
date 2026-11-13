@@ -1,4 +1,5 @@
 import { useMemo } from 'react'
+import { conductorAppearanceEnabled } from '../../../shared/maestro-settings'
 import { useShallow } from 'zustand/react/shallow'
 // Share Settings/Cmd+J visibility without Settings pane UI imports; an architecture test enforces this boundary.
 // Share Settings/Cmd+J visibility without Settings pane UI imports; an architecture test enforces this boundary.
@@ -44,6 +45,7 @@ export function buildSettingsNavigationMetadata({
   isLocalWindowsHost = isWindows,
   isWindowsTerminalHost = isWindows,
   isWebClient,
+  conductorAppearance = false,
   hostQueuesMessages = false,
   typedChatPermissions = false,
   managedBrowserCreationEnabled = !isWebClient,
@@ -58,6 +60,7 @@ export function buildSettingsNavigationMetadata({
   isLocalWindowsHost?: boolean
   isWindowsTerminalHost?: boolean
   isWebClient: boolean
+  conductorAppearance?: boolean
   hostQueuesMessages?: boolean
   typedChatPermissions?: boolean
   managedBrowserCreationEnabled?: boolean
@@ -87,6 +90,7 @@ export function buildSettingsNavigationMetadata({
     isLocalWindowsHost,
     isWindowsTerminalHost,
     isWebClient,
+    conductorAppearance,
     hostQueuesMessages,
     typedChatPermissions,
     managedBrowserCreationEnabled,
@@ -113,6 +117,7 @@ export function useSettingsNavigationMetadata(): SettingsNavSection[] {
   const repos = useAppStore((state) => state.repos)
   const projectHostSetupProjection = useProjectHostSetupProjection()
   const settings = useAppStore((state) => state.settings)
+  const conductorAppearance = conductorAppearanceEnabled(settings)
   const [managedBrowserCreationEnabled, mobileEmulatorCreationEnabled] = useAppStore(
     useShallow((state) => {
       const policy = getClientCreationActionPolicy(state, state.activeWorktreeId)
@@ -164,6 +169,7 @@ export function useSettingsNavigationMetadata(): SettingsNavSection[] {
         isLocalWindowsHost,
         isWindowsTerminalHost,
         isWebClient,
+        conductorAppearance,
         hostQueuesMessages,
         typedChatPermissions,
         managedBrowserCreationEnabled,
@@ -183,6 +189,7 @@ export function useSettingsNavigationMetadata(): SettingsNavSection[] {
       isLocalWindowsHost,
       isWindowsTerminalHost,
       isWebClient,
+      conductorAppearance,
       hostQueuesMessages,
       typedChatPermissions,
       managedBrowserCreationEnabled,

@@ -23,6 +23,7 @@ export type UseNativeChatComposerKeyDownArgs = {
   completeMention: (path: string) => void
   activeSuggestion: number
   draft: string
+  modifiedSend?: boolean
   /** Image chips count as composer content, like typed text. */
   hasAttachments?: boolean
   recall?: NativeChatComposerRecall | undefined
@@ -47,6 +48,7 @@ export function useNativeChatComposerKeyDown({
   completeMention,
   activeSuggestion,
   draft,
+  modifiedSend = false,
   hasAttachments = false,
   recall,
   isComposing,
@@ -137,8 +139,11 @@ export function useNativeChatComposerKeyDown({
         return
       }
       if (event.key === 'Enter' && !event.shiftKey) {
+        if (modifiedSend && !modified) {
+          return
+        }
         event.preventDefault()
-        if (!modified) {
+        if (!modified || (modifiedSend && !event.altKey)) {
           send()
         } else if (draft.trim() !== '' || hasAttachments) {
           // The other thing than the setting, for this one message.
@@ -187,6 +192,7 @@ export function useNativeChatComposerKeyDown({
       dismissPicker,
       dispatchPickerCommand,
       draft,
+      modifiedSend,
       hasAttachments,
       interrupt,
       isComposing,

@@ -6,6 +6,7 @@ import { createLocalizedCatalog } from '@/i18n/localized-catalog'
 import { getGeneralProjectRuntimeSearchEntries } from './project-runtime/general-project-runtime-search'
 import { getGeneralSupportSearchEntries } from './general-support-search'
 import { getUpdateDelayDescription, getUpdateDelayTitle } from '../updates/update-delay-copy'
+import { getMaestroSendKeySearchEntry } from '../../maestro/maestro-send-key-search'
 
 export const getGeneralWorkspaceSearchEntries = createLocalizedCatalog(() => [
   {
@@ -269,12 +270,14 @@ export const getGeneralUpdateSearchEntries = createLocalizedCatalog(() => [
 
 type GeneralPaneSearchOptions = {
   includeProjectRuntime?: boolean
+  includeMaestro?: boolean
 }
 
 export function getGeneralPaneSearchEntries(
   options: GeneralPaneSearchOptions = {}
 ): SettingsSearchEntry[] {
   return [
+    ...(options.includeMaestro ? [getMaestroSendKeySearchEntry()] : []),
     ...getGeneralWorkspaceSearchEntries(),
     ...getGeneralNavigationSearchEntries(),
     ...(options.includeProjectRuntime === false ? [] : getGeneralProjectRuntimeSearchEntries()),

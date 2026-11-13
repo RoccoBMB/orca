@@ -1,3 +1,8 @@
+import {
+  maestroUsesModifiedSend,
+  type MaestroSettings
+} from '../../../../../shared/maestro-settings'
+import { nativeChatAlternateSendShortcut } from '@/lib/native-chat-send-shortcut'
 import { translate } from '@/i18n/i18n'
 import { createLocalizedCatalog } from '@/i18n/localized-catalog'
 import type { SettingsSearchEntry } from '../search/settings-search'
@@ -109,4 +114,14 @@ export const getChatBehaviorEntriesByKey = createLocalizedCatalog(() => ({
 
 export function getChatBehaviorSearchEntries(): SettingsSearchEntry[] {
   return [{ title: getChatBehaviorTitle() }, ...Object.values(getChatBehaviorEntriesByKey())]
+}
+
+export function getChatQueueFollowUpDescription(settings: { maestro?: MaestroSettings }) {
+  return maestroUsesModifiedSend(settings)
+    ? translate(
+        'maestro.sendKey.queueDescription',
+        'Messages sent while the agent works wait as cards until the turn ends. Use {{shortcut}} for the opposite action on one message. Messages with images wait as cards too.',
+        { shortcut: nativeChatAlternateSendShortcut(true) }
+      )
+    : getChatBehaviorEntriesByKey().queueFollowUps.description
 }

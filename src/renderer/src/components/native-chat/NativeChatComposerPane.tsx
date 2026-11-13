@@ -16,7 +16,7 @@ import { nativeChatComposerSendState } from './native-chat-composer-send-state'
 import { useNativeChatSteerChordPreview } from './use-native-chat-steer-chord-preview'
 import { useNativeChatComposerHandle } from './use-native-chat-composer-handle'
 import { useNativeChatFileDrops } from './use-native-chat-file-drops'
-import { useNativeChatComposerKeyDown } from './use-native-chat-composer-keydown'
+import { useMaestroComposerKeyDown } from './native-chat-send-key'
 import { useNativeChatSendLifecycle } from './use-native-chat-send-lifecycle'
 import { useNativeChatComposerSessionOptions } from './use-native-chat-composer-session-options'
 import { useNativeChatDictation } from './use-native-chat-dictation'
@@ -319,7 +319,7 @@ export const NativeChatComposerPane = forwardRef<ComposerHandle, C.NativeChatCom
       resolveTarget
     })
 
-    const handleKeyDown = useNativeChatComposerKeyDown({
+    const handleKeyDown = useMaestroComposerKeyDown({
       autocomplete,
       mentionFiles,
       completeMention,

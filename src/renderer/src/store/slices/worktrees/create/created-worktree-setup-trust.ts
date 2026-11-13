@@ -108,7 +108,7 @@ function showSetupSkippedToast(
 // Long enough to reach the action; the workspace itself is already usable.
 const SETUP_SKIPPED_TOAST_MS = 15_000
 
-async function runApprovedWorktreeSetup(
+export async function runApprovedWorktreeSetup(
   target: RuntimeClientTarget,
   args: RunApprovedWorktreeSetupArgs
 ): Promise<RunApprovedWorktreeSetupResult> {

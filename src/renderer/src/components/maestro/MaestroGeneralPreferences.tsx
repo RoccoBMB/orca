@@ -6,12 +6,16 @@ import { nativeChatQueueFollowUps } from '../../../../shared/native-chat/input/n
 import { nativeChatScrollsToLatestOnSend } from '../../../../shared/native-chat/native-chat-appearance-settings'
 import { useStructuredAgentSessionHostQueuesMessages } from '@/runtime/structured-agent-session-host-capability'
 import { Button } from '@/components/ui/button'
-import { getChatBehaviorEntriesByKey } from '../settings/chat/chat-behavior-search'
+import {
+  getChatBehaviorEntriesByKey,
+  getChatQueueFollowUpDescription
+} from '../settings/chat/chat-behavior-search'
 import { getNotificationsPaneSearchEntries } from '../settings/notifications/notifications-search'
 import { SettingsSwitchRow } from '../settings/form-controls/SettingsFormControls'
 import { SearchableSetting } from '../settings/section-layout/SearchableSetting'
 import { matchesSettingsSearch } from '../settings/search/settings-search'
 import { MaestroNotificationSound } from './MaestroNotificationSound'
+import { MaestroSendKeyPreference } from './MaestroSendKeyPreference'
 
 const LOCAL_CHAT_HOST = { kind: 'local' } as const
 const NOTIFICATION_KEYS = ['enabled', 'agentTaskComplete', 'agentNeedsInput'] as const
@@ -33,11 +37,12 @@ export function MaestroGeneralPreferences(): React.JSX.Element | null {
   }
   return (
     <section className="divide-y divide-border">
+      <MaestroSendKeyPreference />
       {hostQueuesMessages && (
         <SearchableSetting {...chat.queueFollowUps} className="max-w-none">
           <SettingsSwitchRow
             label={chat.queueFollowUps.title}
-            description={chat.queueFollowUps.description}
+            description={getChatQueueFollowUpDescription(settings)}
             checked={nativeChatQueueFollowUps(settings)}
             onChange={() =>
               void useAppStore.getState().updateSettings({

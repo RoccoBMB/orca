@@ -1,5 +1,7 @@
 import React from 'react'
-import { FolderPlus, LoaderCircle, PlugZap } from 'lucide-react'
+import { ChevronDown, FolderPlus, LoaderCircle, PlugZap } from 'lucide-react'
+import { useAppStore } from '@/store'
+import { conductorAppearanceEnabled } from '../../../../shared/maestro-settings'
 import { Button } from '@/components/ui/button'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import ProjectCombobox from '@/components/new-workspace/ProjectCombobox'
@@ -85,9 +87,28 @@ export function NewWorkspaceComposerProjectSection({
   connectButtonLabel,
   selectedProjectName
 }: NewWorkspaceComposerProjectSectionProps): React.JSX.Element {
+  const conductor = useAppStore((state) => conductorAppearanceEnabled(state.settings))
+  const [targetExpanded, setTargetExpanded] = React.useState(false)
+  const soleTarget = projectHostSetupOptions?.length === 1 ? projectHostSetupOptions[0] : null
+  const compactTarget =
+    conductor &&
+    shouldShowRunTargetPicker &&
+    soleTarget?.kind === 'ready' &&
+    soleTarget.hostId === 'local' &&
+    !selectedEphemeralVmRecipeId &&
+    !ephemeralVmRecipeError &&
+    !selectedRepoRequiresConnection &&
+    !targetExpanded
   return (
     <fieldset disabled={disabled} className="space-y-1">
-      <div className={cn('grid gap-3', shouldShowRunTargetPicker && 'grid-cols-2')}>
+      <div
+        className={cn(
+          'grid gap-3',
+          shouldShowRunTargetPicker &&
+            !compactTarget &&
+            (conductor ? 'grid-cols-1 @min-[24rem]:grid-cols-2' : 'grid-cols-2')
+        )}
+      >
         <div className="min-w-0 space-y-1">
           <div className="flex h-5 items-center justify-between gap-2">
             <label className="text-xs font-medium text-muted-foreground">
@@ -152,7 +173,7 @@ export function NewWorkspaceComposerProjectSection({
             ) : null}
           </div>
         </div>
-        {shouldShowRunTargetPicker ? (
+        {shouldShowRunTargetPicker && !compactTarget ? (
           <div className="min-w-0 space-y-1">
             <label className="flex h-5 min-w-0 items-center truncate text-xs font-medium text-muted-foreground">
               {translate('auto.components.NewWorkspaceComposerCard.runOn', 'Run on')}
@@ -178,6 +199,20 @@ export function NewWorkspaceComposerProjectSection({
           </div>
         ) : null}
       </div>
+      {compactTarget && (
+        <Button
+          type="button"
+          size="sm"
+          variant="ghost"
+          className="max-w-full justify-start"
+          onClick={() => setTargetExpanded(true)}
+        >
+          <span className="truncate">
+            {translate('maestro.workspace.runOn', 'Run on {{host}}', { host: soleTarget.label })}
+          </span>
+          <ChevronDown className="size-3.5 shrink-0" />
+        </Button>
+      )}
       {!shouldShowRunTargetPicker && ephemeralVmRecipeError ? (
         <p className="whitespace-pre-line text-2xs text-destructive">{ephemeralVmRecipeError}</p>
       ) : null}

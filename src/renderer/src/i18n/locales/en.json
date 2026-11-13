@@ -24399,12 +24399,37 @@
       "checking": "Checking setup…",
       "unavailable": "Could not check project setup. Try again.",
       "output": "Terminal output",
-      "refresh": "Refresh setup"
+      "refresh": "Refresh setup",
+      "unsupportedRoute": "Run setup from the workspace host.",
+      "settingsChanged": "Setup settings changed. Review the current commands before running again.",
+      "changed": "Workspace commands changed. Review the current commands below before running.",
+      "started": "Setup requested. Open terminal output for progress and results.",
+      "unsupported": "Update Maestro on the workspace host to run setup here.",
+      "notConfigured": "The host has no setup commands to run.",
+      "failed": "Could not request setup. Try again.",
+      "reviewRun": "Review and run",
+      "reviewTitle": "Run workspace setup?",
+      "reviewDescription": "These commands run in {{workspace}}. Running setup again can change workspace files and restart configured commands.",
+      "cancel": "Cancel",
+      "requesting": "Requesting setup…",
+      "runCommands": "Run commands"
     },
     "tabs": {
       "showAll": "Show all tabs",
       "search": "Find a tab…",
       "noMatches": "No matching tabs."
+    },
+    "sendKey": {
+      "title": "Send messages with",
+      "description": "Choose the send key for Maestro chat. Shift+Enter always adds a new line.",
+      "keywordSend": "send",
+      "keywordEnter": "enter",
+      "keywordKeyboard": "keyboard",
+      "keywordNewline": "newline",
+      "queueDescription": "Messages sent while the agent works wait as cards until the turn ends. Use {{shortcut}} for the opposite action on one message. Messages with images wait as cards too."
+    },
+    "workspace": {
+      "runOn": "Run on {{host}}"
     }
   }
 }

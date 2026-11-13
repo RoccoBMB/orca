@@ -2,6 +2,7 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
 import { useAppStore } from '@/store'
+import { conductorAppearanceEnabled } from '../../../shared/maestro-settings'
 import { cn } from '@/lib/utils'
 import { getAgentCatalog } from '@/lib/agent-catalog'
 import { getScreenSubmitModifierLabel } from '@/lib/screen-submit-shortcut'
@@ -90,6 +91,7 @@ export default function NewWorkspaceComposerCard(
     applyDrop: props.onNativeFileDrop
   })
   const openModal = useAppStore((state) => state.openModal)
+  const conductor = useAppStore((state) => conductorAppearanceEnabled(state.settings))
   const activeModal = useAppStore((state) => state.activeModal)
   const defaultTuiAgent = useAppStore((state) => state.settings?.defaultTuiAgent ?? null)
   const disabledTuiAgents = useAppStore(
@@ -278,6 +280,7 @@ export default function NewWorkspaceComposerCard(
       onDragLeave={dragHandlers.onDragLeave}
       className={cn(
         'flex min-h-0 min-w-0 flex-1 flex-col gap-1 rounded-md transition',
+        conductor && '@container',
         isFileDragOver &&
           props.selectedRepoPath &&
           selectedRepoExecutionHostId &&
